@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Code2, Lock, Plus, Unlock, X } from "lucide-react";
+import { Code2, Layers, Lock, Plus, Unlock, X } from "lucide-react";
 import {
   createAdminSkill,
   updateAdminSkill,
 } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
 
 interface AdminSkillsProps {
@@ -234,25 +235,26 @@ export default function AdminSkillsClient({
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Skill Management</h1>
-          <p className="mt-1 text-sm text-light-400">
-            {skills.length} total skills
-          </p>
-        </div>
-        <button
-          onClick={() => setShowCreateForm(!showCreateForm)}
-          className="flex items-center gap-2 rounded-xl bg-primary-200/15 px-4 py-2 text-sm font-medium text-primary-200 transition-colors hover:bg-primary-200/25"
-        >
-          {showCreateForm ? (
-            <X className="size-4" />
-          ) : (
-            <Plus className="size-4" />
-          )}
-          {showCreateForm ? "Cancel" : "New Skill"}
-        </button>
-      </div>
+      <AdminPageHeader
+        eyebrow="Skill taxonomy"
+        title="Skill Management"
+        description="Manage the learning tracks that organize challenges across the preparation experience."
+        icon={Layers}
+        metrics={[`${skills.length} total skills`]}
+        actions={
+          <button
+            onClick={() => setShowCreateForm(!showCreateForm)}
+            className="flex items-center gap-2 rounded-xl bg-primary-200/15 px-4 py-2 text-sm font-medium text-primary-200 transition-colors hover:bg-primary-200/25"
+          >
+            {showCreateForm ? (
+              <X className="size-4" />
+            ) : (
+              <Plus className="size-4" />
+            )}
+            {showCreateForm ? "Cancel" : "New Skill"}
+          </button>
+        }
+      />
 
       {showCreateForm && (
         <form

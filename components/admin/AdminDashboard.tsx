@@ -1,36 +1,63 @@
 "use client";
 
+import type { ComponentType, ReactNode } from "react";
+import { useTransition } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
-  Users,
-  MessageSquare,
+  ArrowUpRight,
+  CheckCircle2,
   Code2,
   FileCheck,
-  TrendingUp,
   Layers,
-  ArrowUpRight,
+  MessageSquare,
+  RefreshCw,
+  ScrollText,
   Trophy,
-  CheckCircle2,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 import {
-  AreaChart,
   Area,
+  AreaChart,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  BarChart,
-  Bar,
 } from "recharts";
 
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import UserAvatar from "@/components/UserAvatar";
 
 interface DashboardProps {
   dashboard: any;
   stats: any;
   currentRange: string;
+}
+
+interface SectionCardProps {
+  title: string;
+  subtitle?: string;
+  icon: ComponentType<{ className?: string }>;
+  iconTone?: string;
+  action?: ReactNode;
+  children: ReactNode;
+  className?: string;
+}
+
+interface ActivityItemProps {
+  href?: string;
+  title: string;
+  meta: string;
+  time?: string;
+  badge?: string;
+  badgeTone?: string;
+  side?: ReactNode;
+  avatar?: ReactNode;
 }
 
 const TIME_RANGE_OPTIONS = [
@@ -98,23 +125,22 @@ const statCards = [
 ];
 
 const CustomTooltip = ({ active, payload, label }: any) => {
-  if (active && payload && payload.length) {
-    return (
-      <div className="rounded-xl border border-white/10 bg-dark-200 px-4 py-2.5 shadow-xl">
-        <p className="mb-1 text-xs text-light-400">{label}</p>
-        {payload.map((entry: any, i: number) => (
-          <p
-            key={i}
-            className="text-sm font-semibold"
-            style={{ color: entry.color }}
-          >
-            {entry.name}: {entry.value}
-          </p>
-        ))}
-      </div>
-    );
-  }
-  return null;
+  if (!active || !payload?.length) return null;
+
+  return (
+    <div className="rounded-xl border border-white/10 bg-dark-200 px-4 py-2.5 shadow-xl">
+      <p className="mb-1 text-xs text-light-400">{label}</p>
+      {payload.map((entry: any, index: number) => (
+        <p
+          key={index}
+          className="text-sm font-semibold"
+          style={{ color: entry.color }}
+        >
+          {entry.name}: {entry.value}
+        </p>
+      ))}
+    </div>
+  );
 };
 
 const formatDate = (value: string) =>
@@ -124,18 +150,141 @@ const formatDate = (value: string) =>
     year: "numeric",
   });
 
+const formatDateTime = (value: string) =>
+  new Date(value).toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+const formatAuditAction = (action: string) =>
+  action
+    .toLowerCase()
+    .split("_")
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(" ");
+
+const getStatusTone = (status: string) => {
+  if (status === "ACCEPTED" || status === "Active") {
+    return "bg-emerald-500/15 text-emerald-400";
+  }
+
+  if (status === "WRONG_ANSWER" || status.includes("ERROR")) {
+    return "bg-red-500/15 text-red-400";
+  }
+
+  if (status === "Archived") {
+    return "bg-slate-500/15 text-slate-300";
+  }
+
+  return "bg-amber-500/15 text-amber-400";
+};
+
+const getAuditActionTone = (action: string) => {
+  if (action.startsWith("CREATE") || action.startsWith("ENABLE")) {
+    return "bg-emerald-500/15 text-emerald-400";
+  }
+
+  if (action.startsWith("DISABLE")) {
+    return "bg-red-500/15 text-red-400";
+  }
+
+  if (action.startsWith("ARCHIVE")) {
+    return "bg-amber-500/15 text-amber-400";
+  }
+
+  if (action.startsWith("RESTORE")) {
+    return "bg-cyan-500/15 text-cyan-300";
+  }
+
+  return "bg-primary-200/15 text-primary-200";
+};
+
 const EmptyState = ({ message }: { message: string }) => (
   <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.03] px-4 py-6 text-center text-sm text-light-400">
     {message}
   </div>
 );
 
+const SectionCard = ({
+  title,
+  subtitle,
+  icon: Icon,
+  iconTone = "bg-primary-200/10 text-primary-200",
+  action,
+  children,
+  className = "",
+}: SectionCardProps) => (
+  <section
+    className={`rounded-2xl border border-white/5 bg-dark-200/50 p-6 ${className}`}
+  >
+    <div className="mb-5 flex items-start justify-between gap-4">
+      <div className="flex min-w-0 items-center gap-3">
+        <div className={`rounded-xl p-2 ${iconTone}`}>
+          <Icon className="size-5" />
+        </div>
+        <div className="min-w-0">
+          <h3 className="text-base font-semibold text-white">{title}</h3>
+          {subtitle && (
+            <p className="mt-1 text-xs leading-relaxed text-light-400">
+              {subtitle}
+            </p>
+          )}
+        </div>
+      </div>
+      {action}
+    </div>
+    {children}
+  </section>
+);
+
+const ActivityItem = ({
+  href,
+  title,
+  meta,
+  time,
+  badge,
+  badgeTone = "bg-primary-200/15 text-primary-200",
+  side,
+  avatar,
+}: ActivityItemProps) => {
+  const content = (
+    <div className="flex items-start justify-between gap-4 rounded-xl border border-white/5 bg-white/[0.04] px-4 py-3 transition-colors hover:bg-white/[0.08]">
+      <div className="flex min-w-0 gap-3">
+        {avatar}
+        <div className="min-w-0">
+          {badge && (
+            <span
+              className={`mb-2 inline-flex rounded-full px-2.5 py-1 text-[11px] font-semibold ${badgeTone}`}
+            >
+              {badge}
+            </span>
+          )}
+          <p className="truncate text-sm font-semibold text-white">{title}</p>
+          <p className="mt-1 truncate text-xs text-light-400">{meta}</p>
+          {time && <p className="mt-2 text-[11px] text-light-500">{time}</p>}
+        </div>
+      </div>
+      {side}
+    </div>
+  );
+
+  if (!href) return content;
+
+  return (
+    <Link href={href} className="block">
+      {content}
+    </Link>
+  );
+};
+
 const GrowthBadge = ({ value }: { value: number }) => {
   const isPositive = value >= 0;
 
   return (
     <span
-      className={`rounded-full px-2.5 py-1 text-xs font-semibold ${
+      className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
         isPositive
           ? "bg-emerald-500/15 text-emerald-400"
           : "bg-red-500/15 text-red-400"
@@ -147,16 +296,55 @@ const GrowthBadge = ({ value }: { value: number }) => {
   );
 };
 
-const getStatusColor = (status: string) => {
-  if (status === "ACCEPTED") {
-    return "bg-emerald-500/15 text-emerald-400";
-  }
+const SectionLink = ({ href, label }: { href: string; label: string }) => (
+  <Link
+    href={href}
+    className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-light-300 transition-colors hover:border-primary-200/40 hover:text-white"
+  >
+    {label}
+    <ArrowUpRight className="size-3.5" />
+  </Link>
+);
 
-  if (status === "WRONG_ANSWER" || status.includes("ERROR")) {
-    return "bg-red-500/15 text-red-400";
-  }
+const RankItem = ({
+  index,
+  title,
+  meta,
+  value,
+  href,
+  valueTone = "text-primary-200",
+}: {
+  index: number;
+  title: string;
+  meta: string;
+  value: number;
+  href?: string;
+  valueTone?: string;
+}) => {
+  const content = (
+    <div className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.04] px-3 py-2.5 transition-colors hover:bg-white/[0.08]">
+      <div className="flex min-w-0 items-center gap-3">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-bold text-light-300">
+          {index + 1}
+        </span>
+        <div className="min-w-0">
+          <p className="truncate text-sm font-semibold text-white">{title}</p>
+          <p className="truncate text-[11px] text-light-500">{meta}</p>
+        </div>
+      </div>
+      <p className={`ml-3 text-sm font-bold ${valueTone}`}>
+        {value.toLocaleString()}
+      </p>
+    </div>
+  );
 
-  return "bg-amber-500/15 text-amber-400";
+  if (!href) return content;
+
+  return (
+    <Link href={href} className="block">
+      {content}
+    </Link>
+  );
 };
 
 export default function AdminDashboardClient({
@@ -167,6 +355,7 @@ export default function AdminDashboardClient({
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const [isRefreshing, startTransition] = useTransition();
   const selectedRange = TIME_RANGE_OPTIONS.some(
     (option) => option.value === currentRange,
   )
@@ -182,6 +371,12 @@ export default function AdminDashboardClient({
     router.push(`${pathname}?${params.toString()}`);
   };
 
+  const handleRefresh = () => {
+    startTransition(() => {
+      router.refresh();
+    });
+  };
+
   if (!dashboard) {
     return (
       <div className="flex h-[60vh] items-center justify-center">
@@ -191,43 +386,54 @@ export default function AdminDashboardClient({
   }
 
   return (
-    <div className="space-y-8 animate-fadeIn">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">Dashboard Overview</h1>
-          <p className="mt-1 text-sm text-light-400">
-            System statistics and recent activity
-          </p>
-        </div>
-
-        <AdminSelectFilter
-          label="Time range"
-          value={selectedRange}
-          options={TIME_RANGE_OPTIONS}
-          onChange={handleRangeChange}
-          className="w-full sm:w-48"
-        />
-      </div>
+    <div className="space-y-7 animate-fadeIn">
+      <AdminPageHeader
+        eyebrow="Admin command center"
+        title="Dashboard Overview"
+        description="A unified view of platform health, recent activity, and content performance."
+        icon={TrendingUp}
+        actions={
+          <>
+            <AdminSelectFilter
+              label="Time range"
+              value={selectedRange}
+              options={TIME_RANGE_OPTIONS}
+              onChange={handleRangeChange}
+              className="w-full sm:w-48"
+            />
+            <button
+              type="button"
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-light-100 transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <RefreshCw
+                className={`size-4 ${isRefreshing ? "animate-spin" : ""}`}
+              />
+              {isRefreshing ? "Refreshing..." : "Refresh"}
+            </button>
+          </>
+        }
+      />
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         {statCards.map((card) => {
           const Icon = card.icon;
           const value = dashboard[card.key] ?? 0;
-          const summary = card.summary(dashboard);
 
           return (
             <div
               key={card.key}
               className={`relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br ${card.color} p-5 transition-all hover:-translate-y-0.5 hover:border-white/10 hover:shadow-lg`}
             >
-              <div className="flex items-center justify-between">
+              <div className="flex items-start justify-between gap-3">
                 <div>
                   <p className="mb-1 text-sm text-light-400">{card.label}</p>
                   <p className="text-3xl font-bold text-white">
                     {value.toLocaleString()}
                   </p>
                   <p className="mt-2 text-xs font-medium text-light-300">
-                    {summary}
+                    {card.summary(dashboard)}
                   </p>
                 </div>
                 <div className={`rounded-xl bg-white/5 p-3 ${card.iconColor}`}>
@@ -241,13 +447,13 @@ export default function AdminDashboardClient({
 
       {stats && (
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <h3 className="text-base font-semibold text-white">
-                User Growth ({selectedRangeLabel})
-              </h3>
-              <GrowthBadge value={stats.growth?.users ?? 0} />
-            </div>
+          <SectionCard
+            title={`User Growth (${selectedRangeLabel})`}
+            subtitle="New user accounts created in the selected range."
+            icon={Users}
+            iconTone="bg-indigo-500/10 text-indigo-400"
+            action={<GrowthBadge value={stats.growth?.users ?? 0} />}
+          >
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={stats.userGrowth}>
                 <defs>
@@ -281,15 +487,15 @@ export default function AdminDashboardClient({
                 />
               </AreaChart>
             </ResponsiveContainer>
-          </div>
+          </SectionCard>
 
-          <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <h3 className="text-base font-semibold text-white">
-                Submissions Trend ({selectedRangeLabel})
-              </h3>
-              <GrowthBadge value={stats.growth?.submissions ?? 0} />
-            </div>
+          <SectionCard
+            title={`Submissions Trend (${selectedRangeLabel})`}
+            subtitle="Challenge submissions sent by learners."
+            icon={FileCheck}
+            iconTone="bg-emerald-500/10 text-emerald-400"
+            action={<GrowthBadge value={stats.growth?.submissions ?? 0} />}
+          >
             <ResponsiveContainer width="100%" height={240}>
               <BarChart data={stats.submissionTrend}>
                 <CartesianGrid
@@ -318,15 +524,15 @@ export default function AdminDashboardClient({
                 />
               </BarChart>
             </ResponsiveContainer>
-          </div>
+          </SectionCard>
 
-          <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-            <div className="mb-4 flex items-center justify-between gap-3">
-              <h3 className="text-base font-semibold text-white">
-                Interview Trend ({selectedRangeLabel})
-              </h3>
-              <GrowthBadge value={stats.growth?.interviews ?? 0} />
-            </div>
+          <SectionCard
+            title={`Interview Trend (${selectedRangeLabel})`}
+            subtitle="Mock interviews generated during the selected range."
+            icon={MessageSquare}
+            iconTone="bg-amber-500/10 text-amber-400"
+            action={<GrowthBadge value={stats.growth?.interviews ?? 0} />}
+          >
             <ResponsiveContainer width="100%" height={240}>
               <AreaChart data={stats.interviewTrend}>
                 <defs>
@@ -366,23 +572,14 @@ export default function AdminDashboardClient({
                 />
               </AreaChart>
             </ResponsiveContainer>
-          </div>
+          </SectionCard>
 
-          <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-            <div className="mb-5 flex items-center gap-3">
-              <div className="rounded-xl bg-emerald-500/10 p-2 text-emerald-400">
-                <CheckCircle2 className="size-5" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-white">
-                  Submission Success Rate
-                </h3>
-                <p className="mt-1 text-xs text-light-400">
-                  Accepted submissions within {selectedRangeLabel.toLowerCase()}
-                </p>
-              </div>
-            </div>
-
+          <SectionCard
+            title={`Submission Success Rate (${selectedRangeLabel})`}
+            subtitle="Accepted submissions over all challenge submissions."
+            icon={CheckCircle2}
+            iconTone="bg-emerald-500/10 text-emerald-400"
+          >
             <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-5">
               <div className="flex items-end justify-between gap-4">
                 <div>
@@ -417,7 +614,7 @@ export default function AdminDashboardClient({
                 stats.submissionSuccessRate.breakdown.map((item: any) => (
                   <span
                     key={item.status}
-                    className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusColor(
+                    className={`rounded-full px-3 py-1 text-xs font-semibold ${getStatusTone(
                       item.status,
                     )}`}
                   >
@@ -428,170 +625,148 @@ export default function AdminDashboardClient({
                 <p className="text-sm text-light-400">No submissions yet.</p>
               )}
             </div>
-          </div>
+          </SectionCard>
         </div>
       )}
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-          <h3 className="mb-4 text-base font-semibold text-white">
-            Recent Users
-          </h3>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-3">
+        <SectionCard
+          title="Recent Users"
+          subtitle="Newest accounts created on the platform."
+          icon={Users}
+          iconTone="bg-indigo-500/10 text-indigo-400"
+          action={<SectionLink href="/admin/users" label="Manage" />}
+        >
           <div className="space-y-3">
             {dashboard.recentUsers?.length ? (
               dashboard.recentUsers.map((user: any) => (
-                <div
+                <ActivityItem
                   key={user.id}
-                  className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3"
-                >
-                  <div className="min-w-0">
-                    <p className="truncate text-sm font-medium text-white">
-                      {user.name}
-                    </p>
-                    <p className="truncate text-xs text-light-400">
-                      {user.email}
-                    </p>
-                  </div>
-                  <span
-                    className={`ml-3 rounded-full px-2 py-0.5 text-xs font-medium ${
-                      user.role === "ADMIN"
-                        ? "bg-amber-500/20 text-amber-400"
-                        : "bg-white/10 text-light-400"
-                    }`}
-                  >
-                    {user.role}
-                  </span>
-                </div>
+                  title={user.name}
+                  meta={user.email}
+                  time={formatDateTime(user.createdAt)}
+                  badge={user.role}
+                  badgeTone={
+                    user.role === "ADMIN"
+                      ? "bg-amber-500/15 text-amber-400"
+                      : "bg-white/10 text-light-300"
+                  }
+                  avatar={
+                    <UserAvatar
+                      name={user.name || "User"}
+                      avatarUrl={user.avatarUrl}
+                      size="sm"
+                    />
+                  }
+                />
               ))
             ) : (
               <EmptyState message="No recent users yet." />
             )}
           </div>
-        </div>
+        </SectionCard>
 
-        <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-          <h3 className="mb-4 text-base font-semibold text-white">
-            Recent Submissions
-          </h3>
+        <SectionCard
+          title="Recent Submissions"
+          subtitle="Latest coding challenge submissions."
+          icon={FileCheck}
+          iconTone="bg-emerald-500/10 text-emerald-400"
+        >
           <div className="space-y-3">
             {dashboard.recentSubmissions?.length ? (
-              dashboard.recentSubmissions.map((sub: any) => (
-                <div
-                  key={sub.id}
-                  className="flex items-center justify-between rounded-xl bg-white/5 px-4 py-3"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-white">
-                      {sub.challengeTitle}
-                    </p>
-                    <p className="text-xs text-light-400">
-                      by {sub.userName} | {sub.language}
-                    </p>
-                  </div>
-                  <span
-                    className={`ml-3 whitespace-nowrap rounded-full px-2 py-0.5 text-xs font-medium ${
-                      sub.status === "ACCEPTED"
-                        ? "bg-emerald-500/20 text-emerald-400"
-                        : sub.status === "WRONG_ANSWER"
-                          ? "bg-red-500/20 text-red-400"
-                          : "bg-amber-500/20 text-amber-400"
-                    }`}
-                  >
-                    {sub.status}
-                  </span>
-                </div>
+              dashboard.recentSubmissions.map((submission: any) => (
+                <ActivityItem
+                  key={submission.id}
+                  title={submission.challengeTitle}
+                  meta={`by ${submission.userName} | ${submission.language}`}
+                  time={formatDateTime(submission.createdAt)}
+                  badge={submission.status}
+                  badgeTone={getStatusTone(submission.status)}
+                />
               ))
             ) : (
               <EmptyState message="No recent submissions yet." />
             )}
           </div>
-        </div>
-      </div>
+        </SectionCard>
 
-      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[1.15fr_0.85fr]">
-        <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-          <div className="mb-4 flex items-center justify-between gap-4">
-            <div>
-              <h3 className="text-base font-semibold text-white">
-                Recent Interviews
-              </h3>
-              <p className="mt-1 text-xs text-light-400">
-                Latest generated interviews and attempt activity
-              </p>
-            </div>
-            <Link
-              href="/admin/interviews"
-              className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-light-300 transition-colors hover:border-primary-200/40 hover:text-white"
-            >
-              View all
-              <ArrowUpRight className="size-3.5" />
-            </Link>
-          </div>
-
+        <SectionCard
+          title="Recent Interviews"
+          subtitle="Latest generated interviews and attempt activity."
+          icon={MessageSquare}
+          iconTone="bg-amber-500/10 text-amber-400"
+          action={<SectionLink href="/admin/interviews" label="View all" />}
+        >
           <div className="space-y-3">
             {dashboard.recentInterviews?.length ? (
               dashboard.recentInterviews.map((interview: any) => (
-                <Link
+                <ActivityItem
                   key={interview.id}
                   href={`/admin/interviews/${interview.id}`}
-                  className="group flex items-center justify-between rounded-xl bg-white/5 px-4 py-3 transition-colors hover:bg-white/10"
-                >
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <p className="truncate text-sm font-semibold text-white">
-                        {interview.role}
+                  title={interview.role}
+                  meta={`${interview.userName} | ${interview.level} | ${
+                    interview.type
+                  } | ${interview.techstack?.join(", ") || "No tech stack"}`}
+                  time={formatDateTime(interview.createdAt)}
+                  badge={interview.status}
+                  badgeTone={getStatusTone(interview.status)}
+                  side={
+                    <div className="shrink-0 text-right">
+                      <p className="text-sm font-bold text-primary-200">
+                        {interview.attempts}
                       </p>
-                      <span
-                        className={`rounded-full px-2 py-0.5 text-[11px] font-semibold ${
-                          interview.status === "Active"
-                            ? "bg-emerald-500/15 text-emerald-400"
-                            : "bg-slate-500/15 text-slate-300"
-                        }`}
-                      >
-                        {interview.status}
-                      </span>
+                      <p className="text-[11px] text-light-500">attempts</p>
                     </div>
-                    <p className="mt-1 truncate text-xs text-light-400">
-                      {interview.userName} | {interview.level} |{" "}
-                      {interview.type}
-                    </p>
-                    <p className="mt-1 truncate text-[11px] text-light-500">
-                      {interview.techstack?.join(", ") || "No tech stack"} |{" "}
-                      {formatDate(interview.createdAt)}
-                    </p>
-                  </div>
-                  <div className="ml-4 text-right">
-                    <p className="text-sm font-bold text-primary-200">
-                      {interview.attempts}
-                    </p>
-                    <p className="text-[11px] text-light-500">attempts</p>
-                  </div>
-                </Link>
+                  }
+                />
               ))
             ) : (
               <EmptyState message="No recent interviews yet." />
             )}
           </div>
-        </div>
+        </SectionCard>
+      </div>
 
-        <div className="rounded-2xl border border-white/5 bg-dark-200/50 p-6">
-          <div className="mb-4 flex items-center gap-2">
-            <div className="rounded-xl bg-amber-500/10 p-2 text-amber-400">
-              <Trophy className="size-4" />
-            </div>
-            <div>
-              <h3 className="text-base font-semibold text-white">
-                Top Content
-              </h3>
-              <p className="mt-1 text-xs text-light-400">
-                Skills by challenges and challenges by submissions
-              </p>
-            </div>
+      <div className="grid grid-cols-1 gap-6 xl:grid-cols-[0.9fr_1.1fr]">
+        <SectionCard
+          title="Recent Admin Actions"
+          subtitle="Latest tracked changes made by admins."
+          icon={ScrollText}
+          iconTone="bg-primary-200/10 text-primary-200"
+          action={<SectionLink href="/admin/audit-logs" label="View logs" />}
+        >
+          <div className="space-y-3">
+            {dashboard.recentAuditLogs?.length ? (
+              dashboard.recentAuditLogs.map((log: any) => (
+                <ActivityItem
+                  key={log.id}
+                  href={`/admin/audit-logs?search=${encodeURIComponent(
+                    log.entityName || log.action,
+                  )}`}
+                  title={log.entityName || log.entityId || "Unknown entity"}
+                  meta={`${log.entityType} by ${
+                    log.admin?.name || "Unknown admin"
+                  }`}
+                  time={formatDateTime(log.createdAt)}
+                  badge={formatAuditAction(log.action)}
+                  badgeTone={getAuditActionTone(log.action)}
+                />
+              ))
+            ) : (
+              <EmptyState message="No admin actions have been logged yet." />
+            )}
           </div>
+        </SectionCard>
 
-          <div className="space-y-5">
+        <SectionCard
+          title={`Top Content (${selectedRangeLabel})`}
+          subtitle="Skills and challenges ranked by submissions in the selected range."
+          icon={Trophy}
+          iconTone="bg-amber-500/10 text-amber-400"
+        >
+          <div className="grid gap-5 lg:grid-cols-2">
             <div>
-              <div className="mb-2 flex items-center justify-between">
+              <div className="mb-3 flex items-center justify-between">
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-light-500">
                   Top Skills
                 </p>
@@ -605,36 +780,23 @@ export default function AdminDashboardClient({
               <div className="space-y-2">
                 {dashboard.topSkills?.length ? (
                   dashboard.topSkills.map((skill: any, index: number) => (
-                    <div
+                    <RankItem
                       key={skill.id}
-                      className="flex items-center justify-between rounded-xl bg-white/5 px-3 py-2.5"
-                    >
-                      <div className="flex min-w-0 items-center gap-3">
-                        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-bold text-light-300">
-                          {index + 1}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-white">
-                            {skill.name}
-                          </p>
-                          <p className="text-[11px] text-light-500">
-                            {skill.isActive ? "Active" : "Disabled"}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm font-bold text-amber-300">
-                        {skill.challengeCount}
-                      </p>
-                    </div>
+                      index={index}
+                      title={skill.name}
+                      meta={skill.isActive ? "Active" : "Disabled"}
+                      value={skill.submissionCount}
+                      valueTone="text-amber-300"
+                    />
                   ))
                 ) : (
-                  <EmptyState message="No skills available yet." />
+                  <EmptyState message="No skill submissions in this range." />
                 )}
               </div>
             </div>
 
             <div>
-              <div className="mb-2 flex items-center justify-between">
+              <div className="mb-3 flex items-center justify-between">
                 <p className="text-xs font-bold uppercase tracking-[0.22em] text-light-500">
                   Top Challenges
                 </p>
@@ -648,38 +810,25 @@ export default function AdminDashboardClient({
               <div className="space-y-2">
                 {dashboard.topChallenges?.length ? (
                   dashboard.topChallenges.map((challenge: any, index: number) => (
-                    <Link
+                    <RankItem
                       key={challenge.id}
+                      index={index}
+                      title={challenge.title}
+                      meta={`${challenge.skillName} | ${challenge.difficulty}`}
+                      value={challenge.submissionCount}
+                      valueTone="text-emerald-300"
                       href={`/admin/challenges?search=${encodeURIComponent(
                         challenge.title,
                       )}`}
-                      className="flex items-center justify-between rounded-xl bg-white/5 px-3 py-2.5 transition-colors hover:bg-white/10"
-                    >
-                      <div className="flex min-w-0 items-center gap-3">
-                        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-bold text-light-300">
-                          {index + 1}
-                        </span>
-                        <div className="min-w-0">
-                          <p className="truncate text-sm font-semibold text-white">
-                            {challenge.title}
-                          </p>
-                          <p className="truncate text-[11px] text-light-500">
-                            {challenge.skillName} | {challenge.difficulty}
-                          </p>
-                        </div>
-                      </div>
-                      <p className="text-sm font-bold text-emerald-300">
-                        {challenge.submissionCount}
-                      </p>
-                    </Link>
+                    />
                   ))
                 ) : (
-                  <EmptyState message="No challenge submissions yet." />
+                  <EmptyState message="No challenge submissions in this range." />
                 )}
               </div>
             </div>
           </div>
-        </div>
+        </SectionCard>
       </div>
     </div>
   );

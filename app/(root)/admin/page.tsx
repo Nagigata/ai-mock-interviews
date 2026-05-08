@@ -10,7 +10,7 @@ export default async function AdminPage({
   const range = params.range || "6m";
 
   const [dashboard, stats] = await Promise.all([
-    getAdminDashboard(),
+    getAdminDashboard({ range }),
     getAdminStats({ range }),
   ]);
 

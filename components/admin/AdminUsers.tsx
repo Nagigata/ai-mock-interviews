@@ -7,6 +7,7 @@ import {
   ChevronRight,
   Shield,
   User,
+  Users,
   Ban,
   CheckCircle2,
   ShieldCheck,
@@ -15,6 +16,7 @@ import {
 import { updateAdminUser } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
 import UserAvatar from "@/components/UserAvatar";
@@ -178,14 +180,13 @@ export default function AdminUsersClient({
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">User Management</h1>
-          <p className="mt-1 text-sm text-light-400">
-            {data.total} total users
-          </p>
-        </div>
-      </div>
+      <AdminPageHeader
+        eyebrow="Admin user control"
+        title="User Management"
+        description="Review accounts, roles, activation status, and platform activity from one place."
+        icon={Users}
+        metrics={[`${data.total} total users`]}
+      />
 
       <AdminFilterBar>
         <AdminSearchBar

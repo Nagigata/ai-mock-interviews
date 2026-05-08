@@ -2,9 +2,12 @@
 
 import { apiGet, apiPatch, apiPost } from "@/lib/api";
 
-export async function getAdminDashboard() {
+export async function getAdminDashboard(params?: { range?: string }) {
   try {
-    return await apiGet<any>("/admin/dashboard");
+    const query = new URLSearchParams();
+    if (params?.range) query.set("range", params.range);
+    const suffix = query.toString() ? `?${query.toString()}` : "";
+    return await apiGet<any>(`/admin/dashboard${suffix}`);
   } catch {
     return null;
   }
@@ -16,6 +19,26 @@ export async function getAdminStats(params?: { range?: string }) {
     if (params?.range) query.set("range", params.range);
     const suffix = query.toString() ? `?${query.toString()}` : "";
     return await apiGet<any>(`/admin/stats${suffix}`);
+  } catch {
+    return null;
+  }
+}
+
+export async function getAdminAuditLogs(params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  action?: string;
+  entityType?: string;
+}) {
+  try {
+    const query = new URLSearchParams();
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.search) query.set("search", params.search);
+    if (params?.action) query.set("action", params.action);
+    if (params?.entityType) query.set("entityType", params.entityType);
+    return await apiGet<any>(`/admin/audit-logs?${query.toString()}`);
   } catch {
     return null;
   }

@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   Plus,
+  Code2,
   Pencil,
   CheckCircle2,
   Lock,
@@ -20,6 +21,7 @@ import {
 } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
@@ -588,15 +590,13 @@ export default function AdminChallengesClient({
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold text-white">
-            Challenge Management
-          </h1>
-          <p className="text-light-400 text-sm mt-1">
-            {data.total} total challenges
-          </p>
-        </div>
+      <AdminPageHeader
+        eyebrow="Practice content"
+        title="Challenge Management"
+        description="Create, edit, disable, and organize coding practice content for learners."
+        icon={Code2}
+        metrics={[`${data.total} total challenges`]}
+        actions={
         <button
           onClick={handleOpenCreate}
           className="flex items-center gap-2 px-4 py-2 rounded-xl bg-primary-200/15 text-primary-200 text-sm font-medium hover:bg-primary-200/25 transition-colors"
@@ -604,7 +604,8 @@ export default function AdminChallengesClient({
           {formMode === "create" ? <X className="size-4" /> : <Plus className="size-4" />}
           {formMode === "create" ? "Cancel" : "New Challenge"}
         </button>
-      </div>
+        }
+      />
 
       {/* Create/Edit Form */}
       {formMode && (

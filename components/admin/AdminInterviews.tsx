@@ -3,13 +3,14 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Archive, Eye, RotateCcw } from "lucide-react";
+import { Archive, Eye, MessageSquare, RotateCcw } from "lucide-react";
 import {
   archiveAdminInterview,
   restoreAdminInterview,
 } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
+import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
@@ -167,12 +168,13 @@ export default function AdminInterviewsClient({
 
   return (
     <div className="space-y-6 animate-fadeIn">
-      <div>
-        <h1 className="text-2xl font-bold text-white">Interview Management</h1>
-        <p className="text-light-400 text-sm mt-1">
-          {data.total} total interviews
-        </p>
-      </div>
+      <AdminPageHeader
+        eyebrow="Interview operations"
+        title="Interview Management"
+        description="Inspect generated sessions, attempts, archive status, transcripts, and feedback details."
+        icon={MessageSquare}
+        metrics={[`${data.total} total interviews`]}
+      />
 
       <AdminFilterBar>
         <AdminSearchBar

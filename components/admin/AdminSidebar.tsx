@@ -8,6 +8,7 @@ import {
   MessageSquare,
   Code2,
   Layers,
+  ScrollText,
   ArrowLeft,
   PanelLeftClose,
   PanelLeftOpen,
@@ -20,6 +21,7 @@ const sidebarItems = [
   { href: "/admin/interviews", label: "Interviews", icon: MessageSquare },
   { href: "/admin/challenges", label: "Challenges", icon: Code2 },
   { href: "/admin/skills", label: "Skills", icon: Layers },
+  { href: "/admin/audit-logs", label: "Audit Logs", icon: ScrollText },
 ];
 
 interface AdminSidebarProps {
