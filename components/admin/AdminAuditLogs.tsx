@@ -9,6 +9,8 @@ import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import AdminStatePanel from "@/components/admin/AdminStatePanel";
+import AdminTableContainer from "@/components/admin/AdminTableContainer";
 import UserAvatar from "@/components/UserAvatar";
 
 interface AdminAuditLogsProps {
@@ -113,9 +115,12 @@ export default function AdminAuditLogsClient({
 
   if (!data) {
     return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <p className="text-light-400">Failed to load audit logs.</p>
-      </div>
+      <AdminStatePanel
+        title="Failed to load audit logs"
+        description="The audit trail could not be loaded. Please refresh the page or try again later."
+        tone="danger"
+        className="h-[60vh]"
+      />
     );
   }
 
@@ -156,7 +161,7 @@ export default function AdminAuditLogsClient({
         </div>
       </AdminFilterBar>
 
-      <div className="overflow-x-auto rounded-2xl border border-white/5 bg-dark-200/50">
+      <AdminTableContainer>
         <table className="w-full min-w-[1100px]">
           <thead>
             <tr className="border-b border-white/5">
@@ -247,14 +252,18 @@ export default function AdminAuditLogsClient({
               ))
             ) : (
               <tr>
-                <td colSpan={6} className="px-5 py-12 text-center text-light-400">
-                  No audit logs match the current filters.
+                <td colSpan={6} className="px-5 py-12 text-center">
+                  <AdminStatePanel
+                    title="No audit logs found"
+                    description="No admin actions match the current search, action, or entity filter."
+                    className="min-h-[180px] border-0 bg-transparent py-6"
+                  />
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-      </div>
+      </AdminTableContainer>
 
       <AdminPagination
         currentPage={currentPage}

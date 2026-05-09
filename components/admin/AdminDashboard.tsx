@@ -31,6 +31,7 @@ import {
 
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import AdminStatePanel from "@/components/admin/AdminStatePanel";
 import UserAvatar from "@/components/UserAvatar";
 
 interface DashboardProps {
@@ -379,9 +380,12 @@ export default function AdminDashboardClient({
 
   if (!dashboard) {
     return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <p className="text-lg text-light-400">Failed to load dashboard data.</p>
-      </div>
+      <AdminStatePanel
+        title="Failed to load dashboard data"
+        description="The admin overview could not be loaded. Please refresh the page or try again later."
+        tone="danger"
+        className="h-[60vh]"
+      />
     );
   }
 
@@ -642,6 +646,9 @@ export default function AdminDashboardClient({
               dashboard.recentUsers.map((user: any) => (
                 <ActivityItem
                   key={user.id}
+                  href={`/admin/users?search=${encodeURIComponent(
+                    user.email || user.name || "",
+                  )}&page=1`}
                   title={user.name}
                   meta={user.email}
                   time={formatDateTime(user.createdAt)}

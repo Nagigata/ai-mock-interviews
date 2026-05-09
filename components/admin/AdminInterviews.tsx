@@ -14,6 +14,8 @@ import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import AdminStatePanel from "@/components/admin/AdminStatePanel";
+import AdminTableContainer from "@/components/admin/AdminTableContainer";
 
 interface AdminInterviewsProps {
   data: any;
@@ -153,9 +155,12 @@ export default function AdminInterviewsClient({
 
   if (!data) {
     return (
-      <div className="flex items-center justify-center h-[60vh]">
-        <p className="text-light-400">Failed to load interviews.</p>
-      </div>
+      <AdminStatePanel
+        title="Failed to load interviews"
+        description="The interview management table could not be loaded. Please refresh the page or try again later."
+        tone="danger"
+        className="h-[60vh]"
+      />
     );
   }
 
@@ -210,8 +215,7 @@ export default function AdminInterviewsClient({
       </AdminFilterBar>
 
       {/* Table */}
-      <div className="rounded-2xl border border-white/5 bg-dark-200/50 overflow-hidden">
-        <div className="overflow-x-auto">
+      <AdminTableContainer>
           <table className="w-full min-w-[1120px]">
           <thead>
             <tr className="border-b border-white/5">
@@ -344,21 +348,17 @@ export default function AdminInterviewsClient({
             )) : (
               <tr>
                 <td colSpan={9} className="px-5 py-12 text-center">
-                  <div className="mx-auto max-w-sm">
-                    <p className="text-sm font-medium text-white">
-                      No interviews found
-                    </p>
-                    <p className="mt-1 text-sm text-light-400">
-                      Try changing the search keyword, status, type, or level filter.
-                    </p>
-                  </div>
+                  <AdminStatePanel
+                    title="No interviews found"
+                    description="Try changing the search keyword, status, type, or level filter."
+                    className="min-h-[180px] border-0 bg-transparent py-6"
+                  />
                 </td>
               </tr>
             )}
           </tbody>
           </table>
-        </div>
-      </div>
+      </AdminTableContainer>
 
       <AdminPagination
         currentPage={currentPage}

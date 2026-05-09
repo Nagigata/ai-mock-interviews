@@ -3,8 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ChevronLeft,
-  ChevronRight,
   Shield,
   User,
   Users,
@@ -17,8 +15,11 @@ import { updateAdminUser } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
+import AdminPagination from "@/components/admin/AdminPagination";
 import AdminSearchBar from "@/components/admin/AdminSearchBar";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import AdminStatePanel from "@/components/admin/AdminStatePanel";
+import AdminTableContainer from "@/components/admin/AdminTableContainer";
 import UserAvatar from "@/components/UserAvatar";
 
 interface AdminUsersProps {
@@ -172,9 +173,12 @@ export default function AdminUsersClient({
 
   if (!data) {
     return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <p className="text-light-400">Failed to load users.</p>
-      </div>
+      <AdminStatePanel
+        title="Failed to load users"
+        description="The admin users table could not be loaded. Please refresh the page or try again later."
+        tone="danger"
+        className="h-[60vh]"
+      />
     );
   }
 
@@ -215,7 +219,7 @@ export default function AdminUsersClient({
         </div>
       </AdminFilterBar>
 
-      <div className="overflow-x-auto rounded-2xl border border-white/5 bg-dark-200/50">
+      <AdminTableContainer>
         <table className="w-full min-w-[800px]">
           <thead>
             <tr className="border-b border-white/5">
@@ -381,42 +385,23 @@ export default function AdminUsersClient({
             }) : (
               <tr>
                 <td colSpan={8} className="px-5 py-12 text-center">
-                  <div className="mx-auto max-w-sm">
-                    <p className="text-sm font-medium text-white">
-                      No users found
-                    </p>
-                    <p className="mt-1 text-sm text-light-400">
-                      Try changing the search keyword, role, or status filter.
-                    </p>
-                  </div>
+                  <AdminStatePanel
+                    title="No users found"
+                    description="Try changing the search keyword, role, or status filter."
+                    className="min-h-[180px] border-0 bg-transparent py-6"
+                  />
                 </td>
               </tr>
             )}
           </tbody>
         </table>
-      </div>
+      </AdminTableContainer>
 
-      {data.totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage <= 1}
-            className="rounded-lg border border-white/10 p-2 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-30"
-          >
-            <ChevronLeft className="size-4" />
-          </button>
-          <span className="px-3 text-sm text-light-400">
-            Page {currentPage} of {data.totalPages}
-          </span>
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage >= data.totalPages}
-            className="rounded-lg border border-white/10 p-2 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-30"
-          >
-            <ChevronRight className="size-4" />
-          </button>
-        </div>
-      )}
+      <AdminPagination
+        currentPage={currentPage}
+        totalPages={data.totalPages}
+        onPageChange={handlePageChange}
+      />
 
       {confirm && (
         <AdminConfirmDialog

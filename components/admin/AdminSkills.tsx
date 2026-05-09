@@ -11,6 +11,7 @@ import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminSelectFilter from "@/components/admin/AdminSelectFilter";
+import AdminStatePanel from "@/components/admin/AdminStatePanel";
 
 interface AdminSkillsProps {
   skills: any[] | null;
@@ -227,9 +228,12 @@ export default function AdminSkillsClient({
 
   if (!skills) {
     return (
-      <div className="flex h-[60vh] items-center justify-center">
-        <p className="text-light-400">Failed to load skills.</p>
-      </div>
+      <AdminStatePanel
+        title="Failed to load skills"
+        description="The skill taxonomy could not be loaded. Please refresh the page or try again later."
+        tone="danger"
+        className="h-[60vh]"
+      />
     );
   }
 
@@ -262,7 +266,7 @@ export default function AdminSkillsClient({
           className="space-y-4 rounded-2xl border border-white/10 bg-dark-200/50 p-6"
         >
           <h3 className="text-base font-semibold text-white">Create Skill</h3>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="mb-1 block text-xs text-light-400">Name</label>
               <input
@@ -464,12 +468,11 @@ export default function AdminSkillsClient({
             )}
           </div>
         )) : (
-          <div className="col-span-full rounded-2xl border border-white/5 bg-dark-200/50 px-5 py-12 text-center">
-            <p className="text-sm font-medium text-white">No skills found</p>
-            <p className="mt-1 text-sm text-light-400">
-              Try changing the status filter.
-            </p>
-          </div>
+          <AdminStatePanel
+            title="No skills found"
+            description="Try changing the status filter."
+            className="col-span-full"
+          />
         )}
       </div>
 

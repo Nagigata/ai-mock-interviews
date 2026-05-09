@@ -41,7 +41,8 @@ export default function AdminPagination({
       <button
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
-        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-30"
+        aria-label="Go to previous page"
+        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
       >
         <ChevronLeft className="size-4" />
       </button>
@@ -58,6 +59,8 @@ export default function AdminPagination({
           <button
             key={page}
             onClick={() => onPageChange(page)}
+            aria-label={`Go to page ${page}`}
+            aria-current={page === currentPage ? "page" : undefined}
             className={`flex size-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors ${
               page === currentPage
                 ? "border-primary-200 bg-primary-200 text-dark-100"
@@ -72,7 +75,8 @@ export default function AdminPagination({
       <button
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
-        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-30"
+        aria-label="Go to next page"
+        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
       >
         <ChevronRight className="size-4" />
       </button>
