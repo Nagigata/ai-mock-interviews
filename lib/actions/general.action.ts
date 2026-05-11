@@ -7,6 +7,7 @@ import {
   Interview, 
   InterviewAttempt,
   InterviewAttemptDetail,
+  InterviewGenerationJob,
   GetFeedbackByAttemptIdParams,
   GetFeedbackByInterviewIdParams, 
   GetLatestInterviewsParams 
@@ -114,6 +115,28 @@ export async function getInterviewsByUserId(
 export async function getAttemptedInterviews(): Promise<Interview[] | null> {
   try {
     return await apiGet<Interview[]>("/interviews/attempted");
+  } catch {
+    return null;
+  }
+}
+
+export async function getActiveInterviewGenerationJob(): Promise<InterviewGenerationJob | null> {
+  try {
+    return await apiGet<InterviewGenerationJob | null>(
+      "/interviews/generation-jobs/active",
+    );
+  } catch {
+    return null;
+  }
+}
+
+export async function getInterviewGenerationJobById(
+  jobId: string,
+): Promise<InterviewGenerationJob | null> {
+  try {
+    return await apiGet<InterviewGenerationJob>(
+      `/interviews/generation-jobs/${jobId}`,
+    );
   } catch {
     return null;
   }

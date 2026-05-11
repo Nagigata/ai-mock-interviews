@@ -27,6 +27,29 @@ export interface Interview {
   finalized: boolean;
 }
 
+export type InterviewGenerationStatus =
+  | "PENDING"
+  | "PROCESSING"
+  | "COMPLETED"
+  | "FAILED";
+
+export interface InterviewGenerationJob {
+  id: string;
+  status: InterviewGenerationStatus;
+  role: string;
+  level: string;
+  type: string;
+  techstack: string[];
+  amount: number;
+  language: string;
+  provider?: string | null;
+  interviewId?: string | null;
+  errorMessage?: string | null;
+  createdAt: string;
+  updatedAt: string;
+  completedAt?: string | null;
+}
+
 export interface CreateFeedbackParams {
   attemptId: string;
   transcript: { role: string; content: string }[];

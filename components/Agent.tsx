@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
@@ -150,6 +151,10 @@ const Agent = ({
 
     if (callStatus === CallStatus.FINISHED) {
       if (type === "generate") {
+        toast.info("Your interview is being generated", {
+          description:
+            "You can keep using the app. We'll notify you when it is ready.",
+        });
         router.push("/interview");
       } else {
         handleGenerateFeedback(messages);
