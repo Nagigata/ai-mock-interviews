@@ -7,7 +7,13 @@ import Link from "next/link";
 import ChallengeFilters from "@/components/ChallengeFilters";
 import ChallengeCard from "@/components/ChallengeCard";
 
-import { ChevronLeft, CircleAlert } from "lucide-react";
+import {
+  BookOpen,
+  ChevronRight,
+  CircleAlert,
+  Code2,
+  Layers3,
+} from "lucide-react";
 
 interface Props {
   params: Promise<{ skillSlug: string }>;
@@ -22,16 +28,24 @@ const SkillPage = async ({ params, searchParams }: Props) => {
   const locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
   const t = getDictionary(locale);
 
-  const skill = await getSkillBySlug(skillSlug, filters);
+  const [skill, unfilteredSkill] = await Promise.all([
+    getSkillBySlug(skillSlug, filters),
+    getSkillBySlug(skillSlug),
+  ]);
 
   if (!skill) {
     notFound();
   }
 
+  const skillStats = unfilteredSkill ?? skill;
+  const totalSkillChallenges =
+    skillStats._count?.challenges ?? skillStats.challenges?.length ?? 0;
+  const showingSkillChallenges = skill.challenges?.length ?? 0;
+
   // Extract unique topics by splitting topics strings
   const topics = Array.from(
     new Set(
-      (skill.challenges ?? []).flatMap(c =>
+      (skillStats.challenges ?? []).flatMap(c =>
         c.topics ? c.topics.split(", ").map(t => t.trim()) : []
       ).filter(Boolean)
     )
@@ -39,26 +53,67 @@ const SkillPage = async ({ params, searchParams }: Props) => {
 
 
   return (
-    <div className="flex flex-col gap-10">
-      {/* Header */}
-      <header className="flex flex-col gap-6">
-        <Link
-          href="/preparation"
-          className="text-sm text-light-400 hover:text-primary-100 flex items-center gap-2 transition-colors w-fit"
+    <div className="flex flex-col gap-8">
+      <header className="rounded-[26px] border border-white/[0.08] bg-[linear-gradient(180deg,_rgba(20,23,31,0.94),_rgba(12,14,19,0.98))] px-5 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.16)] sm:px-6">
+        <nav
+          aria-label="Breadcrumb"
+          className="mb-5 flex flex-wrap items-center gap-2 text-sm"
         >
-          <ChevronLeft size={16} />
-          {t.common.backHome}
-        </Link>
+          <Link
+            href="/preparation"
+            className="font-semibold text-light-400 transition-colors hover:text-primary-100"
+          >
+            Preparation
+          </Link>
+          <ChevronRight className="size-4 text-light-600" />
+          <span className="font-semibold text-white">{skill.name}</span>
+        </nav>
 
-        <div className="flex items-center gap-6">
-          {skill.icon && (
-            <div className="size-20 rounded-3xl bg-dark-200/50 p-4 border border-white/5 flex items-center justify-center">
-              <Image src={skill.icon} alt={skill.name} width={56} height={56} />
+        <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+            <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] p-3.5">
+              {skill.icon ? (
+                <Image
+                  src={skill.icon}
+                  alt={skill.name}
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                />
+              ) : (
+                <BookOpen className="size-7 text-primary-100" />
+              )}
             </div>
-          )}
-          <div className="flex flex-col gap-2">
-            <h1 className="text-4xl font-bold text-white">{skill.name}</h1>
-            <p className="text-light-100 max-w-2xl">{skill.description}</p>
+
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-white">
+                {skill.name}
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-light-100/80 sm:text-base">
+                {skill.description}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap gap-2 lg:max-w-[440px] lg:justify-end">
+            <div className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
+              <Layers3 className="size-4 text-primary-100" />
+              <span className="text-sm font-bold text-white">
+                {totalSkillChallenges}
+              </span>
+              <span className="text-sm text-light-400">Challenges</span>
+            </div>
+            <div className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
+              <Code2 className="size-4 text-cyan-300" />
+              <span className="text-sm font-bold text-white">{topics.length}</span>
+              <span className="text-sm text-light-400">Topics</span>
+            </div>
+            <div className="inline-flex max-w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
+              <BookOpen className="size-4 shrink-0 text-emerald-300" />
+              <span className="truncate text-sm font-semibold text-light-100">
+                {skill.slug}
+              </span>
+            </div>
           </div>
         </div>
       </header>
@@ -66,10 +121,17 @@ const SkillPage = async ({ params, searchParams }: Props) => {
       <div className="flex flex-col lg:flex-row gap-10">
         {/* Challenges List (Left) */}
         <section className="flex-1 flex flex-col gap-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-primary-100">{t.preparation.challenges}</h2>
-            <span className="text-sm text-light-400">
-              Showing {skill.challenges?.length || 0} challenges
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 className="text-2xl font-bold text-white">
+                {t.preparation.challenges}
+              </h2>
+              <p className="mt-1 text-sm text-light-400">
+                Choose a challenge and keep the practice flow moving.
+              </p>
+            </div>
+            <span className="w-fit rounded-full border border-primary-200/20 bg-primary-200/10 px-3 py-1.5 text-sm font-bold text-primary-100">
+              {showingSkillChallenges} showing
             </span>
           </div>
 
@@ -84,12 +146,12 @@ const SkillPage = async ({ params, searchParams }: Props) => {
                 />
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center p-16 bg-dark-200/20 rounded-[2.5rem] border border-dashed border-dark-300">
-                <div className="bg-dark-300/30 p-4 rounded-full mb-4">
+              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-16 text-center">
+                <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
                   <CircleAlert size={32} className="text-light-400" />
                 </div>
                 <p className="text-light-100 font-medium">No challenges found</p>
-                <p className="text-sm text-light-400 mt-1">Try adjusting your filters to find what you're looking for.</p>
+                <p className="text-sm text-light-400 mt-1">Try adjusting your filters to find what you are looking for.</p>
                 <Link href={`/preparation/${skill.slug}`} className="mt-6 text-primary-200 hover:text-primary-100 font-bold text-sm">
                   Clear all filters
                 </Link>

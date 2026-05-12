@@ -2,15 +2,17 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Star, Check, ChevronRight } from "lucide-react";
-import { Challenge, Difficulty } from "@/types";
+import { Check, ChevronRight, Star } from "lucide-react";
+
+import type { getDictionary } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
+import { Challenge, Difficulty } from "@/types";
 import { toggleChallengeStar } from "@/lib/actions/challenges.action";
 
 interface ChallengeCardProps {
   challenge: Challenge;
   skillSlug: string;
-  dictionary: any;
+  dictionary: ReturnType<typeof getDictionary>;
 }
 
 const difficultyStyles: Record<Difficulty, string> = {
@@ -19,18 +21,14 @@ const difficultyStyles: Record<Difficulty, string> = {
   HARD: "bg-red-500/15 text-red-300 border-red-500/20",
 };
 
-const ChallengeCard = ({
-  challenge,
-  skillSlug,
-  dictionary,
-}: ChallengeCardProps) => {
+const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
   const router = useRouter();
   const [isStarred, setIsStarred] = useState(challenge.isStarred);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleToggleStar = async (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const handleToggleStar = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
 
     setIsLoading(true);
     const result = await toggleChallengeStar(challenge.id);
@@ -40,31 +38,28 @@ const ChallengeCard = ({
     setIsLoading(false);
   };
 
-  const formatDifficulty = (diff: string) =>
-    diff.charAt(0) + diff.slice(1).toLowerCase();
+  const formatDifficulty = (difficulty: string) =>
+    difficulty.charAt(0) + difficulty.slice(1).toLowerCase();
 
   const topics = challenge.topics ? challenge.topics.split(", ") : [];
 
   return (
     <div
       onClick={() => router.push(`/preparation/${skillSlug}/${challenge.id}`)}
-      className="group cursor-pointer w-full"
+      className="group w-full cursor-pointer"
     >
-      <div className="relative flex flex-row items-center justify-between gap-6 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-[#1a1d25] to-[#12141a] p-5 transition-all duration-300 hover:border-white/[0.12] hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)]">
-        {/* Left: Info */}
-        <div className="flex flex-col gap-2.5 flex-1 min-w-0">
-          {/* Title */}
-          <h3 className="text-lg font-bold text-white group-hover:text-primary-100 transition-colors leading-tight">
+      <div className="relative flex flex-col gap-5 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-[#1a1d25] to-[#12141a] p-5 transition-all duration-300 hover:border-white/[0.12] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+        <div className="flex min-w-0 flex-1 flex-col gap-2.5">
+          <h3 className="text-lg font-bold leading-tight text-white transition-colors group-hover:text-primary-100">
             {challenge.title}
           </h3>
 
-          {/* Badges */}
           <div className="flex flex-wrap items-center gap-2">
             <span
               className={cn(
                 "inline-flex items-center rounded-lg border px-2.5 py-1 text-[11px] font-semibold",
                 difficultyStyles[challenge.difficulty] ||
-                  "bg-white/5 text-light-400 border-white/10",
+                  "border-white/10 bg-white/5 text-light-400",
               )}
             >
               {formatDifficulty(challenge.difficulty)}
@@ -84,15 +79,12 @@ const ChallengeCard = ({
             )}
           </div>
 
-          {/* Description */}
-          <p className="text-sm text-light-400 line-clamp-1 leading-relaxed">
+          <p className="line-clamp-1 text-sm leading-relaxed text-light-400">
             {challenge.description}
           </p>
         </div>
 
-        {/* Right: Actions */}
-        <div className="flex items-center gap-4 shrink-0">
-          {/* Star */}
+        <div className="flex shrink-0 items-center gap-4">
           <button
             onClick={handleToggleStar}
             disabled={isLoading}
@@ -103,6 +95,7 @@ const ChallengeCard = ({
                 : "text-light-400/30 hover:text-light-400",
             )}
             title={isStarred ? "Unmark" : "Mark Star"}
+            aria-label={isStarred ? "Unmark challenge" : "Mark challenge"}
           >
             <Star
               size={18}
@@ -111,14 +104,13 @@ const ChallengeCard = ({
             />
           </button>
 
-          {/* Solve / Solved */}
           {challenge.isSolved ? (
-            <div className="inline-flex items-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-400 min-w-[140px] justify-center">
+            <div className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-400">
               Solved
               <Check size={14} strokeWidth={3} />
             </div>
           ) : (
-            <div className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-2.5 text-xs font-bold text-dark-100 transition-colors group-hover:bg-primary-200/80 min-w-[140px] justify-center">
+            <div className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-primary-200 px-5 py-2.5 text-xs font-bold text-dark-100 transition-colors group-hover:bg-primary-200/80">
               Solve Challenge
               <ChevronRight size={14} />
             </div>

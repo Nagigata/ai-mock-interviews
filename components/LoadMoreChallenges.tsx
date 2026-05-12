@@ -1,16 +1,24 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useEffectEvent, useState } from "react";
 import { useInView } from "react-intersection-observer";
 import ChallengeCard from "./ChallengeCard";
 import { Challenge } from "@/types";
+import type { getDictionary } from "@/lib/i18n";
 import { getAllChallenges } from "@/lib/actions/challenges.action";
 import { Loader2 } from "lucide-react";
 
 interface Props {
   initialFilters: Record<string, string | string[]>;
-  dictionary: any;
+  dictionary: ReturnType<typeof getDictionary>;
 }
+
+type ChallengeListItem = Challenge & {
+  skillSlug?: string;
+};
+
+const getChallengeSkillSlug = (challenge: ChallengeListItem) =>
+  challenge.skillSlug || challenge.skill?.slug || "algorithms";
 
 const LoadMoreChallenges = ({ initialFilters, dictionary }: Props) => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -19,13 +27,7 @@ const LoadMoreChallenges = ({ initialFilters, dictionary }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const { ref, inView } = useInView({ threshold: 0.1 });
 
-  useEffect(() => {
-    if (inView && hasMore && !isLoading) {
-      loadMoreData();
-    }
-  }, [inView, hasMore, isLoading]);
-
-  const loadMoreData = async () => {
+  const loadMoreData = useEffectEvent(async () => {
     setIsLoading(true);
     try {
       const filtersWithPage = { ...initialFilters, page, limit: 100 };
@@ -51,7 +53,13 @@ const LoadMoreChallenges = ({ initialFilters, dictionary }: Props) => {
     } finally {
       setIsLoading(false);
     }
-  };
+  });
+
+  useEffect(() => {
+    if (inView && hasMore && !isLoading) {
+      loadMoreData();
+    }
+  }, [inView, hasMore, isLoading]);
 
   return (
     <>
@@ -59,13 +67,16 @@ const LoadMoreChallenges = ({ initialFilters, dictionary }: Props) => {
         <ChallengeCard
           key={`more-${challenge.id}`}
           challenge={challenge}
-          skillSlug={(challenge as any).skillSlug || "algorithms"}
+          skillSlug={getChallengeSkillSlug(challenge as ChallengeListItem)}
           dictionary={dictionary}
         />
       ))}
       {hasMore && (
-        <div ref={ref} className="flex justify-center items-center py-6 w-full">
-          <Loader2 className="animate-spin text-primary-200" size={32} />
+        <div ref={ref} className="flex w-full justify-center py-6">
+          <div className="inline-flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.035] px-5 py-3 text-sm font-semibold text-light-400">
+            <Loader2 className="size-5 animate-spin text-primary-200" />
+            Loading more challenges
+          </div>
         </div>
       )}
     </>

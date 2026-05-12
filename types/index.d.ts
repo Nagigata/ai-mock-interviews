@@ -94,6 +94,7 @@ export interface InterviewCardProps {
   interviewId?: string;
   userId?: string;
   role: string;
+  level?: string;
   type: string;
   techstack: string[];
   createdAt?: string;

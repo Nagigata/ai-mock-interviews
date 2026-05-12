@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { cookies } from "next/headers";
-import { BrainCircuit, Mic2, Sparkles } from "lucide-react";
+import { BrainCircuit, Clock3, Mic2, Sparkles } from "lucide-react";
 
 import InterviewTabs from "@/components/InterviewTabs";
 import { getDictionary } from "@/lib/i18n";
@@ -63,6 +63,10 @@ const page = async () => {
     uniqueInterviews,
     user.id,
   );
+  const totalAttempts = Object.values(attemptCountMap).reduce(
+    (total, count) => total + count,
+    0,
+  );
 
   const cookieStore = await cookies();
   const locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
@@ -74,7 +78,7 @@ const page = async () => {
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary-200/10 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
 
-        <div className="relative grid gap-8 xl:grid-cols-[1.4fr_0.5fr] xl:items-end">
+        <div className="relative grid gap-7 xl:grid-cols-[1.35fr_0.95fr] xl:items-center">
           <div className="space-y-5">
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-200/15 bg-primary-200/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-primary-100">
               <Sparkles size={14} />
@@ -103,16 +107,43 @@ const page = async () => {
             </Link>
           </div>
 
-          <div className="grid gap-3">
-            <div className="rounded-[24px] border border-white/8 bg-white/[0.04] px-5 py-5 shadow-[0_18px_40px_rgba(0,0,0,0.18)]">
-              <div className="mb-5 flex items-start justify-between gap-4">
-                <span className="text-sm font-medium text-light-100/90">
-                  Your interviews
-                </span>
-                <Mic2 size={18} className="shrink-0 text-primary-100" />
+          <div className="rounded-[28px] border border-white/[0.08] bg-black/20 p-4 backdrop-blur-xl">
+            <div className="mb-4 px-1">
+              <h2 className="text-lg font-bold text-white">
+                Interview workspace
+              </h2>
+              <p className="mt-1 text-xs leading-5 text-light-400">
+                Keep your generated sessions and practice attempts in one place.
+              </p>
+            </div>
+
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+                <div className="mb-5 flex items-center justify-between">
+                  <span className="text-sm font-medium text-light-100/80">
+                    Interviews
+                  </span>
+                  <span className="flex size-8 items-center justify-center rounded-xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
+                    <Mic2 className="size-4" />
+                  </span>
+                </div>
+                <div className="text-3xl font-bold text-white">
+                  {myInterviews?.length || 0}
+                </div>
               </div>
-              <div className="text-3xl font-bold text-white">
-                {myInterviews?.length || 0}
+
+              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+                <div className="mb-5 flex items-center justify-between">
+                  <span className="text-sm font-medium text-light-100/80">
+                    Attempts
+                  </span>
+                  <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
+                    <Clock3 className="size-4" />
+                  </span>
+                </div>
+                <div className="text-3xl font-bold text-white">
+                  {totalAttempts}
+                </div>
               </div>
             </div>
           </div>

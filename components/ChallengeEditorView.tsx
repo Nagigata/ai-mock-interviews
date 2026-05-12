@@ -14,15 +14,39 @@ import Link from "next/link";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { runCode, submitChallenge } from "@/lib/actions/submissions.action";
-import { ChevronLeft, X, Play, Send, RotateCcw } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  X,
+  Play,
+  Send,
+  RotateCcw,
+} from "lucide-react";
 
 interface ChallengeEditorViewProps {
   challenge: Challenge;
-  dictionary: any;
   skillSlug: string;
 }
 
-const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEditorViewProps) => {
+interface JudgeStatus {
+  id: number;
+  description: string;
+}
+
+interface TestCaseResult {
+  status: JudgeStatus;
+  stdout?: string | null;
+  stderr?: string | null;
+  compile_output?: string | null;
+  time?: string | null;
+}
+
+interface ExecutionResult {
+  allPassed?: boolean;
+  testCaseResults: TestCaseResult[];
+}
+
+const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps) => {
   const templateCode = challenge.templateCode as Record<string, string>;
   const availableLangs = Object.keys(templateCode);
 
@@ -32,7 +56,8 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
   );
   const [code, setCode] = useState<string>(templateCode[language] || "");
   const [isExecuting, setIsExecuting] = useState(false);
-  const [executionResult, setExecutionResult] = useState<any>(null);
+  const [executionResult, setExecutionResult] =
+    useState<ExecutionResult | null>(null);
   const [isConsoleOpen, setIsConsoleOpen] = useState(false);
 
   const handleRunCode = async () => {
@@ -47,8 +72,9 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
     });
 
     if (result.success) {
-      setExecutionResult(result.data);
-      if (result.data.testCaseResults?.[0]?.status?.id === 3) {
+      const data = result.data as ExecutionResult;
+      setExecutionResult(data);
+      if (data.testCaseResults?.[0]?.status?.id === 3) {
         toast.success("Test case passed!");
       } else {
         toast.error("Test case failed");
@@ -71,8 +97,9 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
     });
 
     if (result.success) {
-      setExecutionResult(result.data);
-      if (result.data.allPassed) {
+      const data = result.data as ExecutionResult;
+      setExecutionResult(data);
+      if (data.allPassed) {
         toast.success("Congratulations! All test cases passed.", {
           duration: 5000,
         });
@@ -95,18 +122,39 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
     <div className="flex h-full flex-col">
       {/* Top Header/Toolbar */}
       <header className="flex items-center justify-between border-b border-white/5 bg-dark-300 px-6 py-3 shadow-lg">
-        <div className="flex items-center gap-4">
+        <div className="flex min-w-0 items-center gap-4">
           <Link
-            href={skillSlug === "algorithms" ? "/challenges" : `/preparation/${skillSlug}`}
+            href={`/preparation/${skillSlug}`}
             className="p-2 hover:bg-dark-200 rounded-lg transition-colors text-light-400 hover:text-white"
+            aria-label="Back to skill"
           >
             <ChevronLeft size={20} />
           </Link>
-          <div className="flex flex-col">
-            <span className="text-[10px] text-light-600 uppercase font-bold tracking-widest">
-              {skillSlug === "algorithms" ? "Problem Set" : skillSlug}
-            </span>
-            <h2 className="text-sm font-bold text-white leading-none">{challenge.title}</h2>
+
+          <div className="min-w-0">
+            <nav
+              aria-label="Breadcrumb"
+              className="mb-1 flex min-w-0 items-center gap-1.5 text-[11px] font-semibold"
+            >
+              <Link
+                href="/preparation"
+                className="shrink-0 text-light-500 transition-colors hover:text-primary-100"
+              >
+                Preparation
+              </Link>
+              <ChevronRight className="size-3.5 shrink-0 text-light-600" />
+              <Link
+                href={`/preparation/${skillSlug}`}
+                className="max-w-[140px] truncate text-light-400 transition-colors hover:text-primary-100"
+              >
+                {skillSlug}
+              </Link>
+              <ChevronRight className="size-3.5 shrink-0 text-light-600" />
+              <span className="truncate text-primary-100">{challenge.title}</span>
+            </nav>
+            <h2 className="truncate text-sm font-bold leading-none text-white">
+              {challenge.title}
+            </h2>
           </div>
         </div>
 
@@ -223,7 +271,7 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
                           </div>
                         ) : executionResult ? (
                           <div className="space-y-4">
-                            {executionResult.testCaseResults.map((res: any, idx: number) => (
+                            {executionResult.testCaseResults.map((res, idx) => (
                               <div key={idx} className="space-y-2">
                                 <div className="flex items-center gap-2">
                                   <span className={cn(
@@ -260,14 +308,14 @@ const ChallengeEditorView = ({ challenge, dictionary, skillSlug }: ChallengeEdit
                                 {res.status.id !== 3 && !res.compile_output && !res.stderr && (
                                   <div className="bg-destructive-100/5 p-2 rounded border border-destructive-100/10">
                                     <div className="text-[10px] text-destructive-100/60 mb-1 uppercase tracking-tighter">Expected Output:</div>
-                                    <pre className="text-light-400 whitespace-pre-wrap">{(challenge.testCases as any)[idx]?.output || "N/A"}</pre>
+                                    <pre className="text-light-400 whitespace-pre-wrap">{challenge.testCases[idx]?.output || "N/A"}</pre>
                                   </div>
                                 )}
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <div className="text-light-600 italic">Click "Run" to see execution results.</div>
+                          <div className="text-light-600 italic">Click &quot;Run&quot; to see execution results.</div>
                         )}
                       </div>
                     </div>

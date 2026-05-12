@@ -3,7 +3,15 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
-import { Trash2, Calendar, Star, Clock } from "lucide-react";
+import {
+  ArrowRight,
+  Calendar,
+  Clock,
+  GraduationCap,
+  MessageSquareText,
+  Star,
+  Trash2,
+} from "lucide-react";
 
 import DisplayTechIcons from "./DisplayTechIcons";
 import { getDictionary } from "@/lib/i18n";
@@ -23,10 +31,21 @@ const typeStyles: Record<string, string> = {
   Mixed: "bg-amber-500/15 text-amber-300 border-amber-500/20",
 };
 
+const getScoreTone = (score?: number) => {
+  if (!score) return "border-white/10 bg-white/[0.04] text-light-400";
+  if (score >= 80) {
+    return "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
+  }
+  if (score >= 50) {
+    return "border-amber-500/20 bg-amber-500/10 text-amber-300";
+  }
+  return "border-red-500/20 bg-red-500/10 text-red-300";
+};
+
 const InterviewCard = ({
   interviewId,
-  userId,
   role,
+  level,
   type,
   techstack,
   createdAt,
@@ -39,45 +58,37 @@ const InterviewCard = ({
 }: InterviewCardProps2) => {
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
   const t = getDictionary(locale);
-
-  const formattedDate = dayjs(
-    feedback?.createdAt || createdAt || Date.now(),
-  ).format("MMM D, YYYY");
-
+  const formattedDate =
+    feedback?.createdAt || createdAt
+      ? dayjs(feedback?.createdAt || createdAt).format("MMM D, YYYY")
+      : "Recently";
   const score = feedback?.totalScore;
-  const scoreColor = score
-    ? score >= 80
-      ? "text-emerald-400"
-      : score >= 50
-        ? "text-amber-400"
-        : "text-red-400"
-    : "text-light-400";
+  const scoreTone = getScoreTone(score);
 
   return (
-    <div className="group relative w-[360px] max-sm:w-full">
-      <div className="relative flex flex-col rounded-2xl border border-white/[0.06] bg-gradient-to-b from-[#1a1d25] to-[#12141a] p-5 transition-all duration-300 hover:border-white/[0.12] hover:shadow-[0_16px_48px_rgba(0,0,0,0.3)]">
-        {/* Delete button */}
+    <article className="group relative flex min-h-[360px] w-full">
+      <div className="relative flex w-full flex-col overflow-hidden rounded-[28px] border border-white/[0.07] bg-[linear-gradient(180deg,_rgba(29,32,41,0.94),_rgba(15,17,23,0.98))] p-5 shadow-[0_12px_34px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20 hover:shadow-[0_16px_44px_rgba(0,0,0,0.24)]">
         {showDelete && onDelete && (
           <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
+            onClick={(event) => {
+              event.preventDefault();
+              event.stopPropagation();
               onDelete();
             }}
-            className="absolute top-3 right-3 z-10 p-2 rounded-xl bg-dark-200/80 border border-white/10 text-light-400 opacity-0 group-hover:opacity-100 hover:text-red-400 hover:border-red-500/30 hover:bg-red-500/10 transition-all duration-200"
+            className="absolute right-4 top-4 z-10 rounded-xl border border-white/10 bg-dark-200/80 p-2 text-light-400 opacity-0 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100"
             title="Delete interview"
           >
             <Trash2 className="size-3.5" />
           </button>
         )}
 
-        {/* Header — badges */}
-        <div className="flex items-center gap-2 mb-4">
+        <div className="relative mb-5 flex items-center gap-2 pr-10">
           <span
             className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-semibold ${typeStyles[normalizedType] || typeStyles.Mixed}`}
           >
             {normalizedType}
           </span>
+
           {language && (
             <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1">
               <Image
@@ -89,75 +100,85 @@ const InterviewCard = ({
                 alt={language}
                 width={16}
                 height={11}
-                className="object-cover rounded-[2px]"
+                className="rounded-[2px] object-cover"
               />
-              <span className="text-[11px] font-semibold text-light-100 uppercase">
+              <span className="text-[11px] font-semibold uppercase text-light-100">
                 {language === "vi" ? "VI" : "EN"}
               </span>
             </span>
           )}
+          {level && (
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-primary-200/15 bg-primary-200/10 px-2.5 py-1 text-[11px] font-semibold text-primary-100">
+              <GraduationCap className="size-3.5" />
+              {level}
+            </span>
+          )}
         </div>
 
-        {/* Title */}
-        <h3 className="text-lg font-bold text-white capitalize leading-tight mb-3">
+        <h3 className="relative mb-3 text-xl font-bold capitalize leading-tight text-white">
           {role} {t.interviewCard.mockInterview}
         </h3>
 
-        {/* Meta row */}
-        <div className="flex items-center gap-4 mb-4 text-xs text-light-400">
-          <span className="inline-flex items-center gap-1.5">
-            <Calendar className="size-3.5 text-light-600" />
+        <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-light-400">
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1.5">
+            <Calendar className="size-3.5 text-primary-100/70" />
             {formattedDate}
           </span>
-          <span className={`inline-flex items-center gap-1.5 font-semibold ${scoreColor}`}>
+
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1.5 font-semibold ${scoreTone}`}
+          >
             <Star className="size-3.5" />
             {score ? `${score}/100` : "---"}
           </span>
+
           {attemptCount > 0 && (
-            <span className="inline-flex items-center gap-1.5">
-              <Clock className="size-3.5 text-light-600" />
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1.5">
+              <Clock className="size-3.5 text-primary-100/70" />
               {attemptCount} attempt{attemptCount > 1 ? "s" : ""}
             </span>
           )}
         </div>
 
-        {/* Assessment preview */}
-        <p className="text-sm text-light-400 leading-relaxed line-clamp-2 mb-5 min-h-[40px]">
+        <p className="mb-5 line-clamp-3 min-h-[60px] text-sm leading-relaxed text-light-400">
           {feedback?.finalAssessment || t.interviewCard.notTakenMsg}
         </p>
 
-        {/* Tech Stack */}
-        <div className="flex items-center justify-between rounded-xl bg-white/[0.03] border border-white/[0.05] px-4 py-3 mb-5">
-          <span className="text-xs text-light-400 font-medium">Tech Stack</span>
+        <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.035] px-4 py-3">
+          <span className="text-xs font-medium text-light-400">Tech Stack</span>
           <DisplayTechIcons techStack={techstack} />
         </div>
 
-        {/* Actions */}
-        {feedback ? (
-          <div className="grid grid-cols-2 gap-2">
-            <Link
-              href={`/interview/${interviewId}/attempts`}
-              className="flex items-center justify-center rounded-xl bg-primary-200 px-4 py-2.5 text-xs font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
-            >
-              {t.interviewCard.viewAttempts}
-            </Link>
+        <div className="mt-auto">
+          {feedback ? (
+            <div className="grid grid-cols-2 gap-2">
+              <Link
+                href={`/interview/${interviewId}/attempts`}
+                className="flex min-w-0 items-center justify-center gap-1.5 rounded-xl bg-primary-200 px-3 py-2.5 text-xs font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+              >
+                <MessageSquareText className="size-3.5 shrink-0" />
+                <span className="truncate">Attempts</span>
+              </Link>
+              <Link
+                href={`/interview/${interviewId}`}
+                className="flex min-w-0 items-center justify-center gap-1.5 rounded-xl border border-primary-200/30 px-3 py-2.5 text-xs font-bold text-primary-200 transition-colors hover:bg-primary-200/10"
+              >
+                <span className="truncate">Retake</span>
+                <ArrowRight className="size-3.5 shrink-0" />
+              </Link>
+            </div>
+          ) : (
             <Link
               href={`/interview/${interviewId}`}
-              className="flex items-center justify-center rounded-xl border border-primary-200/30 px-4 py-2.5 text-xs font-bold text-primary-200 transition-colors hover:bg-primary-200/10"
+              className="flex items-center justify-center gap-2 rounded-xl bg-primary-200 px-4 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
             >
-              {t.common.retakeInterview}
+              {t.interviewCard.startInterview}
+              <ArrowRight className="size-4" />
             </Link>
-          </div>
-        ) : (
-          <Link
-            href={`/interview/${interviewId}`}
-            className="flex items-center justify-center rounded-xl bg-primary-200 px-4 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
-          >
-            {t.interviewCard.startInterview}
-          </Link>
-        )}
+          )}
+        </div>
       </div>
-    </div>
+    </article>
   );
 };
 
