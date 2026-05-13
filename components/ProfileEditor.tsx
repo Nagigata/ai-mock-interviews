@@ -2,7 +2,15 @@
 
 import { ChangeEvent, useMemo, useState, useTransition } from "react";
 import dayjs from "dayjs";
-import { Camera, Loader2, PencilLine } from "lucide-react";
+import {
+  CalendarDays,
+  Camera,
+  Loader2,
+  Mail,
+  PencilLine,
+  Save,
+  X,
+} from "lucide-react";
 
 import { updateMyProfile } from "@/lib/actions/user.actions";
 import { UserProfile } from "@/types";
@@ -66,17 +74,20 @@ const ProfileEditor = ({ profile }: ProfileEditorProps) => {
   };
 
   return (
-    <section className="rounded-[28px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(92,114,255,0.12),_transparent_36%),linear-gradient(135deg,#1d1f24_0%,#12151b_100%)] p-6 shadow-[0_10px_40px_rgba(0,0,0,0.28)]">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex items-center gap-5">
-          <div className="relative">
+    <section className="relative overflow-hidden rounded-[34px] border border-white/[0.08] bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.18),_transparent_34%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.1),_transparent_32%),linear-gradient(160deg,_rgba(23,26,36,0.98),_rgba(7,9,13,0.98))] px-6 py-7 shadow-[0_28px_80px_rgba(0,0,0,0.32)] sm:px-8 lg:px-10">
+      <div className="pointer-events-none absolute right-12 top-6 size-32 rounded-full bg-primary-200/10 blur-3xl" />
+      <div className="relative flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
+          <div className="relative w-fit">
+            <div className="absolute -inset-2 rounded-full border border-white/10 bg-white/[0.03]" />
             <UserAvatar
               name={currentProfile.name}
               avatarUrl={avatarUrl}
               size="xl"
+              className="relative border-white/15"
             />
             {isEditing && (
-              <label className="absolute bottom-1 right-1 flex size-10 cursor-pointer items-center justify-center rounded-full border border-white/10 bg-dark-100 text-primary-100 shadow-lg">
+              <label className="absolute bottom-1 right-1 flex size-11 cursor-pointer items-center justify-center rounded-full border border-primary-200/25 bg-[#151922] text-primary-100 shadow-[0_12px_30px_rgba(0,0,0,0.4)] transition hover:bg-primary-200/10">
                 <Camera className="size-4" />
                 <input
                   type="file"
@@ -88,21 +99,33 @@ const ProfileEditor = ({ profile }: ProfileEditorProps) => {
             )}
           </div>
 
-          <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-light-400">Profile</p>
+          <div className="min-w-0">
+            <p className="text-xs font-bold uppercase tracking-[0.28em] text-primary-100">
+              Candidate profile
+            </p>
             {isEditing ? (
               <input
                 value={name}
                 onChange={(event) => setName(event.target.value)}
-                className="mt-2 w-full rounded-xl border border-white/10 bg-[#252932] px-4 py-3 text-2xl font-bold text-white outline-none"
+                className="mt-3 w-full max-w-xl rounded-2xl border border-white/10 bg-white/[0.05] px-4 py-3 text-2xl font-bold leading-[1.25] text-white outline-none transition focus:border-primary-200/40 focus:bg-white/[0.07]"
               />
             ) : (
-              <h1 className="mt-2 text-4xl font-bold text-white">{currentProfile.name}</h1>
+              <h1 className="mt-3 truncate pb-1 text-4xl font-bold leading-[1.15] tracking-tight text-white sm:text-5xl sm:leading-[1.15]">
+                {currentProfile.name}
+              </h1>
             )}
-            <p className="mt-2 text-light-100">{currentProfile.email}</p>
-            <p className="mt-1 text-sm text-light-400">
-              Joined {joinedDate}
-            </p>
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-light-100">
+                <Mail className="size-3.5 text-primary-100" />
+                <span className="max-w-[240px] truncate">
+                  {currentProfile.email}
+                </span>
+              </span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-light-100">
+                <CalendarDays className="size-3.5 text-cyan-300" />
+                Joined {joinedDate}
+              </span>
+            </div>
           </div>
         </div>
 
@@ -117,24 +140,29 @@ const ProfileEditor = ({ profile }: ProfileEditorProps) => {
                   setPreviewUrl(null);
                   setMessage(null);
                 }}
-                className="rounded-xl border border-white/10 bg-[#252932] px-5 py-3 font-semibold text-light-100 transition hover:bg-[#2c313b]"
+                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-bold text-light-100 transition hover:bg-white/[0.08]"
                 disabled={isPending}
               >
+                <X className="size-4" />
                 Cancel
               </button>
               <button
                 onClick={handleSubmit}
-                className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 font-bold text-dark-100 transition hover:bg-primary-100 disabled:opacity-60"
+                className="inline-flex items-center gap-2 rounded-2xl bg-primary-200 px-5 py-3 text-sm font-extrabold text-dark-100 transition hover:bg-primary-100 disabled:opacity-60"
                 disabled={isPending}
               >
-                {isPending ? <Loader2 className="size-4 animate-spin" /> : null}
+                {isPending ? (
+                  <Loader2 className="size-4 animate-spin" />
+                ) : (
+                  <Save className="size-4" />
+                )}
                 Save Changes
               </button>
             </>
           ) : (
             <button
               onClick={() => setIsEditing(true)}
-              className="inline-flex items-center gap-2 rounded-xl bg-[#252932] px-5 py-3 font-semibold text-white transition hover:bg-[#2c313b]"
+              className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.05] px-5 py-3 text-sm font-bold text-white transition hover:border-primary-200/25 hover:bg-primary-200/[0.08]"
             >
               <PencilLine className="size-4" />
               Edit Profile
@@ -144,7 +172,9 @@ const ProfileEditor = ({ profile }: ProfileEditorProps) => {
       </div>
 
       {message && (
-        <p className="mt-4 text-sm text-primary-100">{message}</p>
+        <p className="relative mt-5 w-fit rounded-full border border-primary-200/15 bg-primary-200/10 px-3 py-1.5 text-sm font-medium text-primary-100">
+          {message}
+        </p>
       )}
     </section>
   );

@@ -122,7 +122,7 @@ const PreparationLanding = ({
   const stats = profile?.stats;
   const resumeChallenge = continueChallenges[0] ?? recentChallenges[0];
   const continueTarget = resumeChallenge
-    ? `/preparation/${resumeChallenge.skillSlug}/${resumeChallenge.challengeId}`
+    ? `/preparation/${resumeChallenge.skillSlug || "algorithms"}/${resumeChallenge.challengeId}`
     : "/challenges";
 
   const isVietnamese = locale === "vi";
@@ -326,18 +326,18 @@ const PreparationLanding = ({
               {continueChallenges.map((item) => (
                 <Link
                   key={item.id}
-                  href={`/preparation/${item.skillSlug}/${item.challengeId}`}
+                  href={`/preparation/${item.skillSlug || "algorithms"}/${item.challengeId}`}
                   className="group flex items-center justify-between gap-4 rounded-[22px] border border-white/[0.07] bg-white/[0.03] px-4 py-4 transition-all hover:border-primary-200/20 hover:bg-primary-200/[0.06]"
                 >
                   <div className="min-w-0 space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <ActivityPill status={item.status} />
                       <span className="text-xs font-medium text-light-400">
-                        {item.language}
+                        {item.language || "-"}
                       </span>
                     </div>
                     <h3 className="truncate text-lg font-semibold text-white transition-colors group-hover:text-primary-100">
-                      {item.challengeTitle}
+                      {item.challengeTitle || "Untitled Challenge"}
                     </h3>
                     <p className="text-sm text-light-400">
                       {dayjs(item.submittedAt).format("DD MMM YYYY, HH:mm")}
@@ -410,17 +410,17 @@ const PreparationLanding = ({
             {recentChallenges.map((item) => (
               <Link
                 key={item.id}
-                href={`/preparation/${item.skillSlug}/${item.challengeId}`}
+                href={`/preparation/${item.skillSlug || "algorithms"}/${item.challengeId}`}
                 className="group flex min-h-[190px] flex-col rounded-[24px] border border-white/[0.07] bg-white/[0.03] p-5 transition-all hover:-translate-y-0.5 hover:border-primary-200/15 hover:bg-primary-200/[0.05]"
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <ActivityPill status={item.status} />
                   <span className="text-xs font-medium text-light-400">
-                    {item.language}
+                    {item.language || "-"}
                   </span>
                 </div>
                 <h3 className="line-clamp-2 text-lg font-semibold text-white transition-colors group-hover:text-primary-100">
-                  {item.challengeTitle}
+                  {item.challengeTitle || "Untitled Challenge"}
                 </h3>
                 <p className="mt-auto pt-5 text-sm text-light-400">
                   {dayjs(item.submittedAt).format("DD MMM YYYY, HH:mm")}

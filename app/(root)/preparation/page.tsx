@@ -8,15 +8,25 @@ import { getDictionary } from "@/lib/i18n";
 import { RecentActivityItem } from "@/types";
 import { cookies } from "next/headers";
 
+const isChallengeActivity = (item: RecentActivityItem) =>
+  item.activityType !== "INTERVIEW_ATTEMPT" &&
+  Boolean(item.challengeId && item.challengeTitle && item.skillSlug);
+
 const dedupeRecentChallenges = (items: RecentActivityItem[]) => {
   const seen = new Set<string>();
 
   return items.filter((item) => {
-    if (seen.has(item.challengeId)) {
+    if (!isChallengeActivity(item)) {
       return false;
     }
 
-    seen.add(item.challengeId);
+    const challengeId = item.challengeId as string;
+
+    if (seen.has(challengeId)) {
+      return false;
+    }
+
+    seen.add(challengeId);
     return true;
   });
 };

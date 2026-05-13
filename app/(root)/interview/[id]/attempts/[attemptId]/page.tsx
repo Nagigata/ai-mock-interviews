@@ -13,6 +13,7 @@ import {
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { getInterviewAttemptById } from "@/lib/actions/general.action";
 import { cn } from "@/lib/utils";
+import { InterviewAttemptStatus } from "@/types";
 
 const formatDateTime = (value: string | null | undefined, timeZone: string) => {
   if (!value) {
@@ -24,6 +25,37 @@ const formatDateTime = (value: string | null | undefined, timeZone: string) => {
     timeStyle: "short",
     timeZone,
   }).format(new Date(value));
+};
+
+const getAttemptStatusConfig = (
+  status: InterviewAttemptStatus | undefined,
+  hasFeedback: boolean,
+) => {
+  if (hasFeedback || status === "COMPLETED") {
+    return {
+      label: "Completed",
+      className: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+    };
+  }
+
+  if (status === "TOO_SHORT") {
+    return {
+      label: "Too short",
+      className: "border-amber-400/20 bg-amber-400/10 text-amber-300",
+    };
+  }
+
+  if (status === "FAILED") {
+    return {
+      label: "Failed",
+      className: "border-red-400/20 bg-red-400/10 text-red-300",
+    };
+  }
+
+  return {
+    label: "In progress",
+    className: "border-white/10 bg-white/[0.04] text-light-300",
+  };
 };
 
 const AttemptTranscriptPage = async ({
@@ -47,11 +79,15 @@ const AttemptTranscriptPage = async ({
   const cookieStore = await cookies();
   const timeZone = cookieStore.get("USER_TIMEZONE")?.value || "UTC";
   const completedAt = formatDateTime(
-    attempt.completedAt || attempt.createdAt,
+    attempt.completedAt || attempt.endedAt || attempt.createdAt,
     timeZone,
   );
 
   const score = attempt.feedback?.totalScore;
+  const statusConfig = getAttemptStatusConfig(
+    attempt.status,
+    Boolean(attempt.feedback),
+  );
   const scoreColor = score
     ? score >= 80
       ? "text-emerald-400"
@@ -83,6 +119,11 @@ const AttemptTranscriptPage = async ({
             </p>
 
             <div className="flex flex-wrap gap-4 text-xs text-light-300">
+              <span
+                className={`inline-flex items-center rounded-full border px-2.5 py-1 font-bold ${statusConfig.className}`}
+              >
+                {statusConfig.label}
+              </span>
               <span className="inline-flex items-center gap-1.5">
                 <CalendarDays size={14} />
                 {completedAt}
@@ -93,7 +134,7 @@ const AttemptTranscriptPage = async ({
               </span>
               <span className={`inline-flex items-center gap-1.5 font-bold ${scoreColor}`}>
                 <Star size={14} />
-                {score ? `${score}/100` : "No feedback yet"}
+                {score ? `${score}/100` : statusConfig.label}
               </span>
             </div>
           </div>
@@ -107,6 +148,11 @@ const AttemptTranscriptPage = async ({
             </Link>
           )}
         </div>
+        {!attempt.feedback && attempt.failureReason ? (
+          <div className="mt-5 rounded-2xl border border-amber-400/20 bg-amber-400/10 px-4 py-3 text-sm leading-6 text-amber-100">
+            {attempt.failureReason}
+          </div>
+        ) : null}
       </div>
 
       {/* Transcript */}

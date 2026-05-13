@@ -25,7 +25,13 @@ export async function createFeedback(params: CreateFeedbackParams) {
     return { success: true, feedbackId: feedback.id };
   } catch (error) {
     console.error("Error saving feedback:", error);
-    return { success: false };
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to generate interview feedback.",
+    };
   }
 }
 
@@ -95,15 +101,25 @@ export async function getLatestInterviews(
   params: GetLatestInterviewsParams,
 ): Promise<Interview[] | null> {
   try {
-    return await apiGet<Interview[]>("/interviews/latest");
+    const searchParams = new URLSearchParams();
+    if (params.limit) {
+      searchParams.set("limit", params.limit.toString());
+    }
+
+    const queryString = searchParams.toString();
+    return await apiGet<Interview[]>(
+      queryString ? `/interviews/latest?${queryString}` : "/interviews/latest",
+    );
   } catch {
     return null;
   }
 }
 
 export async function getInterviewsByUserId(
-  userId: string,
+  _userId: string,
 ): Promise<Interview[] | null> {
+  void _userId;
+
   try {
     // Backend gets userId from JWT token automatically
     return await apiGet<Interview[]>("/interviews");
@@ -149,5 +165,18 @@ export async function deleteInterview(interviewId: string) {
   } catch (error) {
     console.error("Error deleting interview:", error);
     return { success: false };
+  }
+}
+
+export async function toggleInterviewStar(
+  interviewId: string,
+): Promise<{ starred: boolean } | null> {
+  try {
+    return await apiPost<{ starred: boolean }>(
+      `/interviews/${interviewId}/star`,
+    );
+  } catch (error) {
+    console.error("Error toggling interview star:", error);
+    return null;
   }
 }

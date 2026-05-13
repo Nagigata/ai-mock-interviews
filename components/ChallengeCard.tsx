@@ -79,9 +79,6 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
             )}
           </div>
 
-          <p className="line-clamp-1 text-sm leading-relaxed text-light-400">
-            {challenge.description}
-          </p>
         </div>
 
         <div className="flex shrink-0 items-center gap-4">
@@ -105,12 +102,12 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
           </button>
 
           {challenge.isSolved ? (
-            <div className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-400">
+            <div className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-400">
               Solved
               <Check size={14} strokeWidth={3} />
             </div>
           ) : (
-            <div className="inline-flex min-w-[140px] items-center justify-center gap-2 rounded-xl bg-primary-200 px-5 py-2.5 text-xs font-bold text-dark-100 transition-colors group-hover:bg-primary-200/80">
+            <div className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-xl bg-primary-200 px-5 py-2.5 text-xs font-bold text-dark-100 transition-colors group-hover:bg-primary-200/80">
               Solve Challenge
               <ChevronRight size={14} />
             </div>

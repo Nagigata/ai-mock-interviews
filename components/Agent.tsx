@@ -10,7 +10,7 @@ import { vapi } from "@/lib/vapi.sdk";
 import { interviewer_en, interviewer_vi } from "@/constants";
 import { createFeedback, createInterviewAttempt } from "@/lib/actions/general.action";
 import UserAvatar from "./UserAvatar";
-import { ChevronDown, Mic, Phone, PhoneOff, Settings, Volume2 } from "lucide-react";
+import { AlertTriangle, ChevronDown, Mic, Phone, PhoneOff, Settings, Volume2, X } from "lucide-react";
 import { AgentProps } from "@/types";
 
 
@@ -49,12 +49,14 @@ const Agent = ({
   const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.INACTIVE);
   const [messages, setMessages] = useState<SavedMessage[]>([]);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [lastMessage, setLastMessage] = useState<string>("");
   const [selectedLanguage, setSelectedLanguage] = useState<string>("en");
   const [isGenerating, setIsGenerating] = useState(false);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
+  const [isEndConfirmOpen, setIsEndConfirmOpen] = useState(false);
   const [attemptId, setAttemptId] = useState<string | null>(initialAttemptId ?? null);
   const langMenuRef = useRef<HTMLDivElement>(null);
+  const feedbackRequestedRef = useRef(false);
+  const lastMessage = messages[messages.length - 1]?.content || "";
 
   useEffect(() => {
     const onCallStart = () => {
@@ -122,20 +124,21 @@ const Agent = ({
   }, []);
 
   useEffect(() => {
-    if (messages.length > 0) {
-      setLastMessage(messages[messages.length - 1].content);
-    }
-
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
       console.log("handleGenerateFeedback");
+      if (feedbackRequestedRef.current) {
+        return;
+      }
+
       if (!attemptId) {
         console.log("Missing interview attempt");
         router.push("/");
         return;
       }
 
+      feedbackRequestedRef.current = true;
       setIsGenerating(true);
-      const { success, feedbackId: id } = await createFeedback({
+      const { success, feedbackId: id, message } = await createFeedback({
         attemptId,
         transcript: messages,
       });
@@ -143,9 +146,13 @@ const Agent = ({
       if (success && id) {
         router.push(`/interview/${interviewId}/feedback?attemptId=${attemptId}`);
       } else {
-        console.log("Error saving feedback");
+        toast.warning("Feedback was not generated", {
+          description:
+            message ||
+            "This interview was too short. Please answer at least 2 questions before ending.",
+        });
         setIsGenerating(false);
-        router.push("/");
+        router.push("/interview");
       }
     };
 
@@ -164,6 +171,7 @@ const Agent = ({
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
+    feedbackRequestedRef.current = false;
 
     if (type === "generate") {
       const assistantId = selectedLanguage === "vi"
@@ -203,6 +211,17 @@ const Agent = ({
   };
 
   const handleDisconnect = () => {
+    if (type === "interview" && callStatus === CallStatus.ACTIVE) {
+      setIsEndConfirmOpen(true);
+      return;
+    }
+
+    setCallStatus(CallStatus.FINISHED);
+    vapi.stop();
+  };
+
+  const confirmEndInterview = () => {
+    setIsEndConfirmOpen(false);
     setCallStatus(CallStatus.FINISHED);
     vapi.stop();
   };
@@ -403,6 +422,56 @@ const Agent = ({
                 {t?.agent?.endBtn || "End Interview"}
               </button>
             )}
+          </div>
+        </div>
+      )}
+
+      {isEndConfirmOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
+          <div className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#151922] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setIsEndConfirmOpen(false)}
+              className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white"
+              aria-label="Close end interview confirmation"
+            >
+              <X className="size-5" />
+            </button>
+
+            <div className="mb-5 flex items-start gap-3">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-amber-300/20 bg-amber-300/10 text-amber-300">
+                <AlertTriangle className="size-5" />
+              </div>
+              <div>
+                <h3 className="text-lg font-bold text-white">
+                  End this interview?
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-light-100/75">
+                  Feedback will only be generated if you answered at least 2
+                  questions with enough detail. If the interview is too short,
+                  we will save the attempt as too short and return you to the
+                  interview page.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-6 text-light-100">
+              Make sure you are ready to finish before ending the call.
+            </div>
+
+            <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+              <button
+                onClick={() => setIsEndConfirmOpen(false)}
+                className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-bold text-light-100 transition hover:bg-white/[0.08]"
+              >
+                Continue Interview
+              </button>
+              <button
+                onClick={confirmEndInterview}
+                className="rounded-2xl bg-destructive-100 px-5 py-3 text-sm font-bold text-white transition hover:bg-destructive-200"
+              >
+                End Interview
+              </button>
+            </div>
           </div>
         </div>
       )}

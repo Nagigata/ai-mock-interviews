@@ -17,6 +17,7 @@ import {
   getInterviewAttempts,
   getInterviewById,
 } from "@/lib/actions/general.action";
+import { InterviewAttemptStatus } from "@/types";
 
 const formatDateTime = (value: string | null | undefined, timeZone: string) => {
   if (!value) {
@@ -28,6 +29,43 @@ const formatDateTime = (value: string | null | undefined, timeZone: string) => {
     timeStyle: "short",
     timeZone,
   }).format(new Date(value));
+};
+
+const getAttemptStatusConfig = (
+  status: InterviewAttemptStatus | undefined,
+  hasFeedback: boolean,
+) => {
+  if (hasFeedback || status === "COMPLETED") {
+    return {
+      label: "Completed",
+      className: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+      emptyText: "Feedback is available for this completed attempt.",
+    };
+  }
+
+  if (status === "TOO_SHORT") {
+    return {
+      label: "Too short",
+      className: "border-amber-400/20 bg-amber-400/10 text-amber-300",
+      emptyText:
+        "This interview ended before enough answers were provided, so feedback was not generated.",
+    };
+  }
+
+  if (status === "FAILED") {
+    return {
+      label: "Failed",
+      className: "border-red-400/20 bg-red-400/10 text-red-300",
+      emptyText:
+        "Feedback generation failed for this attempt. Please try another attempt.",
+    };
+  }
+
+  return {
+    label: "In progress",
+    className: "border-white/10 bg-white/[0.04] text-light-300",
+    emptyText: "This attempt has not generated feedback yet.",
+  };
 };
 
 const AttemptsPage = async ({
@@ -56,8 +94,12 @@ const AttemptsPage = async ({
 
   const bestScore =
     attempts
-      ?.map((a) => a.feedback?.totalScore ?? 0)
+      ?.filter((a) => a.status === "COMPLETED" || a.feedback)
+      .map((a) => a.feedback?.totalScore ?? 0)
       .reduce((max, s) => Math.max(max, s), 0) || 0;
+  const completedAttempts =
+    attempts?.filter((attempt) => attempt.status === "COMPLETED" || attempt.feedback)
+      .length || 0;
 
   return (
     <section className="flex flex-col gap-8">
@@ -95,6 +137,14 @@ const AttemptsPage = async ({
               </div>
               <div className="text-[11px] text-light-400 mt-1">Attempts</div>
             </div>
+            <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] px-5 py-4 text-center">
+              <div className="text-2xl font-bold text-emerald-400">
+                {completedAttempts}
+              </div>
+              <div className="text-[11px] text-light-400 mt-1">
+                Completed
+              </div>
+            </div>
             {bestScore > 0 && (
               <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] px-5 py-4 text-center">
                 <div className="text-2xl font-bold text-emerald-400">
@@ -129,11 +179,15 @@ const AttemptsPage = async ({
           {attempts.map((attempt, index) => {
             const feedback = attempt.feedback;
             const displayDate = formatDateTime(
-              attempt.completedAt || attempt.createdAt,
+              attempt.completedAt || attempt.endedAt || attempt.createdAt,
               timeZone,
             );
             const attemptNumber = attempts.length - index;
             const attemptScore = feedback?.totalScore ?? 0;
+            const statusConfig = getAttemptStatusConfig(
+              attempt.status,
+              Boolean(feedback),
+            );
             const scoreColor =
               attemptScore >= 80
                 ? "text-emerald-400"
@@ -154,6 +208,11 @@ const AttemptsPage = async ({
                     <div className="flex flex-wrap items-center gap-3">
                       <span className="rounded-lg bg-primary-200 px-3 py-1 text-xs font-extrabold text-dark-100">
                         #{attemptNumber}
+                      </span>
+                      <span
+                        className={`rounded-full border px-2.5 py-1 text-xs font-bold ${statusConfig.className}`}
+                      >
+                        {statusConfig.label}
                       </span>
                       <span className="inline-flex items-center gap-1.5 text-xs text-light-400">
                         <CalendarDays size={13} />
@@ -176,7 +235,8 @@ const AttemptsPage = async ({
                     {/* Assessment preview */}
                     <p className="line-clamp-2 text-sm text-light-100 leading-relaxed">
                       {feedback?.finalAssessment ||
-                        "This attempt has not generated feedback yet."}
+                        attempt.failureReason ||
+                        statusConfig.emptyText}
                     </p>
                   </div>
 
@@ -197,8 +257,10 @@ const AttemptsPage = async ({
                         View Feedback
                       </Link>
                     ) : (
-                      <span className="inline-flex items-center gap-2 rounded-xl bg-dark-300 px-4 py-2.5 text-xs font-medium text-light-600">
-                        Pending
+                      <span
+                        className={`inline-flex items-center gap-2 rounded-xl border px-4 py-2.5 text-xs font-bold ${statusConfig.className}`}
+                      >
+                        {statusConfig.label}
                       </span>
                     )}
                   </div>

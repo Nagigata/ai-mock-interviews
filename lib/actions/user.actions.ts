@@ -9,6 +9,7 @@ import {
   RecentActivityItem,
   SolvedChallengeItem,
   StarredChallengeItem,
+  StarredInterviewItem,
   Skill,
   UserProfile,
 } from "@/types";
@@ -62,6 +63,24 @@ export async function getMyStarredChallenges(
     );
   } catch (error) {
     console.error("Error fetching starred challenges:", error);
+    return null;
+  }
+}
+
+export async function getMyStarredInterviews(
+  page = 1,
+  limit = 10,
+): Promise<PaginatedResponse<StarredInterviewItem> | null> {
+  if (!(await hasAuthToken())) {
+    return null;
+  }
+
+  try {
+    return await apiGet<PaginatedResponse<StarredInterviewItem>>(
+      `/users/me/starred-interviews?page=${page}&limit=${limit}`,
+    );
+  } catch (error) {
+    console.error("Error fetching starred interviews:", error);
     return null;
   }
 }

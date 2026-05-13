@@ -12,6 +12,7 @@ import {
   ReceiptText,
   Shield,
   UserCircle2,
+  type LucideIcon,
 } from "lucide-react";
 
 import { signOut } from "@/lib/actions/auth.action";
@@ -38,7 +39,11 @@ const languages = [
   },
 ];
 
-const menuItems = [
+const menuItems: {
+  href: string;
+  label: string;
+  icon: LucideIcon;
+}[] = [
   {
     href: "/profile",
     label: "Profile",
@@ -54,7 +59,7 @@ const menuItems = [
     label: "Submissions",
     icon: ReceiptText,
   },
-] as const;
+];
 
 const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -77,6 +82,7 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
   }, []);
 
   const handleLanguageChange = (locale: string) => {
+    // eslint-disable-next-line react-hooks/immutability
     document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
     setIsOpen(false);
     router.refresh();
@@ -91,37 +97,55 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
     <div className="relative z-50" ref={menuRef}>
       <button
         onClick={() => setIsOpen((prev) => !prev)}
-        className="flex items-center gap-3 rounded-xl border border-white/10 bg-dark-200 px-2.5 py-1.5 transition hover:bg-dark-300"
+        aria-haspopup="menu"
+        aria-expanded={isOpen}
+        className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-2.5 py-1.5 shadow-[0_12px_32px_rgba(0,0,0,0.22)] transition-all hover:border-primary-200/25 hover:bg-primary-200/[0.07]"
       >
         <UserAvatar
           name={user?.name || "User"}
           avatarUrl={user?.avatarUrl}
           size="sm"
+          className="shrink-0 shadow-none"
         />
-        <span className="hidden text-sm font-medium text-light-100 lg:inline">
-          {user?.name || "Account"}
+        <span className="hidden min-w-0 flex-col items-start lg:flex">
+          <span className="max-w-28 truncate text-sm font-bold text-white">
+            {user?.name || "Account"}
+          </span>
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-light-400">
+            {currentLanguage.short}
+          </span>
         </span>
         <ChevronDown
-          className={`size-4 text-light-400 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          className={`size-4 text-light-400 transition-transform group-hover:text-primary-100 ${isOpen ? "rotate-180" : ""}`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-3 w-70 overflow-hidden rounded-2xl border border-white/10 bg-[#1c1f26] shadow-[0_20px_60px_rgba(0,0,0,0.45)] animate-in fade-in zoom-in-95 duration-200">
-          <div className="border-b border-white/8 px-4 py-4">
-            <div className="flex items-center gap-3">
+        <div
+          role="menu"
+          className="absolute right-0 mt-3 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-[26px] border border-white/10 bg-[#151922]/95 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+        >
+          <div className="relative overflow-hidden border-b border-white/8 px-4 py-4">
+            <div className="pointer-events-none absolute -right-8 -top-10 size-28 rounded-full bg-primary-200/10 blur-2xl" />
+            <div className="relative flex items-center gap-3">
               <UserAvatar
                 name={user?.name || "User"}
                 avatarUrl={user?.avatarUrl}
                 size="md"
+                className="shrink-0 shadow-none"
               />
               <div className="min-w-0">
-                <p className="truncate font-semibold text-white">
+                <p className="truncate text-base font-bold text-white">
                   {user?.name || "User"}
                 </p>
                 <p className="truncate text-sm text-light-400">
                   {user?.email || ""}
                 </p>
+                {user?.role ? (
+                  <p className="mt-1 inline-flex rounded-full border border-primary-200/15 bg-primary-200/10 px-2 py-0.5 text-[10px] font-bold uppercase tracking-[0.16em] text-primary-100">
+                    {user.role.toLowerCase()}
+                  </p>
+                ) : null}
               </div>
             </div>
           </div>
@@ -134,27 +158,34 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                   key={item.href}
                   href={item.href}
                   onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-light-100 transition hover:bg-white/[0.05]"
+                  role="menuitem"
+                  className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-light-100 transition hover:bg-white/[0.06] hover:text-white"
                 >
-                  <Icon className="size-4 text-light-400" />
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-white/8 bg-white/[0.04] text-light-400 transition group-hover/item:border-primary-200/20 group-hover/item:bg-primary-200/10 group-hover/item:text-primary-100">
+                    <Icon className="size-4" />
+                  </span>
                   <span>{item.label}</span>
                 </Link>
               );
             })}
+
             {user?.role === "ADMIN" && (
               <Link
                 href="/admin"
                 onClick={() => setIsOpen(false)}
-                className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-amber-400 transition hover:bg-amber-500/10"
+                role="menuitem"
+                className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-500/10"
               >
-                <Shield className="size-4" />
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-amber-300/15 bg-amber-300/10 text-amber-300">
+                  <Shield className="size-4" />
+                </span>
                 <span>Admin Panel</span>
               </Link>
             )}
           </div>
 
           <div className="border-t border-white/8 px-4 py-3">
-            <div className="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.25em] text-light-400">
+            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-light-400">
               <Globe2 className="size-3.5" />
               <span>Language</span>
             </div>
@@ -163,10 +194,10 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                 <button
                   key={language.code}
                   onClick={() => handleLanguageChange(language.code)}
-                  className={`flex items-center justify-center gap-2 rounded-xl border px-3 py-2 text-sm transition ${
+                  className={`flex items-center justify-center gap-2 rounded-2xl border px-3 py-2.5 text-sm font-bold transition ${
                     currentLocale === language.code
                       ? "border-primary-100/40 bg-primary-100/10 text-primary-100"
-                      : "border-white/8 bg-white/3 text-light-100 hover:bg-white/6"
+                      : "border-white/8 bg-white/[0.035] text-light-100 hover:bg-white/[0.07]"
                   }`}
                 >
                   <Image
@@ -184,9 +215,12 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
           <div className="border-t border-white/8 p-2">
             <button
               onClick={handleLogout}
-              className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-[#f29a9a] transition hover:bg-[#ff6b6b]/10"
+              role="menuitem"
+              className="group/item flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-[#f29a9a] transition hover:bg-[#ff6b6b]/10 hover:text-red-200"
             >
-              <LogOut className="size-4" />
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-red-300/15 bg-red-300/10 text-red-300">
+                <LogOut className="size-4" />
+              </span>
               <span>Logout</span>
             </button>
           </div>

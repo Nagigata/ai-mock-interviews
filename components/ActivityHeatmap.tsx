@@ -3,6 +3,7 @@
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import { ActivityCalendar } from "react-activity-calendar";
+import { Activity } from "lucide-react";
 import { ActivityDay } from "@/types";
 
 dayjs.extend(advancedFormat);
@@ -15,13 +16,9 @@ interface ActivityHeatmapProps {
 
 const ActivityHeatmap = ({
   activity,
-  activeDays,
-  maxStreak,
 }: ActivityHeatmapProps) => {
-  const submissionCount = activity.reduce((total, day) => total + day.count, 0);
-
   return (
-    <section className="rounded-[28px] border border-white/8 bg-[#1d1f24] p-5 shadow-[0_10px_40px_rgba(0,0,0,0.28)]">
+    <section className="rounded-[32px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
       <style jsx global>{`
         .react-activity-calendar__tooltip {
           padding: 6px 10px !important;
@@ -46,22 +43,24 @@ const ActivityHeatmap = ({
         }
       `}</style>
 
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="text-lg text-light-100">
-          <span className="text-2xl font-semibold text-white">{submissionCount}</span>{" "}
-          submissions in the past one year
+      <div className="flex items-start gap-3">
+        <div className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
+          <Activity className="size-5" />
         </div>
-        <div className="flex gap-6 text-sm text-light-400">
-          <p>
-            Total active days: <span className="text-white">{activeDays}</span>
+        <div>
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-cyan-300">
+            Activity
           </p>
-          <p>
-            Max streak: <span className="text-white">{maxStreak}</span>
+          <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
+            Practice Calendar
+          </h2>
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
+            Daily submission rhythm across the past year.
           </p>
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-[24px] border border-white/6 bg-[#202228] p-4">
+      <div className="mt-6 overflow-x-auto rounded-[26px] border border-white/[0.08] bg-white/[0.035] p-4">
         <div className="flex min-w-max justify-center">
           <div className="[&_.react-activity-calendar__count]:hidden [&_.react-activity-calendar__legend-colors]:gap-1.5 [&_.react-activity-calendar__legend-month]:text-light-400 [&_.react-activity-calendar__month-label]:fill-[#d6e0ff] [&_.react-activity-calendar__svg]:mx-auto [&_.react-activity-calendar__svg]:w-auto">
           <ActivityCalendar
@@ -78,7 +77,7 @@ const ActivityHeatmap = ({
             }}
             labels={{
               weekdays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
-              totalCount: "{{count}} submissions in the past one year",
+              totalCount: "",
               legend: {
                 less: "Less",
                 more: "More",

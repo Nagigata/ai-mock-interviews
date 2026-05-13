@@ -23,7 +23,7 @@ const FilterGroup = ({ title, options, selectedValues, onChange }: FilterGroupPr
             <div className="relative flex items-center">
               <input
                 type="checkbox"
-                className="peer size-5 appearance-none rounded border border-dark-300 bg-dark-200 checked:border-primary-200 checked:bg-primary-200 transition-all cursor-pointer"
+                className="peer size-5 cursor-pointer appearance-none rounded border border-dark-300 bg-dark-200 transition-all checked:border-primary-200 checked:bg-primary-200"
                 checked={selectedValues.includes(option.value)}
                 onChange={() => onChange(option.value)}
               />

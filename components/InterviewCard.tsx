@@ -3,6 +3,7 @@
 import dayjs from "dayjs";
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 import {
   ArrowRight,
   Calendar,
@@ -16,6 +17,7 @@ import {
 import DisplayTechIcons from "./DisplayTechIcons";
 import { getDictionary } from "@/lib/i18n";
 import { Feedback, InterviewCardProps } from "@/types";
+import { toggleInterviewStar } from "@/lib/actions/general.action";
 
 interface InterviewCardProps2 extends InterviewCardProps {
   feedback?: Feedback | null;
@@ -50,12 +52,15 @@ const InterviewCard = ({
   techstack,
   createdAt,
   language,
+  isStarred: initialIsStarred = false,
   feedback,
   locale = "en",
   showDelete,
   attemptCount = 0,
   onDelete,
 }: InterviewCardProps2) => {
+  const [isStarred, setIsStarred] = useState(initialIsStarred);
+  const [isStarLoading, setIsStarLoading] = useState(false);
   const normalizedType = /mix/gi.test(type) ? "Mixed" : type;
   const t = getDictionary(locale);
   const formattedDate =
@@ -65,24 +70,59 @@ const InterviewCard = ({
   const score = feedback?.totalScore;
   const scoreTone = getScoreTone(score);
 
+  const handleToggleStar = async (event: React.MouseEvent) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    if (!interviewId) {
+      return;
+    }
+
+    setIsStarLoading(true);
+    const result = await toggleInterviewStar(interviewId);
+    if (result) {
+      setIsStarred(result.starred);
+    }
+    setIsStarLoading(false);
+  };
+
   return (
     <article className="group relative flex min-h-[360px] w-full">
       <div className="relative flex w-full flex-col overflow-hidden rounded-[28px] border border-white/[0.07] bg-[linear-gradient(180deg,_rgba(29,32,41,0.94),_rgba(15,17,23,0.98))] p-5 shadow-[0_12px_34px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20 hover:shadow-[0_16px_44px_rgba(0,0,0,0.24)]">
-        {showDelete && onDelete && (
+        <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
           <button
-            onClick={(event) => {
-              event.preventDefault();
-              event.stopPropagation();
-              onDelete();
-            }}
-            className="absolute right-4 top-4 z-10 rounded-xl border border-white/10 bg-dark-200/80 p-2 text-light-400 opacity-0 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400 group-hover:opacity-100"
-            title="Delete interview"
+            onClick={handleToggleStar}
+            disabled={isStarLoading || !interviewId}
+            className={`rounded-xl border border-white/10 bg-dark-200/80 p-2 transition-all duration-200 ${
+              isStarred
+                ? "text-yellow-400 hover:border-yellow-400/30 hover:bg-yellow-400/10"
+                : "text-light-400/50 hover:border-white/15 hover:bg-white/5 hover:text-light-100"
+            }`}
+            title={isStarred ? "Unmark" : "Mark Star"}
+            aria-label={isStarred ? "Unmark interview" : "Mark interview"}
           >
-            <Trash2 className="size-3.5" />
+            <Star
+              className="size-3.5"
+              fill={isStarred ? "currentColor" : "none"}
+            />
           </button>
-        )}
 
-        <div className="relative mb-5 flex items-center gap-2 pr-10">
+          {showDelete && onDelete && (
+            <button
+              onClick={(event) => {
+                event.preventDefault();
+                event.stopPropagation();
+                onDelete();
+              }}
+              className="rounded-xl border border-white/10 bg-dark-200/80 p-2 text-light-400 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+              title="Delete interview"
+            >
+              <Trash2 className="size-3.5" />
+            </button>
+          )}
+        </div>
+
+        <div className="relative mb-5 flex items-center gap-2 pr-20">
           <span
             className={`inline-flex items-center gap-1 rounded-lg border px-2.5 py-1 text-[11px] font-semibold ${typeStyles[normalizedType] || typeStyles.Mixed}`}
           >

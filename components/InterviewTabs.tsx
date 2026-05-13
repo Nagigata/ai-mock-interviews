@@ -14,6 +14,7 @@ import {
 } from "lucide-react";
 
 import InterviewCard from "./InterviewCard";
+import UnderlineTabs from "./UnderlineTabs";
 import { deleteInterview } from "@/lib/actions/general.action";
 import { Feedback, Interview } from "@/types";
 
@@ -145,41 +146,30 @@ export default function InterviewTabs({
 
   const myCreatedIds = new Set(myInterviews.map((interview) => interview.id));
   const visibleInterviews = tab === "my" ? myFilteredInterviews : exploreFiltered;
+  const tabs: Array<{
+    id: Tab;
+    label: string;
+    count?: number;
+    icon: typeof Mic2;
+  }> = [
+    {
+      id: "my",
+      label: "My Interviews",
+      count: myFilteredInterviews.length,
+      icon: Mic2,
+    },
+    {
+      id: "explore",
+      label: "Explore",
+      icon: Compass,
+    },
+  ];
 
   return (
     <div className="space-y-6">
       <div className="rounded-[30px] border border-white/8 bg-dark-200/35 p-3 shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl">
         <div className="flex flex-col gap-4 border-b border-white/8 p-2 pb-4 lg:flex-row lg:items-center lg:justify-between">
-          <div className="inline-flex w-fit rounded-2xl border border-white/8 bg-dark-100/70 p-1.5">
-            <button
-              onClick={() => setTab("my")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
-                tab === "my"
-                  ? "bg-primary-200 text-dark-100 shadow-lg"
-                  : "text-light-400 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              <Mic2 className="size-4" />
-              My Interviews
-              <span className="rounded-full bg-black/10 px-2 py-0.5 text-xs">
-                {myFilteredInterviews.length}
-              </span>
-            </button>
-            <button
-              onClick={() => setTab("explore")}
-              className={`inline-flex items-center gap-2 rounded-xl px-4 py-2.5 text-sm font-semibold transition-all ${
-                tab === "explore"
-                  ? "bg-primary-200 text-dark-100 shadow-lg"
-                  : "text-light-400 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              <Compass className="size-4" />
-              Explore
-              <span className="rounded-full bg-black/10 px-2 py-0.5 text-xs">
-                {exploreFiltered.length}
-              </span>
-            </button>
-          </div>
+          <UnderlineTabs tabs={tabs} activeTab={tab} onChange={setTab} />
 
           <div className="flex items-center gap-2 text-sm text-light-400">
             <Filter className="size-4 text-primary-100" />
@@ -252,6 +242,7 @@ export default function InterviewTabs({
               techstack={interview.techstack}
               createdAt={interview.createdAt}
               language={interview.language}
+              isStarred={interview.isStarred}
               feedback={feedbackMap[interview.id]}
               locale={locale}
               showDelete={tab === "my" && myCreatedIds.has(interview.id)}

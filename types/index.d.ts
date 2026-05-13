@@ -25,6 +25,7 @@ export interface Interview {
   type: string;
   language: string;
   finalized: boolean;
+  isStarred?: boolean;
 }
 
 export type InterviewGenerationStatus =
@@ -50,6 +51,12 @@ export interface InterviewGenerationJob {
   completedAt?: string | null;
 }
 
+export type InterviewAttemptStatus =
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "TOO_SHORT"
+  | "FAILED";
+
 export interface CreateFeedbackParams {
   attemptId: string;
   transcript: { role: string; content: string }[];
@@ -68,7 +75,10 @@ export interface InterviewAttempt {
   id: string;
   interviewId: string;
   userId: string;
+  status?: InterviewAttemptStatus;
+  endedAt?: string | null;
   completedAt?: string | null;
+  failureReason?: string | null;
   createdAt: string;
   updatedAt: string;
   transcriptCount?: number;
@@ -99,6 +109,7 @@ export interface InterviewCardProps {
   techstack: string[];
   createdAt?: string;
   language?: string;
+  isStarred?: boolean;
 }
 
 export interface AgentProps {
@@ -218,12 +229,18 @@ export interface ActivityDay {
 
 export interface RecentActivityItem {
   id: string;
-  challengeId: string;
-  challengeTitle: string;
-  difficulty: Difficulty;
-  skillSlug: string;
-  language: string;
+  activityType?: "CHALLENGE_SUBMISSION" | "INTERVIEW_ATTEMPT";
+  challengeId?: string;
+  challengeTitle?: string;
+  difficulty?: Difficulty;
+  skillSlug?: string;
+  language?: string;
+  interviewId?: string;
+  interviewRole?: string;
+  interviewLevel?: string;
+  interviewType?: string;
   status: string;
+  score?: number | null;
   runtime?: number | null;
   memory?: number | null;
   submittedAt: string;
@@ -266,6 +283,13 @@ export interface StarredChallengeItem {
   isSolved: boolean;
   isStarred: boolean;
   starredAt: string;
+}
+
+export interface StarredInterviewItem extends Interview {
+  isStarred: true;
+  starredAt: string;
+  attemptCount: number;
+  feedback?: Feedback | null;
 }
 
 export interface SolvedChallengeItem {

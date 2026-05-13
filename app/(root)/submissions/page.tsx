@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { ChevronLeft, ChevronRight, History } from "lucide-react";
 
 import { getMyRecentActivity } from "@/lib/actions/user.actions";
 import RecentActivityTable from "@/components/RecentActivityTable";
@@ -26,34 +27,49 @@ const SubmissionsPage = async ({ searchParams }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="rounded-[30px] border border-white/8 bg-[radial-gradient(circle_at_top_left,rgba(92,114,255,0.16),transparent_38%),linear-gradient(135deg,#1d1f24_0%,#12151b_100%)] p-6">
-        <p className="text-sm uppercase tracking-[0.35em] text-light-400">Submissions</p>
-        <h1 className="mt-3 text-4xl font-bold text-white">Submission History</h1>
-        <p className="mt-3 max-w-3xl text-light-100">
-          Review your latest attempts, track your accepted solutions, and revisit problems you want to improve.
-        </p>
+      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex items-start gap-3">
+            <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
+              <History className="size-5" />
+            </span>
+            <div>
+              <h1 className="text-3xl font-bold tracking-tight text-white">
+                Activity History
+              </h1>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-light-100/75">
+                Review your latest challenge submissions and completed mock interviews.
+              </p>
+            </div>
+          </div>
+
+          <span className="w-fit rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-light-100">
+            {activity?.total || 0} total records
+          </span>
+        </div>
       </section>
 
       <RecentActivityTable
         items={activity?.items || []}
-        title="All Recent Submissions"
+        title="All Recent Activity"
       />
 
       {totalPages > 1 && (
-        <section className="flex items-center justify-between rounded-[24px] border border-white/8 bg-[#1d1f24] px-5 py-4">
+        <section className="flex flex-col gap-4 rounded-[24px] border border-white/[0.08] bg-[#101318] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
           <Link
             href={hasPreviousPage ? createPageHref(currentPage - 1) : "#"}
             aria-disabled={!hasPreviousPage}
-            className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold transition-colors ${
               hasPreviousPage
-                ? "bg-dark-200 text-white hover:bg-dark-100"
-                : "pointer-events-none bg-dark-200/40 text-light-400"
+                ? "border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]"
+                : "pointer-events-none border border-white/5 bg-white/[0.02] text-light-400"
             }`}
           >
+            <ChevronLeft className="size-4" />
             Previous
           </Link>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2">
             {pageNumbers.map((pageNumber) => {
               const isActive = pageNumber === currentPage;
 
@@ -62,10 +78,10 @@ const SubmissionsPage = async ({ searchParams }: Props) => {
                   key={pageNumber}
                   href={createPageHref(pageNumber)}
                   aria-current={isActive ? "page" : undefined}
-                  className={`flex h-10 w-10 items-center justify-center rounded-xl border text-sm font-semibold transition-colors ${
+                  className={`flex h-10 w-10 items-center justify-center rounded-2xl border text-sm font-bold transition-colors ${
                     isActive
                       ? "border-primary-200 bg-primary-200 text-dark-100"
-                      : "border-white/8 bg-dark-200 text-light-100 hover:bg-dark-100 hover:text-white"
+                      : "border-white/8 bg-white/[0.035] text-light-100 hover:bg-white/[0.08] hover:text-white"
                   }`}
                 >
                   {pageNumber}
@@ -77,13 +93,14 @@ const SubmissionsPage = async ({ searchParams }: Props) => {
           <Link
             href={hasNextPage ? createPageHref(currentPage + 1) : "#"}
             aria-disabled={!hasNextPage}
-            className={`rounded-xl px-4 py-2 text-sm font-semibold transition-colors ${
+            className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold transition-colors ${
               hasNextPage
                 ? "bg-primary-200 text-dark-100 hover:bg-primary-100"
-                : "pointer-events-none bg-dark-200/40 text-light-400"
+                : "pointer-events-none border border-white/5 bg-white/[0.02] text-light-400"
             }`}
           >
             Next
+            <ChevronRight className="size-4" />
           </Link>
         </section>
       )}
