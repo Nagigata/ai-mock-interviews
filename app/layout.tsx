@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Toaster } from "sonner";
 import TimezoneCookie from "@/components/TimezoneCookie";
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "PrepWise",
@@ -15,11 +16,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased dark">
+    <html lang="en" className="h-full antialiased" suppressHydrationWarning>
       <body className="min-h-full flex flex-col pattern">
-        <TimezoneCookie />
-        {children}
-        <Toaster />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange={false}
+        >
+          <TimezoneCookie />
+          {children}
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -48,9 +48,14 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
       onClick={() => router.push(`/preparation/${skillSlug}/${challenge.id}`)}
       className="group w-full cursor-pointer"
     >
-      <div className="relative flex flex-col gap-5 rounded-2xl border border-white/[0.06] bg-gradient-to-b from-[#1a1d25] to-[#12141a] p-5 transition-all duration-300 hover:border-white/[0.12] sm:flex-row sm:items-center sm:justify-between sm:gap-6">
+      <div
+        className="relative flex flex-col gap-5 rounded-2xl border border-[var(--surface-border)] p-5 transition-all duration-300 hover:border-[var(--surface-border-hover)] sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+        style={{
+          background: `linear-gradient(180deg, var(--surface-card-gradient-from), var(--surface-card-gradient-to))`,
+        }}
+      >
         <div className="flex min-w-0 flex-1 flex-col gap-2.5">
-          <h3 className="text-lg font-bold leading-tight text-white transition-colors group-hover:text-primary-100">
+          <h3 className="text-lg font-bold leading-tight transition-colors group-hover:text-primary-100" style={{ color: "var(--text-heading)" }}>
             {challenge.title}
           </h3>
 
@@ -59,7 +64,7 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
               className={cn(
                 "inline-flex items-center rounded-lg border px-2.5 py-1 text-[11px] font-semibold",
                 difficultyStyles[challenge.difficulty] ||
-                  "border-white/10 bg-white/5 text-light-400",
+                  "border-[var(--surface-border)] text-[var(--text-muted)]",
               )}
             >
               {formatDifficulty(challenge.difficulty)}
@@ -67,13 +72,14 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
             {topics.slice(0, 3).map((topic) => (
               <span
                 key={topic}
-                className="inline-flex items-center rounded-lg border border-white/[0.06] bg-white/[0.04] px-2.5 py-1 text-[11px] text-light-400"
+                className="inline-flex items-center rounded-lg border border-[var(--surface-border)] px-2.5 py-1 text-[11px]"
+                style={{ background: "var(--surface-overlay)", color: "var(--text-muted)" }}
               >
                 {topic}
               </span>
             ))}
             {topics.length > 3 && (
-              <span className="text-[11px] text-light-600">
+              <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>
                 +{topics.length - 3} more
               </span>
             )}
@@ -89,7 +95,7 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
               "rounded-full p-1 transition-all duration-200",
               isStarred
                 ? "text-yellow-400"
-                : "text-light-400/30 hover:text-light-400",
+                : "text-[var(--text-muted)] hover:text-[var(--text-body)]",
             )}
             title={isStarred ? "Unmark" : "Mark Star"}
             aria-label={isStarred ? "Unmark challenge" : "Mark challenge"}

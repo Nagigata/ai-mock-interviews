@@ -158,23 +158,23 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
 
         <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
-            <span className="w-full border-t border-dark-300"></span>
+            <span className="w-full border-t" style={{ borderColor: "var(--surface-border)" }}></span>
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className=" px-3 text-light-400">Or continue with</span>
+            <span className="px-3" style={{ color: "var(--text-muted)", background: "var(--surface-card)" }}>Or continue with</span>
           </div>
         </div>
 
         <div className="flex flex-col gap-3">
           <Link href="http://localhost:3001/api/auth/google" className="w-full">
-            <Button variant="outline" className="w-full flex justify-center gap-3 bg-dark-200 border-white/5 hover:bg-dark-300 py-6 rounded-xl transition text-white">
+            <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
               <GoogleIcon />
               <span className="font-semibold">Google</span>
             </Button>
           </Link>
 
           <Link href="http://localhost:3001/api/auth/github" className="w-full">
-            <Button variant="outline" className="w-full flex justify-center gap-3 bg-dark-200 border-white/5 hover:bg-dark-300 py-6 rounded-xl transition text-white">
+            <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
               <GithubIcon />
               <span className="font-semibold">GitHub</span>
             </Button>

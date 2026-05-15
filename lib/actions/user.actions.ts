@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
 import { apiGet } from "@/lib/api";
 import {
   PaginatedResponse,
-  RecentActivityItem,
+  PracticeActivityResponse,
   SolvedChallengeItem,
   StarredChallengeItem,
   StarredInterviewItem,
@@ -70,14 +70,29 @@ export async function getMyStarredChallenges(
 export async function getMyStarredInterviews(
   page = 1,
   limit = 10,
+  filters?: Record<string, string | string[]>,
 ): Promise<PaginatedResponse<StarredInterviewItem> | null> {
   if (!(await hasAuthToken())) {
     return null;
   }
 
   try {
+    const query = new URLSearchParams();
+    query.append("page", page.toString());
+    query.append("limit", limit.toString());
+
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((entry) => query.append(key, entry));
+        } else if (value) {
+          query.append(key, value);
+        }
+      });
+    }
+
     return await apiGet<PaginatedResponse<StarredInterviewItem>>(
-      `/users/me/starred-interviews?page=${page}&limit=${limit}`,
+      `/users/me/starred-interviews?${query.toString()}`,
     );
   } catch (error) {
     console.error("Error fetching starred interviews:", error);
@@ -106,14 +121,29 @@ export async function getMySolvedChallenges(
 export async function getMyRecentActivity(
   page = 1,
   limit = 20,
-): Promise<PaginatedResponse<RecentActivityItem> | null> {
+  filters?: Record<string, string | string[]>,
+): Promise<PracticeActivityResponse | null> {
   if (!(await hasAuthToken())) {
     return null;
   }
 
   try {
-    return await apiGet<PaginatedResponse<RecentActivityItem>>(
-      `/users/me/activity?page=${page}&limit=${limit}`,
+    const query = new URLSearchParams();
+    query.append("page", page.toString());
+    query.append("limit", limit.toString());
+
+    if (filters) {
+      Object.entries(filters).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((entry) => query.append(key, entry));
+        } else if (value) {
+          query.append(key, value);
+        }
+      });
+    }
+
+    return await apiGet<PracticeActivityResponse>(
+      `/users/me/activity?${query.toString()}`,
     );
   } catch (error) {
     console.error("Error fetching recent activity:", error);

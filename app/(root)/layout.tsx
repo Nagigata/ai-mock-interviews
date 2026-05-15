@@ -18,7 +18,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   const profile = await getMyProfile();
 
   return (
-    <div className="flex flex-col min-h-screen bg-dark-100">
+    <div className="flex flex-col min-h-screen" style={{ background: "var(--surface-base)" }}>
       <Navbar locale={locale} t={t} user={profile} />
       <InterviewGenerationWatcher />
 

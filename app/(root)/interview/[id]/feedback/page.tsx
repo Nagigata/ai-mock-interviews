@@ -75,16 +75,22 @@ const Feedback = async ({
       </Link>
 
       {/* Hero header */}
-      <div className="relative overflow-hidden rounded-[28px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.16),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div
+        className="relative overflow-hidden rounded-[28px] border border-[var(--surface-border)] p-7"
+        style={{
+          background: "var(--hero-gradient)",
+          boxShadow: `0 24px 70px var(--shadow-heavy)`,
+        }}
+      >
         <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-white sm:text-4xl">
+            <h1 className="text-3xl font-bold sm:text-4xl" style={{ color: "var(--text-heading)" }}>
               {t.feedback.title}
               <span className="capitalize text-primary-100">
                 {interview.role}
               </span>
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-light-300">
+            <div className="flex flex-wrap items-center gap-4 text-sm" style={{ color: "var(--text-muted)" }}>
               <span className="inline-flex items-center gap-2">
                 <CalendarDays size={15} />
                 {feedback?.createdAt
@@ -101,15 +107,15 @@ const Feedback = async ({
             <span className={`text-4xl font-extrabold ${scoreColor}`}>
               {score}
             </span>
-            <Minus size={12} className="text-xs text-light-400 mt-1" />
-            <span className="text-xs text-light-400 mt-1">100</span>
+            <Minus size={12} className="text-xs mt-1" style={{ color: "var(--text-muted)" }} />
+            <span className="text-xs mt-1" style={{ color: "var(--text-muted)" }}>100</span>
           </div>
         </div>
       </div>
 
       {/* Final Assessment */}
-      <div className="rounded-2xl border border-white/6 bg-white/[0.03] p-6">
-        <p className="text-base leading-7 text-light-100">
+      <div className="rounded-2xl border border-[var(--surface-border)] p-6" style={{ background: "var(--surface-overlay)" }}>
+        <p className="text-base leading-7" style={{ color: "var(--text-body)" }}>
           {feedback?.finalAssessment}
         </p>
       </div>
@@ -117,7 +123,7 @@ const Feedback = async ({
       {/* Category Breakdown */}
       {feedback?.categoryScores && feedback.categoryScores.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-xl font-bold text-white">
+          <h2 className="text-xl font-bold" style={{ color: "var(--text-heading)" }}>
             {t.feedback.breakdown}
           </h2>
           <div className="grid gap-3">
@@ -138,10 +144,11 @@ const Feedback = async ({
               return (
                 <div
                   key={index}
-                  className="rounded-2xl border border-white/6 bg-white/[0.03] p-5"
+                  className="rounded-2xl border border-[var(--surface-border)] p-5"
+                  style={{ background: "var(--surface-overlay)" }}
                 >
                   <div className="flex items-center justify-between mb-2">
-                    <h3 className="text-sm font-bold text-white">
+                    <h3 className="text-sm font-bold" style={{ color: "var(--text-heading)" }}>
                       {category.name}
                     </h3>
                     <span
@@ -151,13 +158,13 @@ const Feedback = async ({
                     </span>
                   </div>
                   {/* Score bar */}
-                  <div className="h-1.5 w-full rounded-full bg-white/10 mb-3">
+                  <div className="h-1.5 w-full rounded-full mb-3" style={{ background: "var(--surface-border)" }}>
                     <div
                       className={`h-full rounded-full ${catBarColor} transition-all`}
                       style={{ width: `${category.score}%` }}
                     />
                   </div>
-                  <p className="text-sm text-light-400 leading-relaxed">
+                  <p className="text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                     {category.comment}
                   </p>
                 </div>
@@ -182,7 +189,8 @@ const Feedback = async ({
               {feedback.strengths.map((strength, index) => (
                 <li
                   key={index}
-                  className="flex items-start gap-2 text-sm text-light-100 leading-relaxed"
+                  className="flex items-start gap-2 text-sm leading-relaxed"
+                  style={{ color: "var(--text-body)" }}
                 >
                   <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-emerald-400" />
                   {strength}
@@ -206,7 +214,8 @@ const Feedback = async ({
                 {feedback.areasForImprovement.map((area, index) => (
                   <li
                     key={index}
-                    className="flex items-start gap-2 text-sm text-light-100 leading-relaxed"
+                    className="flex items-start gap-2 text-sm leading-relaxed"
+                    style={{ color: "var(--text-body)" }}
                   >
                     <span className="mt-1.5 size-1.5 shrink-0 rounded-full bg-amber-400" />
                     {area}
@@ -221,7 +230,8 @@ const Feedback = async ({
       <div className="flex flex-wrap gap-3 justify-center pt-2 pb-4">
         <Link
           href="/interview"
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-5 py-3 text-sm font-semibold text-light-100 transition-colors hover:bg-white/5"
+          className="inline-flex items-center gap-2 rounded-xl border border-[var(--surface-border)] px-5 py-3 text-sm font-semibold transition-colors hover:bg-[var(--surface-overlay-hover)]"
+          style={{ color: "var(--text-body)" }}
         >
           <House size={16} />
           {t.feedback.backToInterviews}

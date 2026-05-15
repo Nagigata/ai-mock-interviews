@@ -326,8 +326,8 @@ const ProfilePage = async () => {
       <RecentActivityTable
         items={recentAccepted}
         title="Recent Accepted Submissions"
-        actionHref="/submissions"
-        actionLabel="View all submissions"
+        actionHref="/practice-history"
+        actionLabel="View practice history"
       />
     </div>
   );

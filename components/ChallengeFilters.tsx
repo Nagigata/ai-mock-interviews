@@ -22,8 +22,8 @@ const FilterGroup = ({ title, options, selectedValues, onChange, scrollable, sea
     : options;
 
   return (
-    <div className="flex flex-col gap-4 border-b border-dark-300 pb-6 mb-6 last:border-0 last:pb-0 last:mb-0">
-      <h3 className="text-xs font-bold text-light-400 uppercase tracking-widest">{title}</h3>
+    <div className="flex flex-col gap-4 pb-6 mb-6 last:border-0 last:pb-0 last:mb-0" style={{ borderBottom: "1px solid var(--surface-border)" }}>
+      <h3 className="text-xs font-bold uppercase tracking-widest" style={{ color: "var(--text-muted)" }}>{title}</h3>
       
       {searchable && (
         <div className="relative">
@@ -33,7 +33,8 @@ const FilterGroup = ({ title, options, selectedValues, onChange, scrollable, sea
             placeholder={`Search ${title.toLowerCase()}...`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full bg-dark-200/50 border border-white/5 rounded-xl py-2 pl-9 pr-3 text-sm text-light-100 placeholder:text-light-400 focus:outline-none focus:ring-1 focus:ring-primary-200/50"
+            className="w-full border rounded-xl py-2 pl-9 pr-3 text-sm placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-primary-200/50"
+            style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-body)" }}
           />
         </div>
       )}
@@ -45,7 +46,8 @@ const FilterGroup = ({ title, options, selectedValues, onChange, scrollable, sea
               <div className="relative flex items-center">
                 <input
                   type="checkbox"
-                  className="peer appearance-none size-5 rounded border border-dark-300 bg-dark-200 checked:bg-primary-200 checked:border-primary-200 transition-all cursor-pointer"
+                  className="peer appearance-none size-5 rounded border cursor-pointer checked:bg-primary-200 checked:border-primary-200 transition-all"
+                  style={{ borderColor: "var(--surface-border)", background: "var(--surface-card)" }}
                   checked={selectedValues.includes(option.value)}
                   onChange={() => onChange(option.value)}
                 />
@@ -54,13 +56,13 @@ const FilterGroup = ({ title, options, selectedValues, onChange, scrollable, sea
                   strokeWidth={4}
                 />
               </div>
-              <span className="text-sm text-light-100 group-hover:text-white transition-colors">
+              <span className="text-sm transition-colors" style={{ color: "var(--text-body)" }}>
                 {option.label}
               </span>
             </label>
           ))
         ) : (
-          <span className="text-sm text-light-400 italic">No matches found.</span>
+          <span className="text-sm italic" style={{ color: "var(--text-muted)" }}>No matches found.</span>
         )}
       </div>
     </div>
@@ -103,7 +105,7 @@ const ChallengeFilters = ({ topics }: ChallengeFiltersProps) => {
 
   return (
     <aside className="w-64 shrink-0 hidden lg:block">
-      <div className="sticky top-28 rounded-3xl border border-white/5 bg-dark-200/50 p-6 backdrop-blur-xl">
+      <div className="sticky top-28 rounded-3xl border p-6 backdrop-blur-xl" style={{ borderColor: "var(--surface-border)", background: "var(--surface-card)" }}>
         
         <FilterGroup
           title="Status"

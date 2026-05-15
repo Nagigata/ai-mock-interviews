@@ -74,7 +74,10 @@ const page = async () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.2),_transparent_28%),linear-gradient(155deg,_rgba(18,22,30,0.98),_rgba(8,10,14,0.98))] px-7 py-8 shadow-[0_28px_80px_rgba(0,0,0,0.3)] sm:px-10 sm:py-10">
+      <section
+        className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-7 py-8 sm:px-10 sm:py-10"
+        style={{ background: "var(--hero-gradient)", boxShadow: `0 28px 80px var(--shadow-heavy)` }}
+      >
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary-200/10 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
 
@@ -88,11 +91,11 @@ const page = async () => {
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 <BrainCircuit className="text-primary-100" size={30} />
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text-heading)" }}>
                   {t.agent.aiInterviewer}
                 </h1>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-light-100 sm:text-lg">
+              <p className="max-w-2xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-body)" }}>
                 Start a new mock interview, explore public interview templates,
                 and keep your own interview sessions in one place.
               </p>
@@ -107,41 +110,41 @@ const page = async () => {
             </Link>
           </div>
 
-          <div className="rounded-[28px] border border-white/[0.08] bg-black/20 p-4 backdrop-blur-xl">
+          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.12)" }}>
             <div className="mb-4 px-1">
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold" style={{ color: "var(--text-heading)" }}>
                 Interview workspace
               </h2>
-              <p className="mt-1 text-xs leading-5 text-light-400">
+              <p className="mt-1 text-xs leading-5" style={{ color: "var(--text-muted)" }}>
                 Keep your generated sessions and practice attempts in one place.
               </p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+              <div className="rounded-[22px] border border-[var(--surface-border)] p-4" style={{ background: "var(--surface-overlay)" }}>
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="text-sm font-medium text-light-100/80">
+                  <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                     Interviews
                   </span>
                   <span className="flex size-8 items-center justify-center rounded-xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
                     <Mic2 className="size-4" />
                   </span>
                 </div>
-                <div className="text-3xl font-bold text-white">
+                <div className="text-3xl font-bold" style={{ color: "var(--text-heading)" }}>
                   {myInterviews?.length || 0}
                 </div>
               </div>
 
-              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+              <div className="rounded-[22px] border border-[var(--surface-border)] p-4" style={{ background: "var(--surface-overlay)" }}>
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="text-sm font-medium text-light-100/80">
+                  <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                     Attempts
                   </span>
                   <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
                     <Clock3 className="size-4" />
                   </span>
                 </div>
-                <div className="text-3xl font-bold text-white">
+                <div className="text-3xl font-bold" style={{ color: "var(--text-heading)" }}>
                   {totalAttempts}
                 </div>
               </div>

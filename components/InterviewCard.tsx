@@ -34,7 +34,7 @@ const typeStyles: Record<string, string> = {
 };
 
 const getScoreTone = (score?: number) => {
-  if (!score) return "border-white/10 bg-white/[0.04] text-light-400";
+  if (!score) return "border-[var(--surface-border)] text-[var(--text-muted)]";
   if (score >= 80) {
     return "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
   }
@@ -88,16 +88,23 @@ const InterviewCard = ({
 
   return (
     <article className="group relative flex min-h-[360px] w-full">
-      <div className="relative flex w-full flex-col overflow-hidden rounded-[28px] border border-white/[0.07] bg-[linear-gradient(180deg,_rgba(29,32,41,0.94),_rgba(15,17,23,0.98))] p-5 shadow-[0_12px_34px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20 hover:shadow-[0_16px_44px_rgba(0,0,0,0.24)]">
+      <div
+        className="relative flex w-full flex-col overflow-hidden rounded-[28px] border border-[var(--surface-border)] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20"
+        style={{
+          background: `linear-gradient(180deg, var(--surface-card-gradient-from), var(--surface-card-gradient-to))`,
+          boxShadow: `0 12px 34px var(--shadow-color)`,
+        }}
+      >
         <div className="absolute right-4 top-4 z-10 flex items-center gap-2">
           <button
             onClick={handleToggleStar}
             disabled={isStarLoading || !interviewId}
-            className={`rounded-xl border border-white/10 bg-dark-200/80 p-2 transition-all duration-200 ${
+            className={`rounded-xl border border-[var(--surface-border)] p-2 transition-all duration-200 ${
               isStarred
                 ? "text-yellow-400 hover:border-yellow-400/30 hover:bg-yellow-400/10"
-                : "text-light-400/50 hover:border-white/15 hover:bg-white/5 hover:text-light-100"
+                : "text-[var(--text-muted)] hover:border-[var(--surface-border-hover)] hover:text-[var(--text-body)]"
             }`}
+            style={{ background: "var(--surface-overlay)" }}
             title={isStarred ? "Unmark" : "Mark Star"}
             aria-label={isStarred ? "Unmark interview" : "Mark interview"}
           >
@@ -114,7 +121,8 @@ const InterviewCard = ({
                 event.stopPropagation();
                 onDelete();
               }}
-              className="rounded-xl border border-white/10 bg-dark-200/80 p-2 text-light-400 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+              className="rounded-xl border border-[var(--surface-border)] p-2 transition-all duration-200 hover:border-red-500/30 hover:bg-red-500/10 hover:text-red-400"
+              style={{ background: "var(--surface-overlay)", color: "var(--text-muted)" }}
               title="Delete interview"
             >
               <Trash2 className="size-3.5" />
@@ -130,7 +138,7 @@ const InterviewCard = ({
           </span>
 
           {language && (
-            <span className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/[0.04] px-2.5 py-1">
+            <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--surface-border)] px-2.5 py-1" style={{ background: "var(--surface-overlay)" }}>
               <Image
                 src={
                   language === "vi"
@@ -142,7 +150,7 @@ const InterviewCard = ({
                 height={11}
                 className="rounded-[2px] object-cover"
               />
-              <span className="text-[11px] font-semibold uppercase text-light-100">
+              <span className="text-[11px] font-semibold uppercase" style={{ color: "var(--text-body)" }}>
                 {language === "vi" ? "VI" : "EN"}
               </span>
             </span>
@@ -155,12 +163,12 @@ const InterviewCard = ({
           )}
         </div>
 
-        <h3 className="relative mb-3 text-xl font-bold capitalize leading-tight text-white">
+        <h3 className="relative mb-3 text-xl font-bold capitalize leading-tight" style={{ color: "var(--text-heading)" }}>
           {role} {t.interviewCard.mockInterview}
         </h3>
 
-        <div className="mb-4 flex flex-wrap items-center gap-2 text-xs text-light-400">
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1.5">
+        <div className="mb-4 flex flex-wrap items-center gap-2 text-xs" style={{ color: "var(--text-muted)" }}>
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--surface-border)] px-2.5 py-1.5" style={{ background: "var(--surface-overlay)" }}>
             <Calendar className="size-3.5 text-primary-100/70" />
             {formattedDate}
           </span>
@@ -173,19 +181,19 @@ const InterviewCard = ({
           </span>
 
           {attemptCount > 0 && (
-            <span className="inline-flex items-center gap-1.5 rounded-full border border-white/8 bg-white/[0.03] px-2.5 py-1.5">
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--surface-border)] px-2.5 py-1.5" style={{ background: "var(--surface-overlay)" }}>
               <Clock className="size-3.5 text-primary-100/70" />
               {attemptCount} attempt{attemptCount > 1 ? "s" : ""}
             </span>
           )}
         </div>
 
-        <p className="mb-5 line-clamp-3 min-h-[60px] text-sm leading-relaxed text-light-400">
+        <p className="mb-5 line-clamp-3 min-h-[60px] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
           {feedback?.finalAssessment || t.interviewCard.notTakenMsg}
         </p>
 
-        <div className="mb-5 flex items-center justify-between rounded-2xl border border-white/[0.06] bg-white/[0.035] px-4 py-3">
-          <span className="text-xs font-medium text-light-400">Tech Stack</span>
+        <div className="mb-5 flex items-center justify-between rounded-2xl border border-[var(--surface-border)] px-4 py-3" style={{ background: "var(--surface-overlay)" }}>
+          <span className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>Tech Stack</span>
           <DisplayTechIcons techStack={techstack} />
         </div>
 

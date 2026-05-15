@@ -1,10 +1,9 @@
 import { getAllChallenges, getTopics } from "@/lib/actions/challenges.action";
 import { getDictionary } from "@/lib/i18n";
 import { cookies } from "next/headers";
-import ChallengeFilters from "@/components/ChallengeFilters";
 import ChallengeCard from "@/components/ChallengeCard";
+import ChallengeFilterBar from "@/components/ChallengeFilterBar";
 import LoadMoreChallenges from "@/components/LoadMoreChallenges";
-import ChallengeSearch from "@/components/ChallengeSearch";
 import {
   CircleAlert,
   Code2,
@@ -44,7 +43,10 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-white/[0.08] bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.2),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.12),_transparent_34%),linear-gradient(160deg,_rgba(23,26,36,0.98),_rgba(7,9,13,0.98))] px-6 py-7 shadow-[0_28px_80px_rgba(0,0,0,0.35)] sm:px-8 lg:px-10">
+      <header
+        className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-6 py-7 sm:px-8 lg:px-10"
+        style={{ background: "var(--hero-gradient)", boxShadow: `0 28px 80px var(--shadow-heavy)` }}
+      >
         <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-primary-200/15 blur-3xl" />
 
         <div className="relative grid gap-7 xl:grid-cols-[1.35fr_0.95fr] xl:items-center">
@@ -57,11 +59,11 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
             <div className="space-y-4">
               <div className="flex items-center gap-3">
                 <FolderOpenDot className="text-primary-100" size={30} />
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+                <h1 className="text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text-heading)" }}>
                   {t.common.challenges}
                 </h1>
               </div>
-              <p className="max-w-2xl text-base leading-7 text-light-100/85 sm:text-lg">
+              <p className="max-w-2xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-body)", opacity: 0.85 }}>
                 Explore curated coding problems, filter by difficulty or topic,
                 and jump straight into the challenges that match your current
                 focus.
@@ -69,41 +71,41 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-white/[0.08] bg-black/20 p-4 backdrop-blur-xl">
+          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.12)" }}>
             <div className="mb-4 px-1">
-              <h2 className="text-lg font-bold text-white">
+              <h2 className="text-lg font-bold" style={{ color: "var(--text-heading)" }}>
                 Practice library
               </h2>
-              <p className="mt-1 text-xs leading-5 text-light-400">
+              <p className="mt-1 text-xs leading-5" style={{ color: "var(--text-muted)" }}>
                 A focused collection of coding problems for interview practice.
               </p>
             </div>
 
             <div className="grid gap-3 sm:grid-cols-2">
-              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+              <div className="rounded-[22px] border border-[var(--surface-border)] p-4" style={{ background: "var(--surface-overlay)" }}>
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="text-sm font-medium text-light-100/80">
+                  <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                     Challenges
                   </span>
                   <span className="flex size-8 items-center justify-center rounded-xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
                     <Swords className="size-4" />
                   </span>
                 </div>
-                <div className="text-3xl font-bold text-white">
+                <div className="text-3xl font-bold" style={{ color: "var(--text-heading)" }}>
                   {totalCount}
                 </div>
               </div>
 
-              <div className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4">
+              <div className="rounded-[22px] border border-[var(--surface-border)] p-4" style={{ background: "var(--surface-overlay)" }}>
                 <div className="mb-5 flex items-center justify-between">
-                  <span className="text-sm font-medium text-light-100/80">
+                  <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                     Focus
                   </span>
                   <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
                     <Code2 className="size-4" />
                   </span>
                 </div>
-                <div className="text-lg font-semibold leading-snug text-white">
+                <div className="text-lg font-semibold leading-snug" style={{ color: "var(--text-heading)" }}>
                   Interview-ready practice
                 </div>
               </div>
@@ -112,19 +114,19 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
         </div>
       </header>
 
-      <div className="animate-fadeIn flex flex-col gap-10 lg:flex-row" style={{ animationDelay: "0.08s", animationFillMode: "both" }}>
-        {/* Challenges List (Left) */}
+      <div
+        className="animate-fadeIn flex flex-col gap-6"
+        style={{ animationDelay: "0.08s", animationFillMode: "both" }}
+      >
         <section className="flex-1 flex flex-col gap-6">
-          <div className="w-full">
-            <ChallengeSearch />
-          </div>
+          <ChallengeFilterBar topics={topics} />
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <h2 className="text-2xl font-bold text-white">
+              <h2 className="text-2xl font-bold" style={{ color: "var(--text-heading)" }}>
                 Problem set
               </h2>
-              <p className="mt-1 text-sm text-light-400">
+              <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
                 Select a challenge and practice inside the code workspace.
               </p>
             </div>
@@ -151,12 +153,12 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
                 )}
               </>
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-16 text-center">
-                <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <CircleAlert size={32} className="text-light-400" />
+              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-[var(--surface-border)] p-16 text-center" style={{ background: "var(--surface-overlay)" }}>
+                <div className="mb-4 rounded-2xl border border-[var(--surface-border)] p-4" style={{ background: "var(--surface-overlay)" }}>
+                  <CircleAlert size={32} style={{ color: "var(--text-muted)" }} />
                 </div>
-                <p className="text-light-100 font-medium">No challenges found</p>
-                <p className="text-sm text-light-400 mt-1">Try adjusting your filters to find what you are looking for.</p>
+                <p className="font-medium" style={{ color: "var(--text-body)" }}>No challenges found</p>
+                <p className="text-sm mt-1" style={{ color: "var(--text-muted)" }}>Try adjusting your filters to find what you are looking for.</p>
                 <Link href="/challenges" className="mt-6 text-primary-200 hover:text-primary-100 font-bold text-sm">
                   Clear all filters
                 </Link>
@@ -164,9 +166,6 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
             )}
           </div>
         </section>
-
-        {/* Filter Sidebar (Right) */}
-        <ChallengeFilters topics={topics} />
       </div>
     </div>
   );

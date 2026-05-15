@@ -246,6 +246,19 @@ export interface RecentActivityItem {
   submittedAt: string;
 }
 
+export type PracticeActivityType = "all" | "challenges" | "interviews";
+
+export interface PracticeActivitySummary {
+  total: number;
+  challengeSubmissions: number;
+  interviewAttempts: number;
+}
+
+export interface PracticeActivityResponse
+  extends PaginatedResponse<RecentActivityItem> {
+  summary: PracticeActivitySummary;
+}
+
 export interface UserDashboardStats {
   totalStarredChallenges: number;
   totalSolvedChallenges: number;

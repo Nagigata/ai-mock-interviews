@@ -2,8 +2,9 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import { Bookmark, Code2, Mic2 } from "lucide-react";
 
-import BookmarkFilters from "@/components/BookmarkFilters";
+import ChallengeFilterBar from "@/components/ChallengeFilterBar";
 import ChallengeCard from "@/components/ChallengeCard";
+import InterviewFilterBar from "@/components/InterviewFilterBar";
 import InterviewCard from "@/components/InterviewCard";
 import UnderlineTabs from "@/components/UnderlineTabs";
 import { getDictionary } from "@/lib/i18n";
@@ -26,20 +27,29 @@ const BookmarksPage = async ({ searchParams }: Props) => {
   const cookieStore = await cookies();
   const locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
   const t = getDictionary(locale);
+  const challengeFilters = {
+    ...(filters.status ? { status: filters.status } : {}),
+    ...(filters.difficulty ? { difficulty: filters.difficulty } : {}),
+  };
+  const interviewFilters = {
+    ...(filters.type ? { type: filters.type } : {}),
+    ...(filters.level ? { level: filters.level } : {}),
+  };
   const [starredChallenges, starredInterviews] = await Promise.all([
-    getMyStarredChallenges(1, 100, filters),
-    getMyStarredInterviews(1, 100),
+    getMyStarredChallenges(1, 100, challengeFilters),
+    getMyStarredInterviews(1, 100, interviewFilters),
   ]);
   const totalSaved =
     (starredChallenges?.total || 0) + (starredInterviews?.total || 0);
   const hasChallengeFilters = Boolean(filters.status || filters.difficulty);
+  const hasInterviewFilters = Boolean(filters.type || filters.level);
   const requestedTab = getFirstParam(filters.tab);
   const activeTab: BookmarkTab =
     requestedTab === "interviews" || requestedTab === "challenges"
       ? requestedTab
-      : starredInterviews?.items.length
-        ? "interviews"
-        : "challenges";
+      : starredChallenges?.items.length
+        ? "challenges"
+        : "interviews";
 
   const buildTabHref = (tab: BookmarkTab) => {
     const params = new URLSearchParams();
@@ -47,6 +57,17 @@ const BookmarksPage = async ({ searchParams }: Props) => {
 
     if (tab === "challenges") {
       ["status", "difficulty"].forEach((key) => {
+        const value = filters[key];
+        if (Array.isArray(value)) {
+          value.forEach((entry) => params.append(key, entry));
+        } else if (value) {
+          params.append(key, value);
+        }
+      });
+    }
+
+    if (tab === "interviews") {
+      ["type", "level"].forEach((key) => {
         const value = filters[key];
         if (Array.isArray(value)) {
           value.forEach((entry) => params.append(key, entry));
@@ -67,18 +88,18 @@ const BookmarksPage = async ({ searchParams }: Props) => {
     href: string;
   }> = [
     {
-      id: "interviews",
-      label: "Interviews",
-      count: starredInterviews?.total || 0,
-      icon: Mic2,
-      href: buildTabHref("interviews"),
-    },
-    {
       id: "challenges",
       label: "Challenges",
       count: starredChallenges?.total || 0,
       icon: Code2,
       href: buildTabHref("challenges"),
+    },
+    {
+      id: "interviews",
+      label: "Interviews",
+      count: starredInterviews?.total || 0,
+      icon: Mic2,
+      href: buildTabHref("interviews"),
     },
   ];
 
@@ -109,10 +130,12 @@ const BookmarksPage = async ({ searchParams }: Props) => {
 
       <UnderlineTabs tabs={tabs} activeTab={activeTab} />
 
-      <div className="flex flex-col gap-10 lg:flex-row">
+      <div className="flex flex-col gap-10">
         <section className="flex flex-1 flex-col gap-4">
           {activeTab === "interviews" ? (
             <>
+              <InterviewFilterBar preserveParams={["tab"]} />
+
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-white">
@@ -146,6 +169,16 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                     />
                   ))}
                 </div>
+              ) : hasInterviewFilters ? (
+                <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
+                  <p>No bookmarked interviews match these filters.</p>
+                  <Link
+                    href="/bookmarks?tab=interviews"
+                    className="mt-4 inline-flex rounded-2xl border border-primary-200/20 bg-primary-200/10 px-4 py-2.5 font-bold text-primary-100 hover:bg-primary-200/15"
+                  >
+                    Clear all filters
+                  </Link>
+                </div>
               ) : (
                 <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
                   <p>You have not bookmarked any interviews yet.</p>
@@ -160,6 +193,12 @@ const BookmarksPage = async ({ searchParams }: Props) => {
             </>
           ) : (
             <>
+              <ChallengeFilterBar
+                showSearch={false}
+                showTopics={false}
+                preserveParams={["tab"]}
+              />
+
               <div className="flex items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-white">
@@ -219,8 +258,6 @@ const BookmarksPage = async ({ searchParams }: Props) => {
             </>
           )}
         </section>
-
-        {activeTab === "challenges" && <BookmarkFilters />}
       </div>
     </div>
   );

@@ -10,6 +10,7 @@ interface RecentActivityTableProps {
   compact?: boolean;
   actionHref?: string;
   actionLabel?: string;
+  totalItems?: number;
 }
 
 const statusClasses: Record<string, string> = {
@@ -38,7 +39,9 @@ const getActivityTitle = (item: RecentActivityItem) => {
 
 const getActivityContext = (item: RecentActivityItem) => {
   if (item.activityType === "INTERVIEW_ATTEMPT") {
-    return item.score ? `${item.score}/100` : item.interviewType || "Interview";
+    return typeof item.score === "number"
+      ? `${item.score}/100`
+      : item.interviewType || "Interview";
   }
 
   return item.language || "-";
@@ -50,7 +53,10 @@ const RecentActivityTable = ({
   compact = false,
   actionHref,
   actionLabel,
+  totalItems,
 }: RecentActivityTableProps) => {
+  const displayTotal = totalItems ?? items.length;
+
   return (
     <section className="rounded-[32px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -64,7 +70,7 @@ const RecentActivityTable = ({
             </h3>
             {!compact && (
               <p className="mt-1 text-sm text-light-400">
-                {items.length} item{items.length !== 1 ? "s" : ""} found
+                {displayTotal} item{displayTotal !== 1 ? "s" : ""} found
               </p>
             )}
           </div>

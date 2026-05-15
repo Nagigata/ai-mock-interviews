@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import ChallengeFilters from "@/components/ChallengeFilters";
 import ChallengeCard from "@/components/ChallengeCard";
+import ChallengeFilterBar from "@/components/ChallengeFilterBar";
 
 import {
   BookOpen,
@@ -118,9 +118,10 @@ const SkillPage = async ({ params, searchParams }: Props) => {
         </div>
       </header>
 
-      <div className="flex flex-col lg:flex-row gap-10">
-        {/* Challenges List (Left) */}
+      <div className="flex flex-col gap-6">
         <section className="flex-1 flex flex-col gap-6">
+          <ChallengeFilterBar topics={topics} />
+
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <h2 className="text-2xl font-bold text-white">
@@ -159,9 +160,6 @@ const SkillPage = async ({ params, searchParams }: Props) => {
             )}
           </div>
         </section>
-
-        {/* Filter Sidebar (Right) */}
-        <ChallengeFilters topics={topics} />
       </div>
     </div>
   );

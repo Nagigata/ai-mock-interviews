@@ -30,11 +30,17 @@ const SkillCard = ({ skill, dictionary, index, locale = "en" }: SkillCardProps) 
       className="w-full"
     >
       <Link href={`/preparation/${skill.slug}`} className="group block h-full">
-        <article className="relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-[28px] border border-white/[0.07] bg-[linear-gradient(180deg,_rgba(29,32,41,0.94),_rgba(15,17,23,0.98))] p-5 shadow-[0_12px_34px_rgba(0,0,0,0.18)] transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20 hover:shadow-[0_16px_44px_rgba(0,0,0,0.24)]">
+        <article
+          className="relative flex h-full min-h-[260px] flex-col overflow-hidden rounded-[28px] border border-[var(--surface-border)] p-5 transition-all duration-300 hover:-translate-y-0.5 hover:border-primary-200/20"
+          style={{
+            background: `linear-gradient(180deg, var(--surface-card-gradient-from), var(--surface-card-gradient-to))`,
+            boxShadow: `0 12px 34px var(--shadow-color)`,
+          }}
+        >
           <div className="relative flex flex-1 flex-col gap-5">
             <div className="flex items-start justify-between gap-4">
               {skill.icon ? (
-                <div className="flex size-14 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.04] p-3 transition-colors group-hover:border-primary-200/20 group-hover:bg-primary-200/10">
+                <div className="flex size-14 items-center justify-center rounded-2xl border border-[var(--surface-border)] p-3 transition-colors group-hover:border-primary-200/20 group-hover:bg-primary-200/10" style={{ background: "var(--surface-overlay)" }}>
                   <Image
                     src={skill.icon}
                     alt={skill.name}
@@ -44,8 +50,8 @@ const SkillCard = ({ skill, dictionary, index, locale = "en" }: SkillCardProps) 
                   />
                 </div>
               ) : (
-                <div className="flex size-14 items-center justify-center rounded-2xl border border-white/[0.07] bg-white/[0.04] p-3 transition-colors group-hover:border-primary-200/20 group-hover:bg-primary-200/10">
-                  <BookOpen className="size-6 text-light-400" />
+                <div className="flex size-14 items-center justify-center rounded-2xl border border-[var(--surface-border)] p-3 transition-colors group-hover:border-primary-200/20 group-hover:bg-primary-200/10" style={{ background: "var(--surface-overlay)" }}>
+                  <BookOpen className="size-6" style={{ color: "var(--text-muted)" }} />
                 </div>
               )}
 
@@ -56,21 +62,21 @@ const SkillCard = ({ skill, dictionary, index, locale = "en" }: SkillCardProps) 
             </div>
 
             <div className="space-y-3">
-              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-white/[0.08] bg-white/[0.04] px-2.5 py-1 text-[11px] font-semibold text-light-400">
+              <div className="inline-flex w-fit items-center gap-1.5 rounded-full border border-[var(--surface-border)] px-2.5 py-1 text-[11px] font-semibold" style={{ background: "var(--surface-overlay)", color: "var(--text-muted)" }}>
                 <Code2 className="size-3.5 text-primary-100/70" />
                 {skill.slug}
               </div>
 
-              <h3 className="text-xl font-bold leading-tight text-white transition-colors group-hover:text-primary-100">
+              <h3 className="text-xl font-bold leading-tight transition-colors group-hover:text-primary-100" style={{ color: "var(--text-heading)" }}>
                 {skill.name}
               </h3>
-              <p className="line-clamp-3 min-h-[63px] text-sm leading-relaxed text-light-400">
+              <p className="line-clamp-3 min-h-[63px] text-sm leading-relaxed" style={{ color: "var(--text-muted)" }}>
                 {skill.description || descriptionFallback}
               </p>
             </div>
           </div>
 
-          <div className="relative mt-6 flex items-center justify-between rounded-2xl border border-white/[0.07] bg-white/[0.035] px-4 py-3">
+          <div className="relative mt-6 flex items-center justify-between rounded-2xl border border-[var(--surface-border)] px-4 py-3" style={{ background: "var(--surface-overlay)" }}>
             <span className="text-sm font-bold text-primary-100">
               {t.preparation.startBtn}
             </span>

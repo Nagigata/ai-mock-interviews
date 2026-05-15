@@ -27,41 +27,86 @@
   --bg-pattern: url("/pattern.png");
 }
 
+/* ── Light mode tokens ───────────────────────────────── */
 :root {
   --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  --background: oklch(0.985 0.002 247);
+  --foreground: oklch(0.16 0.02 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.16 0.02 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.16 0.02 260);
+  --primary: oklch(0.28 0.06 280);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.955 0.01 260);
+  --secondary-foreground: oklch(0.28 0.06 280);
+  --muted: oklch(0.955 0.01 260);
+  --muted-foreground: oklch(0.45 0.03 260);
+  --accent: oklch(0.955 0.01 260);
+  --accent-foreground: oklch(0.28 0.06 280);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  --border: oklch(0.88 0.015 260);
+  --input: oklch(0.88 0.015 260);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar: oklch(0.975 0.005 260);
+  --sidebar-foreground: oklch(0.16 0.02 260);
+  --sidebar-primary: oklch(0.28 0.06 280);
   --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-accent: oklch(0.955 0.01 260);
+  --sidebar-accent-foreground: oklch(0.28 0.06 280);
+  --sidebar-border: oklch(0.88 0.015 260);
   --sidebar-ring: oklch(0.708 0 0);
+
+  /* ── Theme-aware surface tokens (light) ── */
+  --surface-base: #eaecf4;
+  --surface-card: #ffffff;
+  --surface-card-gradient-from: #ffffff;
+  --surface-card-gradient-to: #f5f6fc;
+  --surface-overlay: rgba(75, 85, 130, 0.07);
+  --surface-overlay-hover: rgba(75, 85, 130, 0.13);
+  --surface-border: rgba(75, 85, 130, 0.18);
+  --surface-border-hover: rgba(75, 85, 130, 0.3);
+  --text-heading: #0d1224;
+  --text-body: #28304d;
+  --text-muted: #4f5980;
+  --border-gradient-from: #b8bdd4;
+  --border-gradient-to: rgba(184, 189, 212, 0.35);
+  --navbar-bg: rgba(234, 236, 244, 0.88);
+  --menu-bg: rgba(255, 255, 255, 0.98);
+  --shadow-color: rgba(60, 70, 120, 0.1);
+  --shadow-heavy: rgba(60, 70, 120, 0.2);
+  --hero-gradient: radial-gradient(
+      circle at top left,
+      rgba(130, 110, 255, 0.18),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(34, 200, 238, 0.12),
+      transparent 42%
+    ),
+    linear-gradient(
+      160deg,
+      #f0f1fc,
+      #e6e8f6
+    );
+  --section-bg: #e2e5f0;
+  --section-bg-alt: linear-gradient(
+    180deg,
+    #e2e5f0,
+    #dce0ee
+  );
+  --pattern-opacity: 0.05;
+  --color-primary-100-themed: #4a3f8f;
+  --color-primary-200-themed: #5b4fc7;
 }
 
+/* ── Dark mode tokens ────────────────────────────────── */
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
@@ -94,6 +139,47 @@
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
+
+  /* ── Theme-aware surface tokens (dark) ── */
+  --surface-base: #020408;
+  --surface-card: #1a1c20;
+  --surface-card-gradient-from: rgba(29, 32, 41, 0.94);
+  --surface-card-gradient-to: rgba(15, 17, 23, 0.98);
+  --surface-overlay: rgba(255, 255, 255, 0.04);
+  --surface-overlay-hover: rgba(255, 255, 255, 0.08);
+  --surface-border: rgba(255, 255, 255, 0.07);
+  --surface-border-hover: rgba(255, 255, 255, 0.14);
+  --text-heading: #ffffff;
+  --text-body: #d6e0ff;
+  --text-muted: #9aa6d8;
+  --border-gradient-from: #4b4d4f;
+  --border-gradient-to: rgba(75, 77, 79, 0.2);
+  --navbar-bg: rgba(2, 4, 8, 0.8);
+  --menu-bg: rgba(21, 25, 34, 0.95);
+  --shadow-color: rgba(0, 0, 0, 0.18);
+  --shadow-heavy: rgba(0, 0, 0, 0.35);
+  --hero-gradient: radial-gradient(
+      circle at top left,
+      rgba(202, 197, 254, 0.2),
+      transparent 32%
+    ),
+    radial-gradient(
+      circle at bottom right,
+      rgba(34, 211, 238, 0.12),
+      transparent 34%
+    ),
+    linear-gradient(
+      160deg,
+      rgba(23, 26, 36, 0.98),
+      rgba(7, 9, 13, 0.98)
+    );
+  --section-bg: #11141a;
+  --section-bg-alt: linear-gradient(
+    180deg,
+    rgba(10, 16, 22, 0.96),
+    rgba(6, 9, 13, 0.96)
+  );
+  --pattern-opacity: 1;
 }
 
 @theme inline {
@@ -142,20 +228,33 @@
     @apply bg-background text-foreground;
   }
   p {
-    @apply text-light-100;
+    @apply text-[var(--text-body)];
   }
   h2 {
     @apply text-3xl font-semibold;
+    color: var(--text-heading);
   }
   h3 {
     @apply text-2xl font-semibold;
+    color: var(--text-heading);
   }
   ul {
     @apply list-disc list-inside;
   }
   li {
-    @apply text-light-100;
+    @apply text-[var(--text-body)];
   }
+}
+
+/* ── Light mode: override pale primary colors ─────────── */
+:root:not(.dark) {
+  --color-primary-100: #5b4fc7;
+  --color-primary-200: #6c5ce7;
+}
+
+/* Ensure text-white elements get dark text in light mode for readability */
+:root:not(.dark) .text-white {
+  color: var(--text-heading) !important;
 }
 
 @layer components {
@@ -182,26 +281,44 @@
   }
 
   .btn-upload {
-    @apply bg-dark-200 rounded-full min-h-12 px-5 cursor-pointer border border-input  overflow-hidden;
+    @apply rounded-full min-h-12 px-5 cursor-pointer border border-input overflow-hidden;
+    background: var(--surface-card);
   }
 
   .card-border {
-    @apply border-gradient p-0.5 rounded-2xl w-fit;
+    @apply p-0.5 rounded-2xl w-fit;
+    background: linear-gradient(
+      to bottom,
+      var(--border-gradient-from),
+      var(--border-gradient-to)
+    );
   }
 
   .card {
-    @apply dark-gradient rounded-2xl min-h-full;
+    @apply rounded-2xl min-h-full;
+    background: linear-gradient(
+      to bottom,
+      var(--surface-card-gradient-from),
+      var(--surface-card-gradient-to)
+    );
   }
 
   .form {
     @apply w-full;
 
     .label {
-      @apply !text-light-100 !font-normal;
+      @apply !font-normal;
+      color: var(--text-muted);
     }
 
     .input {
-      @apply !bg-dark-200 !rounded-full !min-h-12 !px-5 placeholder:!text-light-100;
+      @apply !rounded-full !min-h-12 !px-5;
+      background: var(--surface-card) !important;
+      border: 1px solid var(--surface-border) !important;
+    }
+
+    .input::placeholder {
+      color: var(--text-muted);
     }
 
     .btn {
@@ -229,22 +346,43 @@
     }
 
     .card-border {
-      @apply border-gradient p-0.5 rounded-2xl w-full sm:flex-1 sm:basis-0 sm:min-w-[500px] h-[400px] min-h-[400px] max-h-[400px] shrink-0 max-md:hidden;
+      @apply p-0.5 rounded-2xl w-full sm:flex-1 sm:basis-0 sm:min-w-[500px] h-[400px] min-h-[400px] max-h-[400px] shrink-0 max-md:hidden;
+      background: linear-gradient(
+        to bottom,
+        var(--border-gradient-from),
+        var(--border-gradient-to)
+      );
     }
 
     .card-content {
-      @apply flex flex-col gap-2 justify-center items-center p-7 dark-gradient rounded-2xl min-h-full;
+      @apply flex flex-col gap-2 justify-center items-center p-7 rounded-2xl min-h-full;
+      background: linear-gradient(
+        to bottom,
+        var(--surface-card-gradient-from),
+        var(--surface-card-gradient-to)
+      );
     }
   }
 
   .transcript-border {
-    @apply border-gradient p-0.5 rounded-2xl w-full;
+    @apply p-0.5 rounded-2xl w-full;
+    background: linear-gradient(
+      to bottom,
+      var(--border-gradient-from),
+      var(--border-gradient-to)
+    );
 
     .transcript {
-      @apply dark-gradient rounded-2xl  min-h-12 px-5 py-3 flex items-center justify-center;
+      @apply rounded-2xl min-h-12 px-5 py-3 flex items-center justify-center;
+      background: linear-gradient(
+        to bottom,
+        var(--surface-card-gradient-from),
+        var(--surface-card-gradient-to)
+      );
 
       p {
-        @apply text-lg text-center text-white;
+        @apply text-lg text-center;
+        color: var(--text-heading);
       }
     }
   }
@@ -274,7 +412,8 @@
   }
 
   .interview-text {
-    @apply text-lg text-center text-white;
+    @apply text-lg text-center;
+    color: var(--text-heading);
   }
 
   .progress {
@@ -282,11 +421,19 @@
   }
 
   .tech-tooltip {
-    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs text-white bg-gray-700 rounded-md shadow-md;
+    @apply absolute bottom-full mb-1 hidden group-hover:flex px-2 py-1 text-xs rounded-md shadow-md;
+    color: var(--text-heading);
+    background: var(--surface-card);
+    border: 1px solid var(--surface-border);
   }
 
   .card-interview {
-    @apply dark-gradient rounded-2xl min-h-full flex flex-col p-6 relative overflow-hidden gap-10 justify-between;
+    @apply rounded-2xl min-h-full flex flex-col p-6 relative overflow-hidden gap-10 justify-between;
+    background: linear-gradient(
+      to bottom,
+      var(--surface-card-gradient-from),
+      var(--surface-card-gradient-to)
+    );
 
     .badge-text {
       @apply text-sm font-semibold capitalize;
@@ -449,15 +596,39 @@
 }
 
 @utility dark-gradient {
-  @apply bg-gradient-to-b from-[#1A1C20] to-[#08090D];
+  background: linear-gradient(
+    to bottom,
+    var(--surface-card-gradient-from),
+    var(--surface-card-gradient-to)
+  );
 }
 
 @utility border-gradient {
-  @apply bg-gradient-to-b from-[#4B4D4F] to-[#4B4D4F33];
+  background: linear-gradient(
+    to bottom,
+    var(--border-gradient-from),
+    var(--border-gradient-to)
+  );
 }
 
 @utility pattern {
-  @apply bg-[url('/pattern.png')] bg-top bg-no-repeat;
+  position: relative;
+}
+
+/* Pattern background as pseudo-element so opacity doesn't affect content */
+body.pattern::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: url("/pattern.png") top / auto no-repeat;
+  opacity: var(--pattern-opacity, 1);
+}
+
+body.pattern > * {
+  position: relative;
+  z-index: 1;
 }
 
 @utility blue-gradient-dark {
@@ -485,4 +656,16 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ── Smooth theme transition ─────────────────────────── */
+html.transitioning,
+html.transitioning *,
+html.transitioning *::before,
+html.transitioning *::after {
+  transition:
+    background-color 0.3s ease,
+    border-color 0.3s ease,
+    color 0.3s ease,
+    box-shadow 0.3s ease !important;
 }

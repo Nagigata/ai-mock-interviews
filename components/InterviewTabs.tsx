@@ -15,6 +15,7 @@ import {
 
 import InterviewCard from "./InterviewCard";
 import UnderlineTabs from "./UnderlineTabs";
+import SelectFilter from "@/components/filters/SelectFilter";
 import { deleteInterview } from "@/lib/actions/general.action";
 import { Feedback, Interview } from "@/types";
 
@@ -43,8 +44,19 @@ const myFilters: Array<{ value: MyFilter; label: string }> = [
   { value: "attempted", label: "Attempted" },
 ];
 
-const typeOptions = ["Technical", "Behavioral", "Mixed"];
-const levelOptions = ["Junior", "Mid-level", "Senior"];
+const typeOptions = [
+  { value: "all", label: "All types" },
+  { value: "Technical", label: "Technical" },
+  { value: "Behavioral", label: "Behavioral" },
+  { value: "Mixed", label: "Mixed" },
+];
+
+const levelOptions = [
+  { value: "all", label: "All levels" },
+  { value: "Junior", label: "Junior" },
+  { value: "Mid-level", label: "Mid-level" },
+  { value: "Senior", label: "Senior" },
+];
 
 const normalizeType = (type: string) => (/mix/gi.test(type) ? "Mixed" : type);
 
@@ -201,30 +213,20 @@ export default function InterviewTabs({
           </div>
         ) : (
           <div className="flex flex-wrap items-center gap-3 px-2 pt-4">
-            <select
+            <SelectFilter
+              label="Type"
               value={typeFilter}
-              onChange={(event) => setTypeFilter(event.target.value)}
-              className="rounded-xl border border-white/10 bg-dark-100 px-4 py-2.5 text-xs font-semibold text-white transition-colors focus:border-primary-200/50 focus:outline-none"
-            >
-              <option value="all">All Types</option>
-              {typeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
-            <select
+              options={typeOptions}
+              onChange={setTypeFilter}
+              className="min-w-[170px]"
+            />
+            <SelectFilter
+              label="Level"
               value={levelFilter}
-              onChange={(event) => setLevelFilter(event.target.value)}
-              className="rounded-xl border border-white/10 bg-dark-100 px-4 py-2.5 text-xs font-semibold text-white transition-colors focus:border-primary-200/50 focus:outline-none"
-            >
-              <option value="all">All Levels</option>
-              {levelOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+              options={levelOptions}
+              onChange={setLevelFilter}
+              className="min-w-[170px]"
+            />
           </div>
         )}
       </div>

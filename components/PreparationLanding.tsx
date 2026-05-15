@@ -71,10 +71,10 @@ const SectionHeader = ({
         <Icon className="size-5" />
       </div>
       <div>
-        <h2 className="text-2xl font-bold tracking-tight text-white sm:text-[30px]">
+        <h2 className="text-2xl font-bold tracking-tight sm:text-[30px]" style={{ color: "var(--text-heading)" }}>
           {title}
         </h2>
-        <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
+        <p className="mt-2 max-w-2xl text-sm leading-6" style={{ color: "var(--text-muted)" }}>
           {description}
         </p>
       </div>
@@ -83,7 +83,8 @@ const SectionHeader = ({
     {action && (
       <Link
         href={action.href}
-        className="inline-flex w-fit items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition-colors hover:border-primary-200/30 hover:bg-primary-200/10"
+        className="inline-flex w-fit items-center gap-2 rounded-xl border border-[var(--surface-border)] px-4 py-2.5 text-sm font-bold text-primary-100 transition-colors hover:border-primary-200/30 hover:bg-primary-200/10"
+        style={{ background: "var(--surface-overlay)" }}
       >
         {action.label}
         <ArrowRight className="size-4" />
@@ -93,7 +94,7 @@ const SectionHeader = ({
 );
 
 const EmptyPanel = ({ children }: { children: ReactNode }) => (
-  <div className="rounded-[24px] border border-dashed border-white/10 bg-white/[0.03] px-5 py-10 text-center text-sm leading-6 text-light-400">
+  <div className="rounded-[24px] border border-dashed border-[var(--surface-border)] px-5 py-10 text-center text-sm leading-6" style={{ background: "var(--surface-overlay)", color: "var(--text-muted)" }}>
     {children}
   </div>
 );
@@ -153,7 +154,7 @@ const PreparationLanding = ({
         allSkillsTitle: dictionary.preparation.skillTitle,
         allSkillsSubtitle:
           "Mỗi skill là một đường vào rõ ràng để bạn luyện theo chủ đề thay vì học rời rạc.",
-        viewSubmissions: "Xem tất cả submissions",
+        viewPracticeHistory: "Xem lịch sử luyện tập",
       }
     : {
         heroTitle: `Welcome back, ${name}.`,
@@ -181,7 +182,7 @@ const PreparationLanding = ({
         allSkillsTitle: dictionary.preparation.skillTitle,
         allSkillsSubtitle:
           "Each skill gives you a clear entry point so your practice feels guided instead of scattered.",
-        viewSubmissions: "View all submissions",
+        viewPracticeHistory: "View practice history",
       };
 
   const statItems: StatItem[] = [
@@ -217,7 +218,11 @@ const PreparationLanding = ({
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: "easeOut" }}
-        className="relative overflow-hidden rounded-[34px] border border-white/[0.08] bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.2),_transparent_32%),radial-gradient(circle_at_bottom_right,_rgba(34,211,238,0.12),_transparent_34%),linear-gradient(160deg,_rgba(23,26,36,0.98),_rgba(7,9,13,0.98))] px-6 py-7 shadow-[0_28px_80px_rgba(0,0,0,0.35)] sm:px-8 lg:px-10"
+        className="relative overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-6 py-7 sm:px-8 lg:px-10"
+        style={{
+          background: "var(--hero-gradient)",
+          boxShadow: `0 28px 80px var(--shadow-heavy)`,
+        }}
       >
         <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-primary-200/15 blur-3xl" />
         <div className="relative grid gap-7 xl:grid-cols-[1.35fr_0.95fr] xl:items-center">
@@ -228,10 +233,10 @@ const PreparationLanding = ({
             </div>
 
             <div className="space-y-4">
-              <h1 className="max-w-3xl text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              <h1 className="max-w-3xl text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text-heading)" }}>
                 {copy.heroTitle}
               </h1>
-              <p className="max-w-2xl text-base leading-7 text-light-100/85 sm:text-lg">
+              <p className="max-w-2xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-body)", opacity: 0.85 }}>
                 {copy.heroSubtitle}
               </p>
             </div>
@@ -247,7 +252,8 @@ const PreparationLanding = ({
 
               <Link
                 href="/challenges"
-                className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-2 rounded-2xl border border-[var(--surface-border)] px-5 py-3 text-sm font-bold transition-colors hover:bg-[var(--surface-overlay-hover)]"
+                style={{ background: "var(--surface-overlay)", color: "var(--text-heading)" }}
               >
                 <FolderOpenDot className="size-4" />
                 {copy.browseLabel}
@@ -263,13 +269,13 @@ const PreparationLanding = ({
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-white/[0.08] bg-black/20 p-4 backdrop-blur-xl">
+          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.12)" }}>
             <div className="mb-4 flex items-start justify-between gap-4 px-1">
               <div>
-                <h2 className="text-lg font-bold text-white">
+                <h2 className="text-lg font-bold" style={{ color: "var(--text-heading)" }}>
                   {copy.statsTitle}
                 </h2>
-                <p className="mt-1 text-xs leading-5 text-light-400">
+                <p className="mt-1 text-xs leading-5" style={{ color: "var(--text-muted)" }}>
                   {copy.statsSubtitle}
                 </p>
               </div>
@@ -282,10 +288,11 @@ const PreparationLanding = ({
                 return (
                   <div
                     key={stat.label}
-                    className="rounded-[22px] border border-white/[0.07] bg-white/[0.035] p-4"
+                    className="rounded-[22px] border border-[var(--surface-border)] p-4"
+                    style={{ background: "var(--surface-overlay)" }}
                   >
                     <div className="mb-5 flex items-center justify-between">
-                      <span className="text-sm font-medium text-light-100/80">
+                      <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                         {stat.label}
                       </span>
                       <span
@@ -297,7 +304,7 @@ const PreparationLanding = ({
                         <Icon className="size-4" />
                       </span>
                     </div>
-                    <div className="text-3xl font-bold text-white">
+                    <div className="text-3xl font-bold" style={{ color: "var(--text-heading)" }}>
                       {stat.value}
                     </div>
                   </div>
@@ -314,7 +321,10 @@ const PreparationLanding = ({
         transition={{ duration: 0.45, delay: 0.08, ease: "easeOut" }}
         className="grid gap-5 xl:grid-cols-[1.15fr_0.85fr]"
       >
-        <div className="rounded-[30px] border border-white/[0.08] bg-[#11141a] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
+        <div
+          className="rounded-[30px] border border-[var(--surface-border)] p-5 sm:p-7"
+          style={{ background: "var(--section-bg)", boxShadow: `0 24px 60px var(--shadow-color)` }}
+        >
           <SectionHeader
             icon={Clock3}
             title={copy.continueTitle}
@@ -327,24 +337,25 @@ const PreparationLanding = ({
                 <Link
                   key={item.id}
                   href={`/preparation/${item.skillSlug || "algorithms"}/${item.challengeId}`}
-                  className="group flex items-center justify-between gap-4 rounded-[22px] border border-white/[0.07] bg-white/[0.03] px-4 py-4 transition-all hover:border-primary-200/20 hover:bg-primary-200/[0.06]"
+                  className="group flex items-center justify-between gap-4 rounded-[22px] border border-[var(--surface-border)] px-4 py-4 transition-all hover:border-primary-200/20 hover:bg-primary-200/[0.06]"
+                  style={{ background: "var(--surface-overlay)" }}
                 >
                   <div className="min-w-0 space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <ActivityPill status={item.status} />
-                      <span className="text-xs font-medium text-light-400">
+                      <span className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>
                         {item.language || "-"}
                       </span>
                     </div>
-                    <h3 className="truncate text-lg font-semibold text-white transition-colors group-hover:text-primary-100">
+                    <h3 className="truncate text-lg font-semibold transition-colors group-hover:text-primary-100" style={{ color: "var(--text-heading)" }}>
                       {item.challengeTitle || "Untitled Challenge"}
                     </h3>
-                    <p className="text-sm text-light-400">
+                    <p className="text-sm" style={{ color: "var(--text-muted)" }}>
                       {dayjs(item.submittedAt).format("DD MMM YYYY, HH:mm")}
                     </p>
                   </div>
 
-                  <ArrowRight className="size-4 shrink-0 text-light-400 transition-all group-hover:translate-x-1 group-hover:text-primary-100" />
+                  <ArrowRight className="size-4 shrink-0 transition-all group-hover:translate-x-1 group-hover:text-primary-100" style={{ color: "var(--text-muted)" }} />
                 </Link>
               ))}
             </div>
@@ -353,7 +364,10 @@ const PreparationLanding = ({
           )}
         </div>
 
-        <div className="rounded-[30px] border border-white/[0.08] bg-[linear-gradient(180deg,rgba(10,16,22,0.96),rgba(6,9,13,0.96))] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
+        <div
+          className="rounded-[30px] border border-[var(--surface-border)] p-5 sm:p-7"
+          style={{ background: "var(--section-bg-alt)", boxShadow: `0 24px 60px var(--shadow-color)` }}
+        >
           <SectionHeader
             icon={BookOpen}
             title={copy.recommendedTitle}
@@ -366,16 +380,17 @@ const PreparationLanding = ({
                 <Link
                   key={skill.id}
                   href={`/preparation/${skill.slug}`}
-                  className="group flex items-center justify-between gap-4 rounded-[22px] border border-white/[0.07] bg-white/[0.03] px-4 py-4 transition-all hover:border-cyan-400/20 hover:bg-cyan-400/[0.06]"
+                  className="group flex items-center justify-between gap-4 rounded-[22px] border border-[var(--surface-border)] px-4 py-4 transition-all hover:border-cyan-400/20 hover:bg-cyan-400/[0.06]"
+                  style={{ background: "var(--surface-overlay)" }}
                 >
                   <div className="min-w-0">
                     <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/80">
                       Track {index + 1}
                     </p>
-                    <h3 className="truncate text-lg font-semibold text-white transition-colors group-hover:text-cyan-200">
+                    <h3 className="truncate text-lg font-semibold transition-colors group-hover:text-cyan-200" style={{ color: "var(--text-heading)" }}>
                       {skill.name}
                     </h3>
-                    <p className="mt-1 text-sm text-light-400">
+                    <p className="mt-1 text-sm" style={{ color: "var(--text-muted)" }}>
                       {skill._count?.challenges ?? 0}{" "}
                       {dictionary.preparation.challenges.toLowerCase()}
                     </p>
@@ -396,13 +411,17 @@ const PreparationLanding = ({
         initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, delay: 0.16, ease: "easeOut" }}
-        className="rounded-[30px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7"
+        className="rounded-[30px] border border-[var(--surface-border)] p-5 sm:p-7"
+        style={{ background: "var(--section-bg)", boxShadow: `0 24px 60px var(--shadow-color)` }}
       >
         <SectionHeader
           icon={Target}
           title={copy.recentTitle}
           description={copy.recentSubtitle}
-          action={{ href: "/submissions", label: copy.viewSubmissions }}
+          action={{
+            href: "/practice-history",
+            label: copy.viewPracticeHistory,
+          }}
         />
 
         {recentChallenges.length > 0 ? (
@@ -411,18 +430,19 @@ const PreparationLanding = ({
               <Link
                 key={item.id}
                 href={`/preparation/${item.skillSlug || "algorithms"}/${item.challengeId}`}
-                className="group flex min-h-[190px] flex-col rounded-[24px] border border-white/[0.07] bg-white/[0.03] p-5 transition-all hover:-translate-y-0.5 hover:border-primary-200/15 hover:bg-primary-200/[0.05]"
+                className="group flex min-h-[190px] flex-col rounded-[24px] border border-[var(--surface-border)] p-5 transition-all hover:-translate-y-0.5 hover:border-primary-200/15 hover:bg-primary-200/[0.05]"
+                style={{ background: "var(--surface-overlay)" }}
               >
                 <div className="mb-4 flex items-center justify-between gap-3">
                   <ActivityPill status={item.status} />
-                  <span className="text-xs font-medium text-light-400">
+                  <span className="text-xs font-medium" style={{ color: "var(--text-muted)" }}>
                     {item.language || "-"}
                   </span>
                 </div>
-                <h3 className="line-clamp-2 text-lg font-semibold text-white transition-colors group-hover:text-primary-100">
+                <h3 className="line-clamp-2 text-lg font-semibold transition-colors group-hover:text-primary-100" style={{ color: "var(--text-heading)" }}>
                   {item.challengeTitle || "Untitled Challenge"}
                 </h3>
-                <p className="mt-auto pt-5 text-sm text-light-400">
+                <p className="mt-auto pt-5 text-sm" style={{ color: "var(--text-muted)" }}>
                   {dayjs(item.submittedAt).format("DD MMM YYYY, HH:mm")}
                 </p>
               </Link>

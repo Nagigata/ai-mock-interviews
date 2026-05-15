@@ -7,6 +7,7 @@ import { Flame } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import UserMenu from "@/components/UserMenu";
+import ThemeToggle from "@/components/ThemeToggle";
 import { UserProfile } from "@/types";
 
 interface NavbarProps {
@@ -43,12 +44,12 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-light-100/10 bg-dark-100/80 backdrop-blur-md">
+    <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-[var(--surface-border)] backdrop-blur-md" style={{ background: "var(--navbar-bg)" }}>
       <nav className="flex justify-between items-center h-full max-w-7xl mx-auto px-6 lg:px-8">
         <div className="flex items-center gap-8">
           <Link href="/preparation" className="flex items-center gap-2 hover:opacity-80 transition-all">
             <Image src="/logo.svg" alt="MockMate Logo" width={32} height={28} />
-            <h2 className="text-primary-100 font-bold text-xl uppercase tracking-wider">PrepWise</h2>
+            <h2 className="text-primary-100 dark:text-primary-100 font-bold text-xl uppercase tracking-wider">PrepWise</h2>
           </Link>
 
           <div className="flex items-center gap-7">
@@ -59,8 +60,8 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
                 className={cn(
                   "relative pb-1 text-sm font-medium transition-all",
                   item.isActive
-                    ? "text-white"
-                    : "text-light-400 hover:text-primary-100"
+                    ? "text-[var(--text-heading)]"
+                    : "text-[var(--text-muted)] hover:text-primary-100"
                 )}
               >
                 {item.label}
@@ -76,19 +77,21 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
         </div>
 
         {/* Right side controls */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           <div className="group relative hidden md:block">
-            <div className="flex items-center gap-2 rounded-xl border border-white/10 bg-dark-200 px-3 py-2">
+            <div className="flex items-center gap-2 rounded-xl border border-[var(--surface-border)] px-3 py-2" style={{ background: "var(--surface-overlay)" }}>
               <Flame className="size-4 text-[#f59e0b]" />
-              <span className="text-sm font-semibold text-white">
+              <span className="text-sm font-semibold" style={{ color: "var(--text-heading)" }}>
                 {user?.stats.currentStreak ?? 0}
               </span>
             </div>
 
-            <div className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-xl border border-white/10 bg-[#171a20] px-3 py-1.5 text-xs font-medium text-light-100 opacity-0 shadow-[0_16px_40px_rgba(0,0,0,0.28)] transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100">
+            <div className="pointer-events-none absolute left-1/2 top-full z-10 mt-2 -translate-x-1/2 whitespace-nowrap rounded-xl border border-[var(--surface-border)] px-3 py-1.5 text-xs font-medium opacity-0 shadow-lg transition-all duration-200 group-hover:translate-y-0 group-hover:opacity-100" style={{ background: "var(--surface-card)", color: "var(--text-body)" }}>
               {user?.stats.currentStreak ?? 0} Streaks
             </div>
           </div>
+
+          {/* <ThemeToggle /> */}
           <UserMenu currentLocale={locale} user={user} />
         </div>
       </nav>

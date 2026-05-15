@@ -17,7 +17,7 @@ interface UnderlineTabsProps<T extends string> {
 
 const tabClassName = (isActive: boolean) =>
   `relative -mb-px flex w-36 items-center justify-center gap-2 pb-3 text-sm font-semibold transition-colors ${
-    isActive ? "text-white" : "text-light-400 hover:text-light-100"
+    isActive ? "text-[var(--text-heading)]" : "text-[var(--text-muted)] hover:text-[var(--text-body)]"
   }`;
 
 const TabContent = <T extends string>({
@@ -38,14 +38,14 @@ const TabContent = <T extends string>({
           className={`flex size-5 items-center justify-center rounded-full text-[11px] font-bold ${
             isActive
               ? "bg-primary-200 text-dark-100"
-              : "bg-white/[0.08] text-light-400"
+              : "bg-[var(--surface-overlay)] text-[var(--text-muted)]"
           }`}
         >
           {tab.count}
         </span>
       )}
       {isActive && (
-        <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-white" />
+        <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary-200" />
       )}
     </>
   );
@@ -57,7 +57,7 @@ const UnderlineTabs = <T extends string>({
   onChange,
 }: UnderlineTabsProps<T>) => {
   return (
-    <div className="flex gap-3 border-b border-white/[0.08]">
+    <div className="flex gap-3 border-b border-[var(--surface-border)]">
       {tabs.map((tab) => {
         const isActive = activeTab === tab.id;
 

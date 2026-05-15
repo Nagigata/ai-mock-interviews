@@ -8,8 +8,8 @@ import {
   Bookmark,
   ChevronDown,
   Globe2,
+  History,
   LogOut,
-  ReceiptText,
   Shield,
   UserCircle2,
   type LucideIcon,
@@ -55,9 +55,9 @@ const menuItems: {
     icon: Bookmark,
   },
   {
-    href: "/submissions",
-    label: "Submissions",
-    icon: ReceiptText,
+    href: "/practice-history",
+    label: "Practice History",
+    icon: History,
   },
 ];
 
@@ -99,7 +99,8 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="menu"
         aria-expanded={isOpen}
-        className="group flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.04] px-2.5 py-1.5 shadow-[0_12px_32px_rgba(0,0,0,0.22)] transition-all hover:border-primary-200/25 hover:bg-primary-200/[0.07]"
+        className="group flex items-center gap-3 rounded-2xl border border-[var(--surface-border)] px-2.5 py-1.5 transition-all hover:border-primary-200/25 hover:bg-primary-200/[0.07]"
+        style={{ background: "var(--surface-overlay)" }}
       >
         <UserAvatar
           name={user?.name || "User"}
@@ -108,24 +109,26 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
           className="shrink-0 shadow-none"
         />
         <span className="hidden min-w-0 flex-col items-start lg:flex">
-          <span className="max-w-28 truncate text-sm font-bold text-white">
+          <span className="max-w-28 truncate text-sm font-bold" style={{ color: "var(--text-heading)" }}>
             {user?.name || "Account"}
           </span>
-          <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-light-400">
+          <span className="text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: "var(--text-muted)" }}>
             {currentLanguage.short}
           </span>
         </span>
         <ChevronDown
-          className={`size-4 text-light-400 transition-transform group-hover:text-primary-100 ${isOpen ? "rotate-180" : ""}`}
+          className={`size-4 transition-transform group-hover:text-primary-100 ${isOpen ? "rotate-180" : ""}`}
+          style={{ color: "var(--text-muted)" }}
         />
       </button>
 
       {isOpen && (
         <div
           role="menu"
-          className="absolute right-0 mt-3 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-[26px] border border-white/10 bg-[#151922]/95 shadow-[0_24px_70px_rgba(0,0,0,0.5)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+          className="absolute right-0 mt-3 w-[min(20rem,calc(100vw-1.5rem))] overflow-hidden rounded-[26px] border border-[var(--surface-border)] backdrop-blur-xl animate-in fade-in zoom-in-95 duration-200"
+          style={{ background: "var(--menu-bg)", boxShadow: `0 24px 70px var(--shadow-heavy)` }}
         >
-          <div className="relative overflow-hidden border-b border-white/8 px-4 py-4">
+          <div className="relative overflow-hidden border-b border-[var(--surface-border)] px-4 py-4">
             <div className="pointer-events-none absolute -right-8 -top-10 size-28 rounded-full bg-primary-200/10 blur-2xl" />
             <div className="relative flex items-center gap-3">
               <UserAvatar
@@ -135,10 +138,10 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                 className="shrink-0 shadow-none"
               />
               <div className="min-w-0">
-                <p className="truncate text-base font-bold text-white">
+                <p className="truncate text-base font-bold" style={{ color: "var(--text-heading)" }}>
                   {user?.name || "User"}
                 </p>
-                <p className="truncate text-sm text-light-400">
+                <p className="truncate text-sm" style={{ color: "var(--text-muted)" }}>
                   {user?.email || ""}
                 </p>
                 {user?.role ? (
@@ -159,9 +162,18 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                   href={item.href}
                   onClick={() => setIsOpen(false)}
                   role="menuitem"
-                  className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-light-100 transition hover:bg-white/[0.06] hover:text-white"
+                  className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold transition"
+                  style={{ color: "var(--text-body)" }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--surface-overlay-hover)";
+                    e.currentTarget.style.color = "var(--text-heading)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
+                    e.currentTarget.style.color = "var(--text-body)";
+                  }}
                 >
-                  <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-white/8 bg-white/[0.04] text-light-400 transition group-hover/item:border-primary-200/20 group-hover/item:bg-primary-200/10 group-hover/item:text-primary-100">
+                  <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-[var(--surface-border)] transition group-hover/item:border-primary-200/20 group-hover/item:bg-primary-200/10 group-hover/item:text-primary-100" style={{ background: "var(--surface-overlay)", color: "var(--text-muted)" }}>
                     <Icon className="size-4" />
                   </span>
                   <span>{item.label}</span>
@@ -184,8 +196,8 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
             )}
           </div>
 
-          <div className="border-t border-white/8 px-4 py-3">
-            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-light-400">
+          <div className="border-t border-[var(--surface-border)] px-4 py-3">
+            <div className="mb-2 flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em]" style={{ color: "var(--text-muted)" }}>
               <Globe2 className="size-3.5" />
               <span>Language</span>
             </div>
@@ -197,8 +209,9 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                   className={`flex items-center justify-center gap-2 rounded-2xl border px-3 py-2.5 text-sm font-bold transition ${
                     currentLocale === language.code
                       ? "border-primary-100/40 bg-primary-100/10 text-primary-100"
-                      : "border-white/8 bg-white/[0.035] text-light-100 hover:bg-white/[0.07]"
+                      : "border-[var(--surface-border)] text-[var(--text-body)] hover:bg-[var(--surface-overlay-hover)]"
                   }`}
+                  style={currentLocale !== language.code ? { background: "var(--surface-overlay)" } : undefined}
                 >
                   <Image
                     src={language.flag}
@@ -212,7 +225,7 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
             </div>
           </div>
 
-          <div className="border-t border-white/8 p-2">
+          <div className="border-t border-[var(--surface-border)] p-2">
             <button
               onClick={handleLogout}
               role="menuitem"
