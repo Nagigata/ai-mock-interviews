@@ -8,7 +8,7 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { vapi } from "@/lib/vapi.sdk";
 import { interviewer_en, interviewer_vi } from "@/constants";
-import { createFeedback, createInterviewAttempt } from "@/lib/actions/general.action";
+import { createInterviewAttempt, startFeedbackGeneration } from "@/lib/actions/general.action";
 import UserAvatar from "./UserAvatar";
 import { AlertTriangle, ChevronDown, Mic, Phone, PhoneOff, Settings, Volume2, X } from "lucide-react";
 import { AgentProps } from "@/types";
@@ -138,13 +138,13 @@ const Agent = ({
 
       feedbackRequestedRef.current = true;
       setIsGenerating(true);
-      const { success, feedbackId: id, message } = await createFeedback({
+      const { success, message } = await startFeedbackGeneration({
         attemptId,
         transcript: messages,
       });
 
-      if (success && id) {
-        router.push(`/interview/${interviewId}/feedback?attemptId=${attemptId}`);
+      if (success) {
+        router.push("/interview");
       } else {
         toast.warning("Feedback was not generated", {
           description:

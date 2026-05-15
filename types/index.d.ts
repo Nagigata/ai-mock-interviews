@@ -51,8 +51,42 @@ export interface InterviewGenerationJob {
   completedAt?: string | null;
 }
 
+export type NotificationType =
+  | "INTERVIEW_GENERATION_PROCESSING"
+  | "INTERVIEW_GENERATION_COMPLETED"
+  | "INTERVIEW_GENERATION_FAILED"
+  | "FEEDBACK_GENERATION_PROCESSING"
+  | "FEEDBACK_GENERATION_COMPLETED"
+  | "FEEDBACK_GENERATION_FAILED"
+  | "CHALLENGE_COMMENT_REPLY"
+  | "CHALLENGE_COMMENT_MENTION"
+  | "SYSTEM";
+
+export interface NotificationItem {
+  id: string;
+  userId?: string;
+  type: NotificationType;
+  title: string;
+  message: string;
+  actionUrl?: string | null;
+  metadata?: {
+    jobId?: string;
+    attemptId?: string;
+    interviewId?: string;
+    feedbackId?: string;
+    [key: string]: unknown;
+  } | null;
+  readAt?: string | null;
+  createdAt: string;
+}
+
+export interface NotificationsResponse extends PaginatedResponse<NotificationItem> {
+  unreadCount: number;
+}
+
 export type InterviewAttemptStatus =
   | "IN_PROGRESS"
+  | "FEEDBACK_PROCESSING"
   | "COMPLETED"
   | "TOO_SHORT"
   | "FAILED";
@@ -60,6 +94,12 @@ export type InterviewAttemptStatus =
 export interface CreateFeedbackParams {
   attemptId: string;
   transcript: { role: string; content: string }[];
+}
+
+export interface FeedbackGenerationStartResult {
+  attemptId: string;
+  status: "FEEDBACK_PROCESSING" | "TOO_SHORT";
+  message?: string;
 }
 
 export interface Transcript {

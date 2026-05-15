@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 import { getDictionary } from "@/lib/i18n";
 import Navbar from "@/components/Navbar";
 import { getMyProfile } from "@/lib/actions/user.actions";
-import InterviewGenerationWatcher from "@/components/InterviewGenerationWatcher";
+import NotificationWatcher from "@/components/NotificationWatcher";
 
 const RootLayout = async ({ children }: { children: ReactNode }) => {
   const isUserAuthenticated = await isAuthenticated();
@@ -20,7 +20,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "var(--surface-base)" }}>
       <Navbar locale={locale} t={t} user={profile} />
-      <InterviewGenerationWatcher />
+      <NotificationWatcher />
 
       {/* Main Content Area - Increased spacing (pt-24) to avoid "stuck" feeling */}
       <main className="flex-1 pt-24 pb-12 w-full max-w-7xl mx-auto px-6 lg:px-8">

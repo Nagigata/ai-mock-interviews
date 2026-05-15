@@ -7,8 +7,8 @@ import { Flame } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import UserMenu from "@/components/UserMenu";
-import ThemeToggle from "@/components/ThemeToggle";
 import { UserProfile } from "@/types";
+import NotificationCenter from "@/components/NotificationCenter";
 
 interface NavbarProps {
   locale: string;
@@ -92,6 +92,7 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
           </div>
 
           {/* <ThemeToggle /> */}
+          <NotificationCenter />
           <UserMenu currentLocale={locale} user={user} />
         </div>
       </nav>

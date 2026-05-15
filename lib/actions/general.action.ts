@@ -4,6 +4,7 @@ import { apiGet, apiPost, apiDelete } from "@/lib/api";
 import { 
   CreateFeedbackParams, 
   Feedback, 
+  FeedbackGenerationStartResult,
   Interview, 
   InterviewAttempt,
   InterviewAttemptDetail,
@@ -31,6 +32,35 @@ export async function createFeedback(params: CreateFeedbackParams) {
         error instanceof Error
           ? error.message
           : "Failed to generate interview feedback.",
+    };
+  }
+}
+
+export async function startFeedbackGeneration(params: CreateFeedbackParams) {
+  const { attemptId, transcript } = params;
+
+  try {
+    const result = await apiPost<FeedbackGenerationStartResult>(
+      "/feedbacks/start-generation",
+      {
+        attemptId,
+        transcript,
+      },
+    );
+
+    return {
+      success: result.status === "FEEDBACK_PROCESSING",
+      status: result.status,
+      message: result.message,
+    };
+  } catch (error) {
+    console.error("Error starting feedback generation:", error);
+    return {
+      success: false,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to start interview feedback generation.",
     };
   }
 }
