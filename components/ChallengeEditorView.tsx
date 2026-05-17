@@ -44,6 +44,8 @@ interface TestCaseResult {
 interface ExecutionResult {
   allPassed?: boolean;
   testCaseResults: TestCaseResult[];
+  passedTestCases?: number;
+  totalTestCases?: number;
 }
 
 const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps) => {
@@ -227,7 +229,9 @@ const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps)
         <Group orientation="horizontal">
           {/* Left: Problem Description */}
           <Panel defaultSize={40} minSize={30}>
-            <ProblemDescription challenge={challenge} />
+            <ProblemDescription
+              challenge={challenge}
+            />
           </Panel>
 
           <Separator className="w-1 bg-white/5 hover:bg-primary-200/30 transition-colors cursor-col-resize flex items-center justify-center">
@@ -238,12 +242,17 @@ const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps)
           <Panel defaultSize={60} minSize={30}>
             <Group orientation="vertical">
               <Panel defaultSize={70} minSize={20}>
-                <CodeEditor
-                  value={code}
-                  onChange={(val) => setCode(val || "")}
-                  language={language}
-                  onRun={handleRunCode}
-                />
+                <div className="flex h-full flex-col bg-[#08090D]">
+                  <div className="min-h-0 flex-1">
+                    <CodeEditor
+                      key={`editor-${language}`}
+                      value={code}
+                      onChange={(val) => setCode(val || "")}
+                      language={language}
+                      onRun={handleRunCode}
+                    />
+                  </div>
+                </div>
               </Panel>
 
               {isConsoleOpen && (

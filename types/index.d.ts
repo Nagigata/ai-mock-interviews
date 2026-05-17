@@ -286,6 +286,40 @@ export interface RecentActivityItem {
   submittedAt: string;
 }
 
+export interface ChallengeSubmissionHistoryItem {
+  id: string;
+  language: string;
+  status: string;
+  runtime?: number | null;
+  memory?: number | null;
+  passedTestCases?: number | null;
+  totalTestCases?: number | null;
+  errorMessage?: string | null;
+  note?: string | null;
+  noteColor?: string | null;
+  createdAt: string;
+}
+
+export interface ChallengeSubmissionDetail
+  extends ChallengeSubmissionHistoryItem {
+  challengeId: string;
+  code: string;
+}
+
+export type ChallengeSubmissionHistoryResponse =
+  PaginatedResponse<ChallengeSubmissionHistoryItem> & {
+    filters?: {
+      statuses: string[];
+      languages: string[];
+    };
+  };
+
+export interface UpdateSubmissionNoteResult {
+  id: string;
+  note?: string | null;
+  noteColor?: string | null;
+}
+
 export type PracticeActivityType = "all" | "challenges" | "interviews";
 
 export interface PracticeActivitySummary {

@@ -1,17 +1,24 @@
 "use client";
 
 import Editor, { OnMount } from "@monaco-editor/react";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 
 interface CodeEditorProps {
   value: string;
   onChange: (value: string | undefined) => void;
   language: string;
   onRun?: () => void;
+  readOnly?: boolean;
 }
 
-const CodeEditor = ({ value, onChange, language, onRun }: CodeEditorProps) => {
-  const editorRef = useRef<any>(null);
+const CodeEditor = ({
+  value,
+  onChange,
+  language,
+  onRun,
+  readOnly = false,
+}: CodeEditorProps) => {
+  const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
@@ -73,6 +80,7 @@ const CodeEditor = ({ value, onChange, language, onRun }: CodeEditorProps) => {
           fontSize: 14,
           fontFamily: "'Mona Sans', monospace",
           roundedSelection: true,
+          readOnly,
           scrollBeyondLastLine: false,
           automaticLayout: true,
           padding: { top: 20 },
