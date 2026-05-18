@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { LucideIcon } from "lucide-react";
+import { X } from "lucide-react";
 
 interface UnderlineTabItem<T extends string> {
   id: T;
@@ -7,6 +8,7 @@ interface UnderlineTabItem<T extends string> {
   count?: number;
   icon?: LucideIcon;
   href?: string;
+  onClose?: () => void;
 }
 
 interface UnderlineTabsProps<T extends string> {
@@ -44,6 +46,20 @@ const TabContent = <T extends string>({
           {tab.count}
         </span>
       )}
+      {tab.onClose && (
+        <button
+          type="button"
+          onClick={(event) => {
+            event.stopPropagation();
+            event.preventDefault();
+            tab.onClose!();
+          }}
+          aria-label={`Close ${tab.label}`}
+          className="ml-0.5 flex size-4 items-center justify-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-white/10 hover:text-[var(--text-heading)]"
+        >
+          <X className="size-3" />
+        </button>
+      )}
       {isActive && (
         <span className="absolute inset-x-0 bottom-0 h-0.5 rounded-full bg-primary-200" />
       )}
@@ -71,6 +87,28 @@ const UnderlineTabs = <T extends string>({
             >
               <TabContent tab={tab} isActive={isActive} />
             </Link>
+          );
+        }
+
+        // When the tab carries an inline close button the wrapper can't be a
+        // <button> — nested interactive elements are invalid HTML.
+        if (tab.onClose) {
+          return (
+            <div
+              key={tab.id}
+              role="button"
+              tabIndex={0}
+              onClick={() => onChange?.(tab.id)}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  onChange?.(tab.id);
+                }
+              }}
+              className={`${tabClassName(isActive)} cursor-pointer`}
+            >
+              <TabContent tab={tab} isActive={isActive} />
+            </div>
           );
         }
 

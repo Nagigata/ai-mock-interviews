@@ -9,6 +9,7 @@ import {
   FileText,
   HardDrive,
   ListChecks,
+  Share2,
   Terminal,
 } from "lucide-react";
 import { useState } from "react";
@@ -137,6 +138,17 @@ const SubmissionResultView = ({ submission }: SubmissionResultViewProps) => {
               Submitted {formatSubmittedAt(submission.createdAt)}
             </p>
           </div>
+          {submission.status === "ACCEPTED" && (
+            <a
+              href={`/challenges/${submission.challengeId}/solutions/new?submissionId=${submission.id}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-white/10 bg-white/3 px-3 py-1.5 text-xs font-semibold text-light-300 transition-colors hover:border-primary-200/30 hover:text-primary-100"
+            >
+              <Share2 className="size-3.5" />
+              Share Solution
+            </a>
+          )}
         </div>
 
         <div className="grid gap-3 sm:grid-cols-3">

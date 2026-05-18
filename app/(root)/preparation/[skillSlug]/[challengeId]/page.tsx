@@ -1,4 +1,5 @@
 import { getChallengeById } from "@/lib/actions/challenges.action";
+import { getCurrentUser } from "@/lib/actions/auth.action";
 import { notFound } from "next/navigation";
 import ChallengeEditorView from "@/components/ChallengeEditorView";
 
@@ -8,10 +9,12 @@ interface Props {
 
 const ChallengeEditorPage = async ({ params }: Props) => {
   const { skillSlug, challengeId } = await params;
-  
-  // Fetch data on the server
-  const challenge = await getChallengeById(challengeId);
-  
+
+  const [challenge, me] = await Promise.all([
+    getChallengeById(challengeId),
+    getCurrentUser().catch(() => null),
+  ]);
+
   if (!challenge) {
     notFound();
   }
@@ -21,6 +24,7 @@ const ChallengeEditorPage = async ({ params }: Props) => {
       <ChallengeEditorView
         challenge={challenge}
         skillSlug={skillSlug}
+        currentUserId={me?.id}
       />
     </div>
   );

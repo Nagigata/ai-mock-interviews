@@ -10,19 +10,27 @@ import {
   Layers,
   Lightbulb,
   MoveRight,
-  X,
   XCircle,
+  FlaskConical,
 } from "lucide-react";
 import { useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChallengeSubmissionHistory from "@/components/ChallengeSubmissionHistory";
 import SubmissionResultView from "@/components/SubmissionResultView";
 import UnderlineTabs from "@/components/UnderlineTabs";
+import { SolutionsList } from "@/components/solutions/SolutionsList";
+import { SolutionDetailLoader } from "@/components/solutions/SolutionDetailLoader";
 
 interface ProblemDescriptionProps {
   challenge: Challenge;
+  currentUserId?: string;
 }
 
-type ProblemTab = "description" | "submissions" | "submission-result";
+type ProblemTab =
+  | "description"
+  | "solutions"
+  | "submissions"
+  | "submission-result";
 
 const DifficultyBadge = ({ difficulty }: { difficulty: string }) => {
   const styles: Record<string, string> = {
@@ -141,17 +149,43 @@ const getSubmissionStatusIcon = (status: string) => {
   return Clock3;
 };
 
-const ProblemDescription = ({ challenge }: ProblemDescriptionProps) => {
-  const [activeTab, setActiveTab] = useState<ProblemTab>("description");
+const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProps) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const rawTab = searchParams.get("tab");
+  const urlTab: ProblemTab =
+    rawTab === "solutions" || rawTab === "submissions" ? rawTab : "description";
+  const selectedSolutionId = searchParams.get("solutionId");
+
   const [selectedSubmission, setSelectedSubmission] =
     useState<ChallengeSubmissionDetail | null>(null);
+
+  // `submission-result` is a transient view — it overrides whatever the URL says.
+  const activeTab: ProblemTab = selectedSubmission ? "submission-result" : urlTab;
+
+  const updateSearchParams = (updates: Record<string, string | null>) => {
+    const params = new URLSearchParams(searchParams.toString());
+    for (const [key, value] of Object.entries(updates)) {
+      if (value === null) params.delete(key);
+      else params.set(key, value);
+    }
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  };
+
   const topics = challenge.topics
     ? challenge.topics.split(", ").filter(Boolean)
     : [];
   const tabs = [
     { id: "description" as const, label: "Description", icon: BookOpen },
+    { id: "solutions" as const, label: "Solutions", icon: FlaskConical },
     { id: "submissions" as const, label: "Submissions", icon: History },
   ];
+  const closeSubmissionResult = () => {
+    setSelectedSubmission(null);
+  };
   const visibleTabs = selectedSubmission
     ? [
         ...tabs,
@@ -159,41 +193,40 @@ const ProblemDescription = ({ challenge }: ProblemDescriptionProps) => {
           id: "submission-result" as const,
           label: selectedSubmission.status,
           icon: getSubmissionStatusIcon(selectedSubmission.status),
+          onClose: closeSubmissionResult,
         },
       ]
     : tabs;
 
-  const handleSelectSubmission = (submission: ChallengeSubmissionDetail) => {
-    setSelectedSubmission(submission);
-    setActiveTab("submission-result");
+  const handleTabChange = (tab: ProblemTab) => {
+    if (tab === "submission-result") return;
+    setSelectedSubmission(null);
+    updateSearchParams({
+      tab: tab === "description" ? null : tab,
+      solutionId: null,
+    });
   };
 
-  const closeSubmissionResult = () => {
-    setSelectedSubmission(null);
-    setActiveTab("submissions");
+  const handleSelectSolution = (solutionId: string) => {
+    updateSearchParams({ tab: "solutions", solutionId });
+  };
+
+  const handleBackToSolutionsList = () => {
+    updateSearchParams({ solutionId: null });
+  };
+
+  const handleSelectSubmission = (submission: ChallengeSubmissionDetail) => {
+    setSelectedSubmission(submission);
   };
 
   return (
     <div className="flex h-full flex-col overflow-y-auto bg-dark-200/20">
       <div className="sticky top-0 z-10 border-b border-white/5 bg-dark-300/95 px-6 pt-4 backdrop-blur-xl">
-        <div className="flex items-start justify-between gap-3">
-          <UnderlineTabs
-            tabs={visibleTabs}
-            activeTab={activeTab}
-            onChange={setActiveTab}
-          />
-
-          {selectedSubmission && activeTab === "submission-result" && (
-            <button
-              type="button"
-              onClick={closeSubmissionResult}
-              className="mt-1.5 rounded-lg border border-white/10 bg-white/[0.03] p-2 text-light-500 transition-colors hover:border-primary-200/30 hover:text-white"
-              aria-label="Close submission result"
-            >
-              <X className="size-4" />
-            </button>
-          )}
-        </div>
+        <UnderlineTabs
+          tabs={visibleTabs}
+          activeTab={activeTab}
+          onChange={handleTabChange}
+        />
       </div>
 
       {activeTab === "description" ? (
@@ -255,6 +288,22 @@ const ProblemDescription = ({ challenge }: ProblemDescriptionProps) => {
           {/* Hints */}
           {challenge.hints && challenge.hints.length > 0 && (
             <HintsSection hints={challenge.hints} />
+          )}
+        </div>
+      ) : activeTab === "solutions" ? (
+        <div className="flex flex-col gap-4 p-6">
+          {selectedSolutionId ? (
+            <SolutionDetailLoader
+              key={selectedSolutionId}
+              solutionId={selectedSolutionId}
+              currentUserId={currentUserId}
+              onBack={handleBackToSolutionsList}
+            />
+          ) : (
+            <SolutionsList
+              challengeId={challenge.id}
+              onSelectSolution={handleSelectSolution}
+            />
           )}
         </div>
       ) : activeTab === "submissions" ? (

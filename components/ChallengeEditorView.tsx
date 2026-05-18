@@ -26,6 +26,7 @@ import {
 interface ChallengeEditorViewProps {
   challenge: Challenge;
   skillSlug: string;
+  currentUserId?: string;
 }
 
 interface JudgeStatus {
@@ -48,7 +49,7 @@ interface ExecutionResult {
   totalTestCases?: number;
 }
 
-const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps) => {
+const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeEditorViewProps) => {
   const templateCode = challenge.templateCode as Record<string, string>;
   const availableLangs = Object.keys(templateCode);
 
@@ -231,6 +232,7 @@ const ChallengeEditorView = ({ challenge, skillSlug }: ChallengeEditorViewProps)
           <Panel defaultSize={40} minSize={30}>
             <ProblemDescription
               challenge={challenge}
+              currentUserId={currentUserId}
             />
           </Panel>
 

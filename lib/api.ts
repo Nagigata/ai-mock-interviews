@@ -47,12 +47,26 @@ async function apiFetch<T>(
     cache: "no-store",
   });
 
+  const text = await response.text();
+
   if (!response.ok) {
-    const error = await response.json().catch(() => ({}));
-    throw new Error(error.message || `API Error: ${response.status}`);
+    let errorMessage = `API Error: ${response.status}`;
+    if (text) {
+      try {
+        const parsed = JSON.parse(text);
+        if (parsed?.message) errorMessage = parsed.message;
+      } catch {
+        // body is not JSON — keep the default message
+      }
+    }
+    throw new Error(errorMessage);
   }
 
-  const json = await response.json();
+  if (!text) {
+    return undefined as T;
+  }
+
+  const json = JSON.parse(text);
   return json.data !== undefined ? json.data : json;
 }
 
