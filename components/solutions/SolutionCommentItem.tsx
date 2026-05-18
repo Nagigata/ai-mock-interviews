@@ -99,14 +99,14 @@ export function SolutionCommentItem({
 
   if (isDeleted) {
     return (
-      <div className={`${isReply ? "ml-8" : ""} py-2 text-xs text-muted-foreground italic`}>
+      <div className={`${isReply ? "ml-4 border-l border-[var(--surface-border)] pl-4" : ""} py-2 text-xs italic text-muted-foreground`}>
         [deleted]
       </div>
     );
   }
 
   return (
-    <div className={isReply ? "ml-8" : ""}>
+    <div className={isReply ? "ml-4 border-l border-[var(--surface-border)] pl-4" : ""}>
       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
         <Avatar size="sm">
           {comment.user.avatarUrl && (

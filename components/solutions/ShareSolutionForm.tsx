@@ -112,7 +112,7 @@ export function ShareSolutionForm({
         </div>
 
         <div className="space-y-2">
-          <Label className="text-light-300">Write-up (Markdown)</Label>
+          <Label className="text-light-300">Write-up</Label>
           <div data-color-mode="dark">
             <MDEditor
               value={description}

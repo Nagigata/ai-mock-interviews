@@ -8,10 +8,10 @@ import { Button } from "@/components/ui/button";
 interface Solution {
   id: string;
   title: string;
-  description?: string;
   language: string;
   upvoteCount: number;
   commentCount: number;
+  viewCount: number;
   isUpvoted: boolean;
   createdAt: string;
   user: { id: string; name: string; avatarUrl?: string };
@@ -65,16 +65,49 @@ export function SolutionsList({ challengeId, onSelectSolution, limit = 20 }: Pro
 
   if (isInitialLoading) {
     return (
-      <div className="text-center py-12 text-muted-foreground text-sm">
-        Loading solutions...
+      <div className="space-y-3">
+        {Array.from({ length: 3 }).map((_, i) => (
+          <div
+            key={i}
+            className="flex flex-col gap-3 rounded-2xl border border-[var(--surface-border)] p-5"
+            style={{ background: `linear-gradient(180deg, var(--surface-card-gradient-from), var(--surface-card-gradient-to))` }}
+          >
+            <div className="flex items-start justify-between gap-3">
+              <div className="h-4 w-2/3 animate-pulse rounded-md bg-white/[0.06]" />
+              <div className="h-6 w-16 animate-pulse rounded-lg bg-white/[0.06]" />
+            </div>
+            <div className="flex items-center justify-between pt-1">
+              <div className="flex items-center gap-2">
+                <div className="size-6 animate-pulse rounded-full bg-white/[0.06]" />
+                <div className="h-3 w-24 animate-pulse rounded bg-white/[0.06]" />
+              </div>
+              <div className="flex gap-2">
+                <div className="h-6 w-12 animate-pulse rounded-lg bg-white/[0.06]" />
+                <div className="h-6 w-8 animate-pulse rounded bg-white/[0.06]" />
+                <div className="h-6 w-8 animate-pulse rounded bg-white/[0.06]" />
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     );
   }
 
   if (solutions.length === 0) {
     return (
-      <div className="text-center py-12 text-muted-foreground text-sm">
-        No solutions yet. Be the first to share an Accepted submission!
+      <div className="flex flex-col items-center gap-3 py-16 text-center">
+        <div
+          className="flex size-12 items-center justify-center rounded-2xl border border-[var(--surface-border)]"
+          style={{ background: "var(--surface-overlay)" }}
+        >
+          <svg className="size-6" style={{ color: "var(--text-muted)" }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75 22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3-4.5 16.5" />
+          </svg>
+        </div>
+        <p className="text-sm font-medium" style={{ color: "var(--text-heading)" }}>No solutions yet</p>
+        <p className="max-w-xs text-xs" style={{ color: "var(--text-muted)" }}>
+          Be the first to share your accepted submission and help others learn!
+        </p>
       </div>
     );
   }

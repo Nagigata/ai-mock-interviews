@@ -38,6 +38,12 @@ export function SolutionCommentEditor({
       <Textarea
         value={content}
         onChange={(e) => setContent(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && (e.ctrlKey || e.metaKey) && content.trim() && !loading) {
+            e.preventDefault();
+            handleSubmit();
+          }
+        }}
         placeholder={placeholder}
         rows={3}
         className="resize-none"
