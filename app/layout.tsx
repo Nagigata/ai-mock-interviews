@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import TimezoneCookie from "@/components/TimezoneCookie";
 import { ThemeProvider } from "@/components/theme-provider";
 import NextTopLoader from "nextjs-toploader";
 
 export const metadata: Metadata = {
-  title: "PrepWise",
+  title: { default: "PrepWise", template: "%s | PrepWise" },
   description:
     "AI-powered mock interview platform for software engineers to practice and improve their coding interview skills.",
 };
@@ -28,7 +28,7 @@ export default function RootLayout({
         >
           <TimezoneCookie />
           {children}
-          <Toaster />
+          <Toaster position="bottom-right" richColors closeButton />
         </ThemeProvider>
       </body>
     </html>

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -14,6 +15,10 @@ import { getCurrentUser } from "@/lib/actions/auth.action";
 import { getInterviewAttemptById } from "@/lib/actions/general.action";
 import { cn } from "@/lib/utils";
 import { InterviewAttemptStatus } from "@/types";
+
+export const metadata: Metadata = {
+  title: "Attempt transcript",
+};
 
 const formatDateTime = (value: string | null | undefined, timeZone: string) => {
   if (!value) {

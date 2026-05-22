@@ -2,9 +2,7 @@
 
 import {
   CalendarClock,
-  Check,
   Code2,
-  Copy,
   Cpu,
   FileText,
   HardDrive,
@@ -12,11 +10,10 @@ import {
   Share2,
   Terminal,
 } from "lucide-react";
-import { useState } from "react";
-import { toast } from "sonner";
 
 import { ChallengeSubmissionDetail } from "@/types";
 import { cn } from "@/lib/utils";
+import { CodeBlock } from "@/components/ui/CodeBlock";
 
 interface SubmissionResultViewProps {
   submission: ChallengeSubmissionDetail;
@@ -78,42 +75,7 @@ const MetricCard = ({
   </div>
 );
 
-const SubmittedCodeBlock = ({ code }: { code: string }) => {
-  const lines = code.split("\n");
-
-  return (
-    <pre className="h-full min-h-[360px] overflow-auto bg-[#08090D] p-5 text-sm leading-6 text-light-100">
-      <code className="grid grid-cols-[auto_1fr] gap-x-4 font-mono">
-        {lines.map((line, index) => (
-          <span key={`${index}-${line}`} className="contents">
-            <span className="select-none text-right text-light-600">
-              {index + 1}
-            </span>
-            <span className="whitespace-pre">{line || " "}</span>
-          </span>
-        ))}
-      </code>
-    </pre>
-  );
-};
-
 const SubmissionResultView = ({ submission }: SubmissionResultViewProps) => {
-  const [copiedSubmissionId, setCopiedSubmissionId] = useState<string | null>(
-    null,
-  );
-  const copied = copiedSubmissionId === submission.id;
-
-  const copySubmittedCode = async () => {
-    try {
-      await navigator.clipboard.writeText(submission.code);
-      setCopiedSubmissionId(submission.id);
-      toast.success("Submitted code copied.");
-      window.setTimeout(() => setCopiedSubmissionId(null), 1600);
-    } catch {
-      toast.error("Could not copy submitted code.");
-    }
-  };
-
   return (
     <div className="flex h-full flex-col overflow-y-auto bg-[#08090D]">
       <div className="space-y-5 border-b border-white/5 p-5">
@@ -195,36 +157,44 @@ const SubmissionResultView = ({ submission }: SubmissionResultViewProps) => {
         )}
       </div>
 
-      <div className="flex min-h-[420px] flex-1 flex-col">
-        <div className="flex items-center justify-between border-b border-white/5 bg-dark-300 px-5 py-3">
-          <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-light-500">
-            <Code2 className="size-4" />
-            Submitted code
-          </div>
-          <button
-            type="button"
-            onClick={copySubmittedCode}
-            className={cn(
-              "inline-flex items-center gap-2 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors",
-              copied
-                ? "border-emerald-500/20 bg-emerald-500/10 text-emerald-300"
-                : "border-white/10 bg-white/[0.03] text-light-300 hover:border-primary-200/30 hover:text-primary-100",
-            )}
-          >
-            {copied ? (
-              <Check className="size-3.5" />
-            ) : (
-              <Copy className="size-3.5" />
-            )}
-            {copied ? "Copied" : "Copy"}
-          </button>
+      <div className="space-y-3 p-5">
+        <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-light-500">
+          <Code2 className="size-4" />
+          Submitted code
         </div>
-        <div className="min-h-0 flex-1">
-          <SubmittedCodeBlock code={submission.code} />
-        </div>
+        <CodeBlock code={submission.code} language={submission.language} />
       </div>
     </div>
   );
 };
+
+export const SubmissionResultViewSkeleton = () => (
+  <div className="flex h-full flex-col overflow-y-auto bg-[#08090D]">
+    <div className="space-y-5 border-b border-white/5 p-5">
+      <div className="flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <div className="mb-3 flex gap-2">
+            <div className="h-6 w-24 animate-pulse rounded-lg bg-white/[0.06]" />
+            <div className="h-6 w-16 animate-pulse rounded-lg bg-white/[0.06]" />
+          </div>
+          <div className="h-7 w-48 animate-pulse rounded-md bg-white/[0.06]" />
+          <div className="mt-2 h-4 w-40 animate-pulse rounded-md bg-white/[0.06]" />
+        </div>
+      </div>
+      <div className="grid gap-3 sm:grid-cols-3">
+        {[0, 1, 2].map((i) => (
+          <div key={i} className="rounded-2xl border border-white/8 bg-white/[0.03] p-4">
+            <div className="mb-3 h-3 w-20 animate-pulse rounded bg-white/[0.06]" />
+            <div className="h-7 w-16 animate-pulse rounded-md bg-white/[0.06]" />
+          </div>
+        ))}
+      </div>
+    </div>
+    <div className="space-y-3 p-5">
+      <div className="h-3 w-28 animate-pulse rounded bg-white/[0.06]" />
+      <div className="h-64 animate-pulse rounded-md bg-white/[0.06]" />
+    </div>
+  </div>
+);
 
 export default SubmissionResultView;

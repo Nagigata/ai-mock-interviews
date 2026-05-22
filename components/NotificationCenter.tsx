@@ -2,68 +2,20 @@
 
 import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import {
-  AlertCircle,
-  Bell,
-  CheckCircle2,
-  Inbox,
-  MessageCircle,
-  Sparkles,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, Bell, Inbox } from "lucide-react";
 import { toast } from "sonner";
 
-import { cn } from "@/lib/utils";
 import {
   getNotifications,
   markAllNotificationsAsRead,
   markNotificationAsRead,
 } from "@/lib/actions/notification.actions";
-import { NotificationItem, NotificationType } from "@/types";
+import { NotificationCard } from "@/components/notifications/NotificationCard";
+import { NotificationItem } from "@/types";
 import { NOTIFICATION_CENTER_EVENT } from "@/components/NotificationWatcher";
 
 const PAGE_SIZE = 8;
-
-const getNotificationIcon = (type: NotificationType) => {
-  if (type.endsWith("_FAILED")) {
-    return <AlertCircle className="size-4 text-destructive-100" />;
-  }
-
-  if (type.startsWith("INTERVIEW_GENERATION")) {
-    return <Sparkles className="size-4 text-primary-200" />;
-  }
-
-  if (type.startsWith("FEEDBACK_GENERATION")) {
-    return <CheckCircle2 className="size-4 text-success-100" />;
-  }
-
-  if (type.startsWith("CHALLENGE_COMMENT")) {
-    return <MessageCircle className="size-4 text-cyan-300" />;
-  }
-
-  return <Bell className="size-4 text-light-200" />;
-};
-
-const formatRelativeTime = (value: string) => {
-  const timestamp = new Date(value).getTime();
-  if (Number.isNaN(timestamp)) return "";
-
-  const diffSeconds = Math.round((timestamp - Date.now()) / 1000);
-  const ranges: Array<[Intl.RelativeTimeFormatUnit, number]> = [
-    ["year", 60 * 60 * 24 * 365],
-    ["month", 60 * 60 * 24 * 30],
-    ["day", 60 * 60 * 24],
-    ["hour", 60 * 60],
-    ["minute", 60],
-    ["second", 1],
-  ];
-
-  const formatter = new Intl.RelativeTimeFormat("en", { numeric: "auto" });
-  const [unit, seconds] =
-    ranges.find(([, unitSeconds]) => Math.abs(diffSeconds) >= unitSeconds) ||
-    ranges[ranges.length - 1];
-
-  return formatter.format(Math.round(diffSeconds / seconds), unit);
-};
 
 const NotificationCenter = () => {
   const router = useRouter();
@@ -233,47 +185,26 @@ const NotificationCenter = () => {
                 </p>
               </div>
             ) : (
-              items.map((notification) => {
-                const unread = !notification.readAt;
-
-                return (
-                  <button
-                    key={notification.id}
-                    type="button"
-                    onClick={() => handleOpenNotification(notification)}
-                    disabled={isPending}
-                    className={cn(
-                      "group flex w-full gap-3 rounded-2xl p-3 text-left transition",
-                      unread
-                        ? "bg-primary-200/[0.08] hover:bg-primary-200/[0.12]"
-                        : "hover:bg-white/[0.04]",
-                    )}
-                  >
-                    <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl border border-[var(--surface-border)] bg-white/[0.04]">
-                      {getNotificationIcon(notification.type)}
-                    </div>
-
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-start justify-between gap-3">
-                        <p className="line-clamp-1 text-sm font-bold text-[var(--text-heading)]">
-                          {notification.title}
-                        </p>
-                        {unread && (
-                          <span className="mt-1 size-2 shrink-0 rounded-full bg-primary-200" />
-                        )}
-                      </div>
-                      <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--text-muted)]">
-                        {notification.message}
-                      </p>
-                      <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-100/70">
-                        {formatRelativeTime(notification.createdAt)}
-                      </p>
-                    </div>
-                  </button>
-                );
-              })
+              items.map((notification) => (
+                <NotificationCard
+                  key={notification.id}
+                  notification={notification}
+                  onClick={() => handleOpenNotification(notification)}
+                  disabled={isPending}
+                  compact
+                />
+              ))
             )}
           </div>
+
+          <Link
+            href="/notifications"
+            onClick={() => setIsOpen(false)}
+            className="flex items-center justify-center gap-2 border-t border-[var(--surface-border)] p-3 text-xs font-bold text-primary-100 transition hover:bg-white/[0.04]"
+          >
+            View all notifications
+            <ArrowRight className="size-3.5" />
+          </Link>
         </div>
       )}
     </div>

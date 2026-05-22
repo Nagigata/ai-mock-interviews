@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
@@ -18,6 +19,10 @@ import {
   getInterviewById,
 } from "@/lib/actions/general.action";
 import { InterviewAttemptStatus } from "@/types";
+
+export const metadata: Metadata = {
+  title: "Interview attempts",
+};
 
 const formatDateTime = (value: string | null | undefined, timeZone: string) => {
   if (!value) {
@@ -130,7 +135,7 @@ const AttemptsPage = async ({
           </div>
 
           {/* Stats */}
-          <div className="flex gap-3">
+          <div className="flex flex-wrap gap-3">
             <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-5 py-4 text-center">
               <div className="text-2xl font-bold text-white">
                 {attempts?.length || 0}

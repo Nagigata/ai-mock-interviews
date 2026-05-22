@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useId } from "react";
 import { AlertTriangle, X } from "lucide-react";
 
 interface AdminConfirmDialogProps {
@@ -13,6 +14,10 @@ interface AdminConfirmDialogProps {
   variant?: "danger" | "success" | "warning";
   loading?: boolean;
   hideCancel?: boolean;
+  reasonValue?: string;
+  reasonLabel?: string;
+  reasonPlaceholder?: string;
+  onReasonChange?: (value: string) => void;
   onCancel: () => void;
   onConfirm: () => void;
 }
@@ -46,17 +51,41 @@ export default function AdminConfirmDialog({
   variant = "danger",
   loading = false,
   hideCancel = false,
+  reasonValue,
+  reasonLabel = "Reason",
+  reasonPlaceholder = "Optional moderation note...",
+  onReasonChange,
   onCancel,
   onConfirm,
 }: AdminConfirmDialogProps) {
   const styles = variantStyles[variant];
+  const titleId = useId();
+  const descId = useId();
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && !loading) {
+        onCancel();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [loading, onCancel]);
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-      <div className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#1c1f26] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descId}
+        className="relative w-full max-w-md rounded-2xl border border-white/10 bg-[#1c1f26] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+      >
         <button
           onClick={onCancel}
           disabled={loading}
+          aria-label="Close dialog"
           className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white disabled:opacity-50"
         >
           <X className="size-5" />
@@ -66,10 +95,10 @@ export default function AdminConfirmDialog({
           <div className={`rounded-xl p-2.5 ${styles.icon}`}>
             <AlertTriangle className="size-5" />
           </div>
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
+          <h3 id={titleId} className="text-lg font-semibold text-white">{title}</h3>
         </div>
 
-        <p className="mb-1 text-sm text-light-100">{description}</p>
+        <p id={descId} className="mb-1 text-sm text-light-100">{description}</p>
 
         {itemName && (
           <div className="my-4 rounded-xl bg-white/5 px-4 py-3">
@@ -82,6 +111,23 @@ export default function AdminConfirmDialog({
 
         {warning && (
           <p className={`mb-4 text-xs ${styles.warning}`}>{warning}</p>
+        )}
+
+        {onReasonChange && (
+          <label className="mb-4 block">
+            <span className="mb-1.5 block text-xs font-medium text-light-400">
+              {reasonLabel}
+            </span>
+            <textarea
+              value={reasonValue || ""}
+              onChange={(event) => onReasonChange(event.target.value)}
+              disabled={loading}
+              rows={3}
+              maxLength={500}
+              placeholder={reasonPlaceholder}
+              className="w-full resize-none rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white placeholder:text-light-600 focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+            />
+          </label>
         )}
 
         <div className="flex justify-end gap-3">

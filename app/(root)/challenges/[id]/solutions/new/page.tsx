@@ -1,8 +1,13 @@
+import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getSubmissionDetail } from "@/lib/actions/submissions.action";
 import { getCurrentUser } from "@/lib/actions/auth.action";
 import { getChallengeById } from "@/lib/actions/challenges.action";
 import { ShareSolutionForm } from "@/components/solutions/ShareSolutionForm";
+
+export const metadata: Metadata = {
+  title: "Share solution",
+};
 
 interface Props {
   params: Promise<{ id: string }>;

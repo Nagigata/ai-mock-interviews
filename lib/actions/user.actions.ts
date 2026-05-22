@@ -7,6 +7,7 @@ import { apiGet } from "@/lib/api";
 import {
   PaginatedResponse,
   PracticeActivityResponse,
+  ProfileActivityResponse,
   SolvedChallengeItem,
   StarredChallengeItem,
   StarredInterviewItem,
@@ -147,6 +148,22 @@ export async function getMyRecentActivity(
     );
   } catch (error) {
     console.error("Error fetching recent activity:", error);
+    return null;
+  }
+}
+
+export async function getProfileActivity(
+  page = 1,
+  limit = 10,
+): Promise<ProfileActivityResponse | null> {
+  if (!(await hasAuthToken())) return null;
+
+  try {
+    return await apiGet<ProfileActivityResponse>(
+      `/users/me/profile-activity?page=${page}&limit=${limit}`,
+    );
+  } catch (error) {
+    console.error("Error fetching profile activity:", error);
     return null;
   }
 }

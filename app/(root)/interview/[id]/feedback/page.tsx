@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { redirect } from "next/navigation";
@@ -18,8 +19,13 @@ import {
   getInterviewById,
 } from "@/lib/actions/general.action";
 import { getCurrentUser } from "@/lib/actions/auth.action";
+import PageState from "@/components/shared/PageState";
 import { cookies } from "next/headers";
 import { getDictionary } from "@/lib/i18n";
+
+export const metadata: Metadata = {
+  title: "Interview feedback",
+};
 
 const Feedback = async ({
   params,
@@ -47,6 +53,43 @@ const Feedback = async ({
   const cookieStore = await cookies();
   const locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
   const t = getDictionary(locale);
+
+  if (!feedback) {
+    return (
+      <section className="mx-auto max-w-4xl space-y-8 max-sm:px-4">
+        <Link
+          href={`/interview/${id}/attempts`}
+          className="inline-flex items-center gap-2 text-sm font-semibold text-primary-100 hover:text-primary-200 transition-colors"
+        >
+          <ArrowLeft size={16} />
+          Back to Attempt History
+        </Link>
+        <PageState
+          tone="neutral"
+          title="Feedback not ready yet"
+          description="This attempt does not have feedback generated. You can review your attempts or retake the interview."
+          action={
+            <div className="flex flex-wrap gap-3 justify-center">
+              <Link
+                href={`/interview/${id}/attempts`}
+                className="inline-flex items-center gap-2 rounded-xl border border-[var(--surface-border)] px-5 py-3 text-sm font-semibold transition-colors hover:bg-[var(--surface-overlay-hover)]"
+                style={{ color: "var(--text-body)" }}
+              >
+                View attempts
+              </Link>
+              <Link
+                href={`/interview/${id}`}
+                className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+              >
+                <RotateCcw size={16} />
+                Retake interview
+              </Link>
+            </div>
+          }
+        />
+      </section>
+    );
+  }
 
   const score = feedback?.totalScore ?? 0;
   const scoreColor =

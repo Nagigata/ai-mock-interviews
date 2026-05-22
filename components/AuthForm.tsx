@@ -10,8 +10,19 @@ import { Button } from "@/components/ui/button";
 import FormField from "./FormField";
 import { signIn, signUp } from "@/lib/actions/auth.action";
 import { FormType } from "@/types";
+import { getErrorMessage } from "@/lib/errors";
 import Image from "next/image";
 import Link from "next/link";
+
+const OAUTH_BASE = (() => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
+  try {
+    const origin = new URL(apiUrl).origin;
+    return `${origin}/api/auth`;
+  } catch {
+    return "http://localhost:3001/api/auth";
+  }
+})();
 
 const GoogleIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="w-5 h-5">
@@ -30,9 +41,12 @@ const GithubIcon = () => (
 
 const authFormSchema = (type: FormType) => {
   return z.object({
-    name: type === "sign-up" ? z.string().min(3) : z.string().optional(),
-    email: z.string().email(),
-    password: z.string().min(3),
+    name:
+      type === "sign-up"
+        ? z.string().min(3, "Name must be at least 3 characters.")
+        : z.string().optional(),
+    email: z.string().email("Please enter a valid email address."),
+    password: z.string().min(3, "Password must be at least 3 characters."),
   });
 };
 
@@ -61,7 +75,7 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
         });
 
         if (!result?.success) {
-          toast.error(result?.message);
+          toast.error(getErrorMessage(result, "Could not sign up. Please try again."));
           return;
         }
 
@@ -73,7 +87,7 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
         const result = await signIn({ email, password });
 
         if (!result?.success) {
-          toast.error(result?.message);
+          toast.error(getErrorMessage(result, "Could not sign in. Please try again."));
           return;
         }
 
@@ -82,7 +96,7 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
       }
     } catch (error) {
       console.error(error);
-      toast.error(`There was an error: ${error}`);
+      toast.error(getErrorMessage(error, "Something went wrong. Please try again."));
     }
   };
 
@@ -166,14 +180,14 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
         </div>
 
         <div className="flex flex-col gap-3">
-          <Link href="http://localhost:3001/api/auth/google" className="w-full">
+          <Link href={`${OAUTH_BASE}/google`} className="w-full">
             <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
               <GoogleIcon />
               <span className="font-semibold">Google</span>
             </Button>
           </Link>
 
-          <Link href="http://localhost:3001/api/auth/github" className="w-full">
+          <Link href={`${OAUTH_BASE}/github`} className="w-full">
             <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
               <GithubIcon />
               <span className="font-semibold">GitHub</span>

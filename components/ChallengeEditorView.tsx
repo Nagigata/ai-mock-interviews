@@ -124,7 +124,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
   return (
     <div className="flex h-full flex-col">
       {/* Top Header/Toolbar */}
-      <header className="flex items-center justify-between border-b border-white/5 bg-dark-300 px-6 py-3 shadow-lg">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 bg-dark-300 px-6 py-3 shadow-lg">
         <div className="flex min-w-0 items-center gap-4">
           <Link
             href={`/preparation/${skillSlug}`}
@@ -161,7 +161,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <select
             value={language}
             disabled={isExecuting}
@@ -268,6 +268,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
                         <span className="text-[10px] font-bold text-light-600 uppercase tracking-widest leading-none">Console Output</span>
                         <button
                           onClick={() => setIsConsoleOpen(false)}
+                          aria-label="Close console"
                           className="text-light-600 hover:text-white transition-colors p-1"
                         >
                           <X size={16} />
@@ -339,7 +340,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
       </div>
 
       {/* Shortcuts Help Bar */}
-      <footer className="flex items-center justify-between bg-[#08090D] px-6 py-2 text-[10px] font-medium text-light-600">
+      <footer className="hidden items-center justify-between bg-[#08090D] px-6 py-2 text-[10px] font-medium text-light-600 md:flex">
         <div className="flex gap-4">
           <span>Shortcuts: <kbd className="bg-dark-300 px-1 rounded">Ctrl</kbd> + <kbd className="bg-dark-300 px-1 rounded">Enter</kbd> to Run</span>
         </div>

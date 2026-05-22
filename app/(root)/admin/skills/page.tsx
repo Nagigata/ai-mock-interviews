@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
+
 import { getAdminSkills } from "@/lib/actions/admin.actions";
 import AdminSkillsClient from "@/components/admin/AdminSkills";
+
+export const metadata: Metadata = {
+  title: "Admin skills",
+};
 
 export default async function AdminSkillsPage({
   searchParams,

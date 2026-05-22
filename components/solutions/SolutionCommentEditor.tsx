@@ -14,7 +14,7 @@ interface Props {
 
 export function SolutionCommentEditor({
   onSubmit,
-  placeholder = "Write a comment... (Markdown supported)",
+  placeholder = "Write a comment...",
   initialValue = "",
   onCancel,
   submitLabel = "Submit",
@@ -54,7 +54,7 @@ export function SolutionCommentEditor({
             Cancel
           </Button>
         )}
-        <Button size="sm" onClick={handleSubmit} disabled={loading || !content.trim()}>
+        <Button size="sm" onClick={handleSubmit} disabled={loading || !content.trim()} className="bg-primary-200 text-dark-100 hover:bg-primary-200/80">
           {loading ? "Submitting..." : submitLabel}
         </Button>
       </div>

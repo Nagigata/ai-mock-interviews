@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import { Bookmark, Code2, Mic2 } from "lucide-react";
@@ -12,6 +13,10 @@ import {
   getMyStarredChallenges,
   getMyStarredInterviews,
 } from "@/lib/actions/user.actions";
+
+export const metadata: Metadata = {
+  title: "Bookmarks",
+};
 
 interface Props {
   searchParams: Promise<Record<string, string | string[]>>;
@@ -136,7 +141,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
             <>
               <InterviewFilterBar preserveParams={["tab"]} />
 
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-white">
                     Saved Interviews
@@ -199,7 +204,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                 preserveParams={["tab"]}
               />
 
-              <div className="flex items-center justify-between gap-4">
+              <div className="flex flex-wrap items-center justify-between gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-white">
                     Saved Challenges

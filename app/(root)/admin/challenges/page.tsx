@@ -1,8 +1,14 @@
+import type { Metadata } from "next";
+
 import {
   getAdminChallenges,
   getAdminSkills,
 } from "@/lib/actions/admin.actions";
 import AdminChallengesClient from "@/components/admin/AdminChallenges";
+
+export const metadata: Metadata = {
+  title: "Admin challenges",
+};
 
 export default async function AdminChallengesPage({
   searchParams,

@@ -75,12 +75,10 @@ const Agent = ({
     };
 
     const onSpeechStart = () => {
-      console.log("speech start");
       setIsSpeaking(true);
     };
 
     const onSpeechEnd = () => {
-      console.log("speech end");
       setIsSpeaking(false);
     };
 
@@ -125,13 +123,11 @@ const Agent = ({
 
   useEffect(() => {
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
-      console.log("handleGenerateFeedback");
       if (feedbackRequestedRef.current) {
         return;
       }
 
       if (!attemptId) {
-        console.log("Missing interview attempt");
         router.push("/");
         return;
       }
@@ -168,6 +164,32 @@ const Agent = ({
       }
     }
   }, [attemptId, messages, callStatus, interviewId, router, type, userId]);
+
+  useEffect(() => {
+    if (!isEndConfirmOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsEndConfirmOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isEndConfirmOpen]);
+
+  useEffect(() => {
+    if (!isLangMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsLangMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isLangMenuOpen]);
 
   const handleCall = async () => {
     setCallStatus(CallStatus.CONNECTING);
@@ -250,6 +272,9 @@ const Agent = ({
               <button
                 onClick={() => setIsLangMenuOpen(!isLangMenuOpen)}
                 disabled={callStatus !== "INACTIVE"}
+                aria-haspopup="menu"
+                aria-expanded={isLangMenuOpen}
+                aria-label="Select interview language"
                 className="bg-dark-100 border border-primary-200/50 rounded-lg px-4 py-2 flex items-center gap-3 text-white hover:border-primary-200 transition-all cursor-pointer disabled:opacity-50 min-w-[160px] justify-between shadow-md"
               >
                 <div className="flex items-center gap-2">
@@ -428,7 +453,13 @@ const Agent = ({
 
       {isEndConfirmOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#151922] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="end-interview-title"
+            aria-describedby="end-interview-desc"
+            className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#151922] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200"
+          >
             <button
               onClick={() => setIsEndConfirmOpen(false)}
               className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white"
@@ -442,10 +473,10 @@ const Agent = ({
                 <AlertTriangle className="size-5" />
               </div>
               <div>
-                <h3 className="text-lg font-bold text-white">
+                <h3 id="end-interview-title" className="text-lg font-bold text-white">
                   End this interview?
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-light-100/75">
+                <p id="end-interview-desc" className="mt-2 text-sm leading-6 text-light-100/75">
                   Feedback will only be generated if you answered at least 2
                   questions with enough detail. If the interview is too short,
                   we will save the attempt as too short and return you to the

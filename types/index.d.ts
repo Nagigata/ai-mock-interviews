@@ -358,6 +358,79 @@ export interface UserProfile extends User {
   recentActivity: RecentActivityItem[];
 }
 
+export type ProfileActivityItem =
+  | {
+      activityType: "CHALLENGE_SUBMISSION";
+      id: string;
+      createdAt: string;
+      challengeId: string;
+      challengeTitle: string;
+      skillSlug: string;
+      difficulty: string;
+      language: string;
+      status: string;
+      runtime: number | null;
+      memory: number | null;
+    }
+  | {
+      activityType: "INTERVIEW_ATTEMPT";
+      id: string;
+      createdAt: string;
+      interviewId: string;
+      interviewRole: string;
+      interviewLevel: string;
+      interviewType: string;
+      status: string;
+      score: number | null;
+    };
+
+export type ProfileActivityResponse = {
+  items: ProfileActivityItem[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export type ProfileSolutionItem = {
+  id: string;
+  title: string;
+  language: string;
+  upvoteCount: number;
+  viewCount: number;
+  commentCount: number;
+  createdAt: string;
+  challengeId: string;
+  challengeTitle: string;
+  skillSlug: string;
+};
+
+export type ProfileSolutionsResponse = {
+  items: ProfileSolutionItem[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
+export type ProfileDiscussItem = {
+  id: string;
+  content: string;
+  createdAt: string;
+  solutionId: string;
+  solutionTitle: string;
+  challengeId: string;
+  skillSlug: string;
+};
+
+export type ProfileDiscussResponse = {
+  items: ProfileDiscussItem[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+};
+
 export interface StarredChallengeItem {
   id: string;
   title: string;
@@ -398,4 +471,94 @@ export interface PaginatedResponse<T> {
   limit: number;
   total: number;
   totalPages: number;
+}
+
+// ===== Admin Content Moderation Shared Types =====
+
+export interface AdminUserSummary {
+  id: string;
+  name: string;
+  email?: string;
+  avatarUrl?: string | null;
+}
+
+export interface AdminSkillSummary {
+  id?: string;
+  name: string;
+  slug: string;
+}
+
+export interface AdminChallengeSummary {
+  id: string;
+  title: string;
+  slug?: string;
+  difficulty?: string;
+  skill?: AdminSkillSummary;
+}
+
+export interface AdminSolutionItem {
+  id: string;
+  title: string;
+  language: string;
+  createdAt: string;
+  challengeId: string;
+  author: AdminUserSummary;
+  challenge: AdminChallengeSummary;
+  upvoteCount: number;
+  commentCount: number;
+  viewCount: number;
+}
+
+export interface AdminSolutionDetail extends AdminSolutionItem {
+  description?: string | null;
+  code: string;
+  updatedAt: string;
+  submission?: {
+    id: string;
+    status: string;
+    runtime?: number | null;
+    memory?: number | null;
+    createdAt: string;
+  } | null;
+}
+
+export type AdminSolutionsResponse = PaginatedResponse<AdminSolutionItem>;
+
+export interface AdminCommentItem {
+  id: string;
+  content: string;
+  isEdited: boolean;
+  createdAt: string;
+  solutionId: string;
+  parentId?: string | null;
+  author: AdminUserSummary;
+  solution: {
+    id: string;
+    title: string;
+    challengeId: string;
+    challenge: AdminChallengeSummary;
+  };
+  replyCount: number;
+  upvoteCount: number;
+}
+
+export interface AdminCommentDetail extends AdminCommentItem {
+  updatedAt: string;
+  parent?: {
+    id: string;
+    content: string;
+    user: AdminUserSummary;
+  } | null;
+  replies: Array<{
+    id: string;
+    content: string;
+    createdAt: string;
+    user: AdminUserSummary;
+  }>;
+}
+
+export type AdminCommentsResponse = PaginatedResponse<AdminCommentItem>;
+
+export interface AdminDeleteContentPayload {
+  reason?: string;
 }

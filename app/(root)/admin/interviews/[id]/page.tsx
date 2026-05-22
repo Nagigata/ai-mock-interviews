@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   Archive,
@@ -13,6 +14,10 @@ import {
 import { redirect } from "next/navigation";
 
 import { getAdminInterviewDetail } from "@/lib/actions/admin.actions";
+
+export const metadata: Metadata = {
+  title: "Admin interview detail",
+};
 
 const formatDate = (value?: string | null) =>
   value ? new Date(value).toLocaleString() : "Not completed";

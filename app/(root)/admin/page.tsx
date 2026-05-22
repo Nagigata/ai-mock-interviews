@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
+
 import { getAdminDashboard, getAdminStats } from "@/lib/actions/admin.actions";
 import AdminDashboardClient from "@/components/admin/AdminDashboard";
+
+export const metadata: Metadata = {
+  title: "Admin",
+};
 
 export default async function AdminPage({
   searchParams,

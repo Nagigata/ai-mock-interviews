@@ -1,6 +1,13 @@
 "use server";
 
-import { apiGet, apiPatch, apiPost } from "@/lib/api";
+import { apiDelete, apiGet, apiPatch, apiPost } from "@/lib/api";
+import type {
+  AdminCommentDetail,
+  AdminCommentsResponse,
+  AdminDeleteContentPayload,
+  AdminSolutionDetail,
+  AdminSolutionsResponse,
+} from "@/types";
 
 export async function getAdminDashboard(params?: { range?: string }) {
   try {
@@ -195,4 +202,94 @@ export async function updateAdminSkill(
   }
 ) {
   return apiPatch<any>(`/admin/skills/${id}`, data);
+}
+
+// ===== Admin Solutions =====
+
+export async function getAdminSolutions(params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  language?: string;
+  challengeId?: string;
+  createdFrom?: string;
+  createdTo?: string;
+}) {
+  try {
+    const query = new URLSearchParams();
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.search) query.set("search", params.search);
+    if (params?.language) query.set("language", params.language);
+    if (params?.challengeId) query.set("challengeId", params.challengeId);
+    if (params?.createdFrom) query.set("createdFrom", params.createdFrom);
+    if (params?.createdTo) query.set("createdTo", params.createdTo);
+    return await apiGet<AdminSolutionsResponse>(
+      `/admin/solutions?${query.toString()}`,
+    );
+  } catch {
+    return null;
+  }
+}
+
+export async function getAdminSolutionDetail(solutionId: string) {
+  try {
+    return await apiGet<AdminSolutionDetail>(`/admin/solutions/${solutionId}`);
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteAdminSolution(
+  solutionId: string,
+  data?: AdminDeleteContentPayload,
+) {
+  return apiDelete<{ id: string; title: string; deletedAt: string }>(
+    `/admin/solutions/${solutionId}`,
+    data,
+  );
+}
+
+// ===== Admin Comments =====
+
+export async function getAdminComments(params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  hasReplies?: string;
+  createdFrom?: string;
+  createdTo?: string;
+}) {
+  try {
+    const query = new URLSearchParams();
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+    if (params?.search) query.set("search", params.search);
+    if (params?.hasReplies) query.set("hasReplies", params.hasReplies);
+    if (params?.createdFrom) query.set("createdFrom", params.createdFrom);
+    if (params?.createdTo) query.set("createdTo", params.createdTo);
+    return await apiGet<AdminCommentsResponse>(
+      `/admin/comments?${query.toString()}`,
+    );
+  } catch {
+    return null;
+  }
+}
+
+export async function getAdminCommentDetail(commentId: string) {
+  try {
+    return await apiGet<AdminCommentDetail>(`/admin/comments/${commentId}`);
+  } catch {
+    return null;
+  }
+}
+
+export async function deleteAdminComment(
+  commentId: string,
+  data?: AdminDeleteContentPayload,
+) {
+  return apiDelete<{ id: string; deletedAt: string }>(
+    `/admin/comments/${commentId}`,
+    data,
+  );
 }

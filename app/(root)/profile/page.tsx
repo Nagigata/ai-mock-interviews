@@ -1,7 +1,9 @@
+import type { Metadata } from "next";
 import ProfileEditor from "@/components/ProfileEditor";
 import AcceptanceOverview from "@/components/AcceptanceOverview";
 import ActivityHeatmap from "@/components/ActivityHeatmap";
-import RecentActivityTable from "@/components/RecentActivityTable";
+import PageState from "@/components/shared/PageState";
+import { ProfileActivityTabs } from "@/components/profile/ProfileActivityTabs";
 import Link from "next/link";
 import dayjs from "dayjs";
 import {
@@ -18,8 +20,12 @@ import {
 } from "lucide-react";
 import {
   getMyProfile,
-  getMyRecentActivity,
+  getProfileActivity,
 } from "@/lib/actions/user.actions";
+import {
+  getProfileSolutions,
+  getProfileDiscuss,
+} from "@/lib/actions/solutions.actions";
 import {
   getAttemptedInterviews,
   getInterviewAttempts,
@@ -70,14 +76,38 @@ const getAttemptStatusLabel = (status: InterviewAttempt["status"]) => {
   return "In progress";
 };
 
+const PROFILE_TAB_PAGE_SIZE = 10;
+
+export const metadata: Metadata = {
+  title: "Profile",
+};
+
 const ProfilePage = async () => {
-  const [profile, recentActivity] = await Promise.all([
+  const [profile, initialActivity, initialSolutions, initialDiscuss] = await Promise.all([
     getMyProfile(),
-    getMyRecentActivity(1, 50),
+    getProfileActivity(1, PROFILE_TAB_PAGE_SIZE),
+    getProfileSolutions(1, PROFILE_TAB_PAGE_SIZE),
+    getProfileDiscuss(1, PROFILE_TAB_PAGE_SIZE),
   ]);
 
   if (!profile) {
-    return null;
+    return (
+      <div className="flex flex-col gap-8">
+        <PageState
+          tone="neutral"
+          title="Sign-in required"
+          description="We couldn't load your profile. Please sign in again to view your stats and activity."
+          action={
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+            >
+              Go to sign-in
+            </Link>
+          }
+        />
+      </div>
+    );
   }
 
   const [myInterviews, attemptedInterviews] = await Promise.all([
@@ -132,14 +162,6 @@ const ProfilePage = async () => {
       ? `${latestInterview.role} - ${latestInterview.level}`
       : "No interview activity yet";
 
-  const recentAccepted =
-    recentActivity?.items
-      .filter(
-        (item) =>
-          item.activityType !== "INTERVIEW_ATTEMPT" &&
-          item.status === "ACCEPTED",
-      )
-      .slice(0, 12) || [];
 
   const progressCards: ProgressCard[] = [
     {
@@ -323,11 +345,10 @@ const ProfilePage = async () => {
         maxStreak={profile.stats.maxStreak}
       />
 
-      <RecentActivityTable
-        items={recentAccepted}
-        title="Recent Accepted Submissions"
-        actionHref="/practice-history"
-        actionLabel="View practice history"
+      <ProfileActivityTabs
+        initialActivity={initialActivity}
+        initialSolutions={initialSolutions}
+        initialDiscuss={initialDiscuss}
       />
     </div>
   );

@@ -1,15 +1,38 @@
+import type { Metadata } from "next";
+import Link from "next/link";
 import Agent from "@/components/Agent";
 import { cookies } from "next/headers";
 import { BrainCircuit, Sparkles } from "lucide-react";
 
+import PageState from "@/components/shared/PageState";
 import { getDictionary } from "@/lib/i18n";
 import { getMyProfile } from "@/lib/actions/user.actions";
+
+export const metadata: Metadata = {
+  title: "Interview setup",
+};
 
 const InterviewSetupPage = async () => {
   const user = await getMyProfile();
 
   if (!user) {
-    return null;
+    return (
+      <div className="flex flex-col gap-8">
+        <PageState
+          tone="neutral"
+          title="Sign-in required"
+          description="We couldn't load your profile. Please sign in again to start a new interview."
+          action={
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+            >
+              Go to sign-in
+            </Link>
+          }
+        />
+      </div>
+    );
   }
 
   const cookieStore = await cookies();

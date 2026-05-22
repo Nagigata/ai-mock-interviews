@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
+
 import { getAdminInterviews } from "@/lib/actions/admin.actions";
 import AdminInterviewsClient from "@/components/admin/AdminInterviews";
+
+export const metadata: Metadata = {
+  title: "Admin interviews",
+};
 
 export default async function AdminInterviewsPage({
   searchParams,

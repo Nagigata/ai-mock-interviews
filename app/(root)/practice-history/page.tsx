@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   ChevronLeft,
@@ -9,9 +10,14 @@ import {
 } from "lucide-react";
 
 import { getMyRecentActivity } from "@/lib/actions/user.actions";
+import PageState from "@/components/shared/PageState";
 import RecentActivityTable from "@/components/RecentActivityTable";
 import UnderlineTabs from "@/components/UnderlineTabs";
 import { PracticeActivityType } from "@/types";
+
+export const metadata: Metadata = {
+  title: "Practice history",
+};
 
 interface Props {
   searchParams: Promise<Record<string, string | string[]>>;
@@ -33,6 +39,26 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
     10,
     activeTab === "all" ? undefined : { activityType: activeTab },
   );
+
+  if (activity === null) {
+    return (
+      <div className="flex flex-col gap-8">
+        <PageState
+          tone="neutral"
+          title="Activity is unavailable"
+          description="We couldn't load your recent practice activity. Please try again in a moment."
+          action={
+            <Link
+              href="/interview"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+            >
+              Start a session
+            </Link>
+          }
+        />
+      </div>
+    );
+  }
 
   const totalPages = activity?.totalPages || 1;
   const hasPreviousPage = currentPage > 1;
@@ -118,7 +144,7 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
       />
 
       {totalPages > 1 && (
-        <section className="flex flex-col gap-4 rounded-[24px] border border-white/[0.08] bg-[#101318] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <section className="flex flex-col flex-wrap gap-2 rounded-[24px] border border-white/[0.08] bg-[#101318] px-5 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2">
           <Link
             href={hasPreviousPage ? createPageHref(currentPage - 1) : "#"}
             aria-disabled={!hasPreviousPage}

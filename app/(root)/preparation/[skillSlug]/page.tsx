@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { getSkillBySlug } from "@/lib/actions/challenges.action";
 import { getDictionary } from "@/lib/i18n";
 import { cookies } from "next/headers";
@@ -18,6 +19,16 @@ import {
 interface Props {
   params: Promise<{ skillSlug: string }>;
   searchParams: Promise<Record<string, string | string[]>>;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ skillSlug: string }>;
+}): Promise<Metadata> {
+  const { skillSlug } = await params;
+  const skill = await getSkillBySlug(skillSlug);
+  return { title: skill?.name ?? "Skill" };
 }
 
 const SkillPage = async ({ params, searchParams }: Props) => {

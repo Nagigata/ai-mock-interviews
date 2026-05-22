@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
@@ -10,6 +11,10 @@ import {
 
 import AdminAttemptReviewTabs from "@/components/admin/AdminAttemptReviewTabs";
 import { getAdminInterviewAttemptDetail } from "@/lib/actions/admin.actions";
+
+export const metadata: Metadata = {
+  title: "Admin attempt review",
+};
 
 const formatDate = (value?: string | null) =>
   value ? new Date(value).toLocaleString() : "Not completed";

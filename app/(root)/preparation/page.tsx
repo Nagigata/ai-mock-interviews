@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import PreparationLanding from "@/components/PreparationLanding";
 import { getSkills } from "@/lib/actions/challenges.action";
 import {
@@ -7,6 +8,10 @@ import {
 import { getDictionary } from "@/lib/i18n";
 import { RecentActivityItem } from "@/types";
 import { cookies } from "next/headers";
+
+export const metadata: Metadata = {
+  title: "Preparation",
+};
 
 const isChallengeActivity = (item: RecentActivityItem) =>
   item.activityType !== "INTERVIEW_ATTEMPT" &&

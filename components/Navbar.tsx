@@ -3,7 +3,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { Flame } from "lucide-react";
+import { Flame, Menu, X } from "lucide-react";
+import { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import UserMenu from "@/components/UserMenu";
@@ -24,6 +25,7 @@ interface NavbarProps {
 
 const Navbar = ({ locale, t, user }: NavbarProps) => {
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navItems = [
     {
@@ -43,6 +45,20 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
     },
   ];
 
+  // Close mobile menu on Escape
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isMobileMenuOpen]);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-16 border-b border-[var(--surface-border)] backdrop-blur-md" style={{ background: "var(--navbar-bg)" }}>
       <nav className="flex justify-between items-center h-full max-w-7xl mx-auto px-6 lg:px-8">
@@ -52,13 +68,13 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
             <h2 className="text-primary-100 dark:text-primary-100 font-bold text-xl uppercase tracking-wider">PrepWise</h2>
           </Link>
 
-          <div className="flex items-center gap-7">
+          <div className="hidden md:flex items-center gap-7">
             {navItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
-                  "relative pb-1 text-sm font-medium transition-all",
+                  "relative pb-1 text-sm font-medium transition-all rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-(--navbar-bg)",
                   item.isActive
                     ? "text-[var(--text-heading)]"
                     : "text-[var(--text-muted)] hover:text-primary-100"
@@ -94,8 +110,48 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
           {/* <ThemeToggle /> */}
           <NotificationCenter />
           <UserMenu currentLocale={locale} user={user} />
+
+          <button
+            type="button"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isMobileMenuOpen}
+            aria-controls="mobile-nav-menu"
+            className="md:hidden flex size-9 items-center justify-center rounded-xl border border-[var(--surface-border)] text-[var(--text-body)] transition hover:border-primary-200/25 hover:bg-primary-200/[0.07] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-(--navbar-bg)"
+            style={{ background: "var(--surface-overlay)" }}
+          >
+            {isMobileMenuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
+          </button>
         </div>
       </nav>
+
+      {/* Mobile menu panel */}
+      {isMobileMenuOpen && (
+        <div
+          id="mobile-nav-menu"
+          className="md:hidden border-t border-[var(--surface-border)] backdrop-blur-md"
+          style={{ background: "var(--navbar-bg)" }}
+        >
+          <ul className="flex flex-col gap-1 px-6 py-3">
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <Link
+                  href={item.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className={cn(
+                    "block rounded-xl px-3 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-(--navbar-bg)",
+                    item.isActive
+                      ? "bg-primary-100/10 text-primary-100"
+                      : "text-[var(--text-muted)] hover:bg-[var(--surface-overlay-hover)] hover:text-[var(--text-heading)]"
+                  )}
+                >
+                  {item.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   );
 };

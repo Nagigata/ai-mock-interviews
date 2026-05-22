@@ -16,7 +16,7 @@ import {
 import { useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ChallengeSubmissionHistory from "@/components/ChallengeSubmissionHistory";
-import SubmissionResultView from "@/components/SubmissionResultView";
+import SubmissionResultView, { SubmissionResultViewSkeleton } from "@/components/SubmissionResultView";
 import UnderlineTabs from "@/components/UnderlineTabs";
 import { SolutionsList } from "@/components/solutions/SolutionsList";
 import { SolutionDetailLoader } from "@/components/solutions/SolutionDetailLoader";
@@ -161,9 +161,10 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
 
   const [selectedSubmission, setSelectedSubmission] =
     useState<ChallengeSubmissionDetail | null>(null);
+  const [isLoadingSubmission, setIsLoadingSubmission] = useState(false);
 
   // `submission-result` is a transient view — it overrides whatever the URL says.
-  const activeTab: ProblemTab = selectedSubmission ? "submission-result" : urlTab;
+  const activeTab: ProblemTab = (selectedSubmission || isLoadingSubmission) ? "submission-result" : urlTab;
 
   const updateSearchParams = (updates: Record<string, string | null>) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -185,6 +186,7 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
   ];
   const closeSubmissionResult = () => {
     setSelectedSubmission(null);
+    setIsLoadingSubmission(false);
   };
   const visibleTabs = selectedSubmission
     ? [
@@ -196,7 +198,16 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
           onClose: closeSubmissionResult,
         },
       ]
-    : tabs;
+    : isLoadingSubmission
+      ? [
+          ...tabs,
+          {
+            id: "submission-result" as const,
+            label: "Loading...",
+            icon: Clock3,
+          },
+        ]
+      : tabs;
 
   const handleTabChange = (tab: ProblemTab) => {
     if (tab === "submission-result") return;
@@ -311,10 +322,15 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
           challengeId={challenge.id}
           selectedSubmissionId={selectedSubmission?.id}
           onSelectSubmission={handleSelectSubmission}
+          onLoadingChange={setIsLoadingSubmission}
         />
       ) : selectedSubmission ? (
         <div className="min-h-0 flex-1">
           <SubmissionResultView submission={selectedSubmission} />
+        </div>
+      ) : isLoadingSubmission ? (
+        <div className="min-h-0 flex-1">
+          <SubmissionResultViewSkeleton />
         </div>
       ) : (
         <div className="px-6 py-8 text-sm text-light-500">

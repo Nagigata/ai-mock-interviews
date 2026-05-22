@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
+
 import { getAdminAuditLogs } from "@/lib/actions/admin.actions";
 import AdminAuditLogsClient from "@/components/admin/AdminAuditLogs";
+
+export const metadata: Metadata = {
+  title: "Admin audit logs",
+};
 
 export default async function AdminAuditLogsPage({
   searchParams,

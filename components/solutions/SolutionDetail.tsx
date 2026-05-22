@@ -2,12 +2,10 @@
 
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { ArrowBigUp, ArrowLeft, Check, Copy, Eye, Trash2 } from "lucide-react";
+import { ArrowBigUp, ArrowLeft, Eye, Trash2 } from "lucide-react";
+import { CodeBlock } from "@/components/ui/CodeBlock";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import { formatDistanceToNow } from "date-fns";
 import { toggleSolutionUpvote, deleteSolution } from "@/lib/actions/solutions.actions";
@@ -42,13 +40,6 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
   const [upvoteCount, setUpvoteCount] = useState(solution.upvoteCount);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(solution.code);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   const handleUpvote = async () => {
     try {
@@ -93,9 +84,9 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
         )}
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-xl font-semibold">{solution.title}</h1>
-          <Badge variant="outline" className="capitalize">
+          <span className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-1 text-xs font-semibold capitalize text-light-300">
             {solution.language}
-          </Badge>
+          </span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
           <Avatar size="sm">
@@ -157,24 +148,7 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
         </div>
       )}
 
-      <div className="relative rounded-md overflow-hidden text-sm">
-        <button
-          type="button"
-          onClick={handleCopy}
-          aria-label="Copy code"
-          className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-2 py-1 text-xs text-light-400 transition-colors hover:text-white"
-        >
-          {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
-          {copied ? "Copied!" : "Copy"}
-        </button>
-        <SyntaxHighlighter
-          language={solution.language}
-          style={oneDark}
-          showLineNumbers
-        >
-          {solution.code}
-        </SyntaxHighlighter>
-      </div>
+      <CodeBlock code={solution.code} language={solution.language} />
 
       <SolutionCommentsSection
         solutionId={solution.id}

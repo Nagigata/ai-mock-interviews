@@ -16,8 +16,8 @@ interface RecentActivityTableProps {
 const statusClasses: Record<string, string> = {
   ACCEPTED: "text-emerald-400",
   COMPLETED: "text-emerald-400",
-  REJECTED: "text-amber-400",
-  WRONG_ANSWER: "text-amber-400",
+  REJECTED: "text-red-400",
+  WRONG_ANSWER: "text-red-400",
   PENDING: "text-light-400",
 };
 
@@ -104,12 +104,12 @@ const RecentActivityTable = ({
               items.map((item) => (
                 <tr
                   key={item.id}
-                  className="border-t border-white/[0.07] transition hover:bg-white/[0.035]"
+                  className="relative cursor-pointer border-t border-white/[0.07] transition hover:bg-white/[0.035]"
                 >
                   <td className="px-4 py-3">
                     <Link
                       href={getActivityHref(item)}
-                      className="font-medium text-white hover:text-primary-100"
+                      className="font-medium text-white hover:text-primary-100 before:absolute before:inset-0 before:content-['']"
                     >
                       {getActivityTitle(item)}
                     </Link>

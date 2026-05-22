@@ -64,6 +64,7 @@ const menuItems: {
 const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
 
   const currentLanguage =
@@ -81,6 +82,20 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
+
   const handleLanguageChange = (locale: string) => {
     // eslint-disable-next-line react-hooks/immutability
     document.cookie = `NEXT_LOCALE=${locale}; path=/; max-age=31536000`;
@@ -96,9 +111,11 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
   return (
     <div className="relative z-50" ref={menuRef}>
       <button
+        ref={triggerRef}
         onClick={() => setIsOpen((prev) => !prev)}
         aria-haspopup="menu"
         aria-expanded={isOpen}
+        aria-label="Open account menu"
         className="group flex items-center gap-3 rounded-2xl border border-[var(--surface-border)] px-2.5 py-1.5 transition-all hover:border-primary-200/25 hover:bg-primary-200/[0.07]"
         style={{ background: "var(--surface-overlay)" }}
       >

@@ -1,6 +1,12 @@
+import type { Metadata } from "next";
+
 import { getAdminUsers } from "@/lib/actions/admin.actions";
 import { getMyProfile } from "@/lib/actions/user.actions";
 import AdminUsersClient from "@/components/admin/AdminUsers";
+
+export const metadata: Metadata = {
+  title: "Admin users",
+};
 
 export default async function AdminUsersPage({
   searchParams,

@@ -1,8 +1,10 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { cookies } from "next/headers";
 import { BrainCircuit, Clock3, Mic2, Sparkles } from "lucide-react";
 
 import InterviewTabs from "@/components/InterviewTabs";
+import PageState from "@/components/shared/PageState";
 import { getDictionary } from "@/lib/i18n";
 import { getMyProfile } from "@/lib/actions/user.actions";
 import {
@@ -13,6 +15,10 @@ import {
   getInterviewAttempts,
 } from "@/lib/actions/general.action";
 import { Feedback, Interview } from "@/types";
+
+export const metadata: Metadata = {
+  title: "Interviews",
+};
 
 async function buildFeedbackAndAttemptMaps(
   interviews: Interview[],
@@ -39,7 +45,23 @@ const page = async () => {
   const user = await getMyProfile();
 
   if (!user) {
-    return null;
+    return (
+      <div className="flex flex-col gap-8">
+        <PageState
+          tone="neutral"
+          title="Sign-in required"
+          description="We couldn't load your profile. Please sign in again to view your interviews."
+          action={
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center gap-2 rounded-xl bg-primary-200 px-5 py-3 text-sm font-bold text-dark-100 transition-colors hover:bg-primary-200/80"
+            >
+              Go to sign-in
+            </Link>
+          }
+        />
+      </div>
+    );
   }
 
   const [myInterviews, latestInterviews, attemptedInterviews] =
@@ -78,8 +100,8 @@ const page = async () => {
         className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-7 py-8 sm:px-10 sm:py-10"
         style={{ background: "var(--hero-gradient)", boxShadow: `0 28px 80px var(--shadow-heavy)` }}
       >
-        <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary-200/10 blur-3xl" />
-        <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
+        <div className="absolute right-0 top-0 hidden h-40 w-40 rounded-full bg-primary-200/10 blur-3xl md:block" />
+        <div className="absolute bottom-0 left-0 hidden h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl md:block" />
 
         <div className="relative grid gap-7 xl:grid-cols-[1.35fr_0.95fr] xl:items-center">
           <div className="space-y-5">
@@ -103,7 +125,7 @@ const page = async () => {
 
             <Link
               href="/interview/setup"
-              className="inline-flex items-center gap-2 rounded-2xl bg-primary-200 px-5 py-3 text-sm font-extrabold text-dark-100 transition-transform hover:-translate-y-0.5"
+              className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-primary-200 px-5 py-3 text-sm font-extrabold text-dark-100 transition-transform hover:-translate-y-0.5 sm:w-auto sm:justify-start"
             >
               <Mic2 size={16} />
               {t.home.startBtn}

@@ -3,15 +3,15 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Code2, Send } from "lucide-react";
+import { CodeBlock } from "@/components/ui/CodeBlock";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { createSolution } from "@/lib/actions/solutions.actions";
+import { getErrorMessage } from "@/lib/errors";
 import "@uiw/react-md-editor/markdown-editor.css";
 
 const MDEditor = dynamic(() => import("@uiw/react-md-editor"), { ssr: false });
@@ -67,8 +67,7 @@ export function ShareSolutionForm({
         `/preparation/${skillSlug}/${challengeId}?tab=solutions&solutionId=${res.id}`,
       );
     } catch (e) {
-      const msg = e instanceof Error ? e.message : "Failed to publish solution";
-      toast.error(msg);
+      toast.error(getErrorMessage(e, "Failed to publish solution"));
     } finally {
       setLoading(false);
     }
@@ -85,7 +84,7 @@ export function ShareSolutionForm({
             onClick={handleSubmit}
             disabled={loading || !title.trim()}
             size="sm"
-            className="gap-2"
+            className="gap-2 bg-primary-200 text-dark-100 hover:bg-primary-200/80"
           >
             <Send className="size-3.5" />
             {loading ? "Publishing..." : "Publish"}
@@ -119,7 +118,7 @@ export function ShareSolutionForm({
               onChange={(val) => setDescription(val ?? "")}
               preview="live"
               height={480}
-              placeholder={PLACEHOLDER}
+              textareaProps={{ placeholder: PLACEHOLDER }}
             />
           </div>
         </div>
@@ -136,16 +135,7 @@ export function ShareSolutionForm({
               {language}
             </Badge>
           </div>
-          <div className="overflow-hidden rounded-md border border-white/10 text-sm">
-            <SyntaxHighlighter
-              language={language}
-              style={oneDark}
-              showLineNumbers
-              customStyle={{ margin: 0, background: "#0b0c10" }}
-            >
-              {code}
-            </SyntaxHighlighter>
-          </div>
+          <CodeBlock code={code} language={language} />
           <p className="text-xs text-light-600">
             This is your accepted submission and will be included with your post.
           </p>

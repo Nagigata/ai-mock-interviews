@@ -24,6 +24,7 @@ interface ChallengeSubmissionHistoryProps {
   challengeId: string;
   selectedSubmissionId?: string | null;
   onSelectSubmission?: (submission: ChallengeSubmissionDetail) => void;
+  onLoadingChange?: (loading: boolean) => void;
 }
 
 const PAGE_SIZE = 5;
@@ -62,6 +63,7 @@ const ChallengeSubmissionHistory = ({
   challengeId,
   selectedSubmissionId,
   onSelectSubmission,
+  onLoadingChange,
 }: ChallengeSubmissionHistoryProps) => {
   const [items, setItems] = useState<ChallengeSubmissionHistoryItem[]>([]);
   const [requestedPage, setRequestedPage] = useState(1);
@@ -76,9 +78,6 @@ const ChallengeSubmissionHistory = ({
     useState<ChallengeSubmissionHistoryItem | null>(null);
   const [draftNote, setDraftNote] = useState("");
   const [draftNoteColor, setDraftNoteColor] = useState<NoteColor>("gray");
-  const [loadingSubmissionId, setLoadingSubmissionId] = useState<string | null>(
-    null,
-  );
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
@@ -155,9 +154,9 @@ const ChallengeSubmissionHistory = ({
   const selectSubmission = async (submissionId: string) => {
     if (!onSelectSubmission) return;
 
-    setLoadingSubmissionId(submissionId);
+    onLoadingChange?.(true);
     const result = await getSubmissionDetail(submissionId);
-    setLoadingSubmissionId(null);
+    onLoadingChange?.(false);
 
     if (!result.success || !result.data) {
       toast.error(result.error || "Could not load submission detail.");
@@ -434,11 +433,6 @@ const ChallengeSubmissionHistory = ({
         </div>
       )}
 
-      {loadingSubmissionId && (
-        <div className="pointer-events-none fixed bottom-6 right-6 z-[120] rounded-xl border border-white/10 bg-[#1c1f26] px-4 py-3 text-xs font-semibold text-light-100 shadow-2xl">
-          Loading submission detail...
-        </div>
-      )}
     </section>
   );
 };

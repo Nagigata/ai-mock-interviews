@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
 import { getAllChallenges, getTopics } from "@/lib/actions/challenges.action";
 import { getDictionary } from "@/lib/i18n";
 import { cookies } from "next/headers";
 import ChallengeCard from "@/components/ChallengeCard";
 import ChallengeFilterBar from "@/components/ChallengeFilterBar";
 import LoadMoreChallenges from "@/components/LoadMoreChallenges";
+import PageState from "@/components/shared/PageState";
 import {
   CircleAlert,
   Code2,
@@ -13,6 +15,10 @@ import {
 } from "lucide-react";
 import { Challenge } from "@/types";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Challenges",
+};
 
 interface Props {
   searchParams: Promise<Record<string, string | string[]>>;
@@ -37,6 +43,21 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
     getAllChallenges({ ...filters, page: 1, limit: 100 }),
     getAllChallenges({ page: 1, limit: 1 }),
   ]);
+  const topicsFailed = topics == null;
+  const resultFailed = result == null;
+  if (topicsFailed && resultFailed) {
+    return (
+      <div className="flex flex-col gap-8">
+        <PageState
+          tone="danger"
+          icon={<CircleAlert size={20} />}
+          title="Couldn't load challenges"
+          description="Something went wrong fetching the challenge library. Please retry in a moment."
+        />
+      </div>
+    );
+  }
+  const safeTopics = topics ?? [];
   const challenges = result?.data || [];
   const filteredTotalCount = result?.total || 0;
   const totalCount = allChallengesResult?.total || filteredTotalCount;
@@ -47,7 +68,7 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
         className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-6 py-7 sm:px-8 lg:px-10"
         style={{ background: "var(--hero-gradient)", boxShadow: `0 28px 80px var(--shadow-heavy)` }}
       >
-        <div className="pointer-events-none absolute right-10 top-8 h-28 w-28 rounded-full bg-primary-200/15 blur-3xl" />
+        <div className="pointer-events-none absolute right-10 top-8 hidden h-28 w-28 rounded-full bg-primary-200/15 blur-3xl md:block" />
 
         <div className="relative grid gap-7 xl:grid-cols-[1.35fr_0.95fr] xl:items-center">
           <div className="space-y-5">
@@ -119,7 +140,7 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
         style={{ animationDelay: "0.08s", animationFillMode: "both" }}
       >
         <section className="flex-1 flex flex-col gap-6">
-          <ChallengeFilterBar topics={topics} />
+          <ChallengeFilterBar topics={safeTopics} />
 
           <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -136,7 +157,14 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
           </div>
 
           <div className="flex flex-col gap-4">
-            {challenges && challenges.length > 0 ? (
+            {resultFailed ? (
+              <PageState
+                tone="danger"
+                icon={<CircleAlert size={20} />}
+                title="Couldn't load challenges"
+                description="The challenge list failed to load. Please retry in a moment."
+              />
+            ) : challenges && challenges.length > 0 ? (
               <>
                 {challenges.map((challenge) => (
                   <ChallengeCard

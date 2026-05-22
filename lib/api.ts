@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+import { getErrorMessage } from "@/lib/errors";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001/api";
 
@@ -50,11 +51,12 @@ async function apiFetch<T>(
   const text = await response.text();
 
   if (!response.ok) {
-    let errorMessage = `API Error: ${response.status}`;
+    const fallback = `API Error: ${response.status}`;
+    let errorMessage = fallback;
     if (text) {
       try {
         const parsed = JSON.parse(text);
-        if (parsed?.message) errorMessage = parsed.message;
+        errorMessage = getErrorMessage(parsed, fallback);
       } catch {
         // body is not JSON — keep the default message
       }
@@ -94,6 +96,12 @@ export async function apiPatch<T>(
   });
 }
 
-export async function apiDelete<T>(endpoint: string): Promise<T> {
-  return apiFetch<T>(endpoint, { method: "DELETE" });
+export async function apiDelete<T>(
+  endpoint: string,
+  body?: unknown,
+): Promise<T> {
+  return apiFetch<T>(endpoint, {
+    method: "DELETE",
+    body: body ? JSON.stringify(body) : undefined,
+  });
 }
