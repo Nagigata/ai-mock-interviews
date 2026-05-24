@@ -10,6 +10,7 @@ import {
   Globe2,
   History,
   LogOut,
+  Settings,
   Shield,
   UserCircle2,
   type LucideIcon,
@@ -58,6 +59,11 @@ const menuItems: {
     href: "/practice-history",
     label: "Practice History",
     icon: History,
+  },
+  {
+    href: "/settings",
+    label: "Settings",
+    icon: Settings,
   },
 ];
 

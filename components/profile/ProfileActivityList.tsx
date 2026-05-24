@@ -7,6 +7,7 @@ dayjs.extend(relativeTime);
 
 interface Props {
   items: ProfileActivityItem[];
+  kind?: "CHALLENGE" | "INTERVIEW";
 }
 
 const statusColors: Record<string, string> = {
@@ -25,15 +26,18 @@ const statusColors: Record<string, string> = {
 
 const formatStatus = (status: string) => status.replace(/_/g, " ");
 
-export function ProfileActivityList({ items }: Props) {
+export function ProfileActivityList({ items, kind = "CHALLENGE" }: Props) {
   if (items.length === 0) {
+    const isInterview = kind === "INTERVIEW";
     return (
       <div className="flex flex-col items-center gap-3 py-16 text-center">
         <p className="text-sm font-medium" style={{ color: "var(--text-heading)" }}>
-          No activity yet
+          {isInterview ? "No interview attempts yet" : "No challenge submissions yet"}
         </p>
         <p className="max-w-xs text-xs" style={{ color: "var(--text-muted)" }}>
-          Submissions and interview attempts will appear here.
+          {isInterview
+            ? "Interview attempts and feedback will appear here."
+            : "Your challenge submissions will appear here."}
         </p>
       </div>
     );

@@ -3,8 +3,10 @@
 import { revalidatePath } from "next/cache";
 import { cookies } from "next/headers";
 
-import { apiGet } from "@/lib/api";
+import { apiGet, apiPatch, apiPost, apiDelete } from "@/lib/api";
+import { signOut } from "@/lib/actions/auth.action";
 import {
+  Gender,
   PaginatedResponse,
   PracticeActivityResponse,
   ProfileActivityResponse,
@@ -155,12 +157,13 @@ export async function getMyRecentActivity(
 export async function getProfileActivity(
   page = 1,
   limit = 10,
+  type: "CHALLENGE" | "INTERVIEW" = "CHALLENGE",
 ): Promise<ProfileActivityResponse | null> {
   if (!(await hasAuthToken())) return null;
 
   try {
     return await apiGet<ProfileActivityResponse>(
-      `/users/me/profile-activity?page=${page}&limit=${limit}`,
+      `/users/me/profile-activity?page=${page}&limit=${limit}&type=${type}`,
     );
   } catch (error) {
     console.error("Error fetching profile activity:", error);
@@ -248,5 +251,134 @@ export async function updateMyProfile(formData: FormData) {
       success: false,
       message: "Failed to update profile.",
     };
+  }
+}
+
+type ProfileSettingsInput = {
+  name?: string;
+  gender?: Gender | null;
+  birthday?: string | null;
+  location?: string | null;
+  readme?: string | null;
+};
+
+export async function updateProfileSettings(input: ProfileSettingsInput) {
+  try {
+    const body: Record<string, unknown> = {};
+    if (input.name !== undefined) body.name = input.name;
+    if (input.gender !== undefined) body.gender = input.gender ?? null;
+    if (input.birthday !== undefined) {
+      body.birthday = input.birthday ? new Date(input.birthday).toISOString() : null;
+    }
+    if (input.location !== undefined) body.location = input.location ?? null;
+    if (input.readme !== undefined) body.readme = input.readme ?? null;
+
+    const updated = await apiPatch<UserProfile>("/users/me", body);
+    revalidatePath("/settings");
+    revalidatePath("/profile");
+    return { success: true as const, data: updated };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error ? error.message : "Failed to update profile.",
+    };
+  }
+}
+
+export async function updateNotificationPreferences(
+  prefs: Partial<{
+    notifyInterviewActivity: boolean;
+    notifyComments: boolean;
+    notifySound: boolean;
+  }>,
+) {
+  try {
+    const updated = await apiPatch<UserProfile>("/users/me", prefs);
+    revalidatePath("/settings");
+    return { success: true as const, data: updated };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error
+          ? error.message
+          : "Failed to update notification preferences.",
+    };
+  }
+}
+
+export async function deleteMyAccount(input: {
+  password?: string;
+  confirmText: string;
+}) {
+  try {
+    await apiDelete("/users/me", input);
+    await signOut();
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error ? error.message : "Failed to delete account.",
+    };
+  }
+}
+
+export async function setMyPassword(newPassword: string) {
+  try {
+    await apiPost("/auth/set-password", { newPassword });
+    revalidatePath("/settings");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error ? error.message : "Failed to set password.",
+    };
+  }
+}
+
+export async function changeMyPassword(input: {
+  currentPassword: string;
+  newPassword: string;
+}) {
+  try {
+    await apiPost("/auth/change-password", input);
+    revalidatePath("/settings");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error ? error.message : "Failed to change password.",
+    };
+  }
+}
+
+export async function getUserProfileById(
+  userId: string,
+): Promise<UserProfile | null> {
+  try {
+    return await apiGet<UserProfile>(`/users/${userId}`);
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    return null;
+  }
+}
+
+export async function getProfileActivityByUserId(
+  userId: string,
+  page = 1,
+  limit = 10,
+  type: "CHALLENGE" | "INTERVIEW" = "CHALLENGE",
+): Promise<ProfileActivityResponse | null> {
+  try {
+    return await apiGet<ProfileActivityResponse>(
+      `/users/${userId}/profile-activity?page=${page}&limit=${limit}&type=${type}`,
+    );
+  } catch (error) {
+    console.error("Error fetching profile activity:", error);
+    return null;
   }
 }

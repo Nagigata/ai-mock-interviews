@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -20,12 +20,20 @@ const ForgotPasswordView = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const id = setTimeout(() => setResendCooldown((s) => s - 1), 1000);
+    return () => clearTimeout(id);
+  }, [resendCooldown]);
 
   // Step 1: Send OTP
   const handleSendCode = async () => {
     if (!email) return toast.error("Please enter your email.");
+    if (resendCooldown > 0) return;
     setIsLoading(true);
     try {
       const res = await fetch(`${API_BASE_URL}/auth/forgot-password`, {
@@ -37,6 +45,7 @@ const ForgotPasswordView = () => {
       if (!res.ok) throw new Error(getErrorMessage(data, "Failed to send code."));
       toast.success("Verification code sent to your email!");
       setStep(2);
+      setResendCooldown(60);
     } catch (err) {
       toast.error(getErrorMessage(err, "Failed to send code."));
     } finally {
@@ -227,11 +236,13 @@ const ForgotPasswordView = () => {
               </Button>
               <button
                 type="button"
-                className="text-xs text-light-400 hover:text-primary-200 transition-colors"
+                className="text-xs text-light-400 hover:text-primary-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-light-400"
                 onClick={handleSendCode}
-                disabled={isLoading}
+                disabled={isLoading || resendCooldown > 0}
               >
-                Didn't receive the code? Resend
+                {resendCooldown > 0
+                  ? `Resend in ${resendCooldown}s`
+                  : "Didn't receive the code? Resend"}
               </button>
             </div>
           )}

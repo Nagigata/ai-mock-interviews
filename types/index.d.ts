@@ -58,9 +58,18 @@ export type NotificationType =
   | "FEEDBACK_GENERATION_PROCESSING"
   | "FEEDBACK_GENERATION_COMPLETED"
   | "FEEDBACK_GENERATION_FAILED"
+  | "CHALLENGE_NEW_COMMENT"
   | "CHALLENGE_COMMENT_REPLY"
   | "CHALLENGE_COMMENT_MENTION"
   | "SYSTEM";
+
+export type Gender = "MALE" | "FEMALE" | "OTHER" | "PREFER_NOT_TO_SAY";
+
+export interface UserNotificationPreferences {
+  notifyInterviewActivity: boolean;
+  notifyComments: boolean;
+  notifySound: boolean;
+}
 
 export interface NotificationItem {
   id: string;
@@ -138,6 +147,16 @@ export interface User {
   isActive?: boolean;
   avatarUrl?: string | null;
   createdAt?: string;
+  provider?: string | null;
+  hasPassword?: boolean;
+  gender?: Gender | null;
+  birthday?: string | null;
+  location?: string | null;
+  readme?: string | null;
+  notifyInterviewActivity?: boolean;
+  notifyComments?: boolean;
+  notifySound?: boolean;
+  deletedAt?: string | null;
 }
 
 export interface InterviewCardProps {
@@ -356,6 +375,16 @@ export interface UserProfile extends User {
   stats: UserDashboardStats;
   activityCalendar: ActivityDay[];
   recentActivity: RecentActivityItem[];
+  solutionCount?: number;
+  discussCount?: number;
+}
+
+export interface UserHoverCardData {
+  id: string;
+  name: string;
+  avatarUrl?: string | null;
+  solutionCount: number;
+  discussCount: number;
 }
 
 export type ProfileActivityItem =

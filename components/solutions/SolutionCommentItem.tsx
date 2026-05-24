@@ -3,10 +3,10 @@
 import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ArrowBigUp, Reply, Pencil, Trash2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
 import { formatDistanceToNow } from "date-fns";
+import UserAvatar from "@/components/UserAvatar";
 import {
   toggleCommentUpvote,
   createComment,
@@ -15,6 +15,7 @@ import {
 } from "@/lib/actions/solutions.actions";
 import { SolutionCommentEditor } from "./SolutionCommentEditor";
 import { toast } from "sonner";
+import UserHoverCard from "@/components/UserHoverCard";
 
 export interface Comment {
   id: string;
@@ -98,25 +99,26 @@ export function SolutionCommentItem({
   };
 
   if (isDeleted) {
-    return (
-      <div className={`${isReply ? "ml-4 border-l border-[var(--surface-border)] pl-4" : ""} py-2 text-xs italic text-muted-foreground`}>
-        [deleted]
-      </div>
-    );
+    return null;
   }
 
   return (
     <div className={isReply ? "ml-4 border-l border-[var(--surface-border)] pl-4" : ""}>
       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-1">
-        <Avatar size="sm">
-          {comment.user.avatarUrl && (
-            <AvatarImage src={comment.user.avatarUrl} alt={comment.user.name} />
-          )}
-          <AvatarFallback>
-            {comment.user.name?.[0]?.toUpperCase() ?? "?"}
-          </AvatarFallback>
-        </Avatar>
-        <span className="font-medium text-foreground">{comment.user.name}</span>
+        <UserHoverCard
+          userId={comment.user.id}
+          defaultName={comment.user.name}
+          defaultAvatarUrl={comment.user.avatarUrl}
+        >
+          <span className="inline-flex items-center gap-2">
+            <UserAvatar
+              size="sm"
+              name={comment.user.name}
+              avatarUrl={comment.user.avatarUrl}
+            />
+            <span className="font-medium text-foreground">{comment.user.name}</span>
+          </span>
+        </UserHoverCard>
         <span>{formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}</span>
         {comment.isEdited && <span className="italic">(edited)</span>}
       </div>

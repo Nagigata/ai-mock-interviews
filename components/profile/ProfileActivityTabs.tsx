@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ArrowRight, ListChecks } from "lucide-react";
 import UnderlineTabs from "@/components/UnderlineTabs";
 import { ProfileActivityList } from "./ProfileActivityList";
@@ -13,28 +13,37 @@ import {
   ProfileDiscussResponse,
 } from "@/types";
 
-type ProfileTab = "activity" | "solutions" | "discuss";
+type ProfileTab = "challenge" | "interview" | "solutions" | "discuss";
 
 interface Props {
-  initialActivity: ProfileActivityResponse | null;
+  isOwn: boolean;
+  initialChallengeActivity: ProfileActivityResponse | null;
+  initialInterviewActivity: ProfileActivityResponse | null;
   initialSolutions: ProfileSolutionsResponse | null;
   initialDiscuss: ProfileDiscussResponse | null;
 }
 
-const TABS = [
-  { id: "activity" as ProfileTab, label: "Activity" },
-  { id: "solutions" as ProfileTab, label: "Solutions" },
-  { id: "discuss" as ProfileTab, label: "Discuss" },
-];
-
 export function ProfileActivityTabs({
-  initialActivity,
+  isOwn,
+  initialChallengeActivity,
+  initialInterviewActivity,
   initialSolutions,
   initialDiscuss,
 }: Props) {
-  const [activeTab, setActiveTab] = useState<ProfileTab>("activity");
+  const tabs = useMemo(() => {
+    const list: { id: ProfileTab; label: string }[] = [
+      { id: "challenge", label: "Challenge" },
+    ];
+    if (isOwn) list.push({ id: "interview", label: "Interview" });
+    list.push({ id: "solutions", label: "Solutions" });
+    list.push({ id: "discuss", label: "Discuss" });
+    return list;
+  }, [isOwn]);
 
-  const activityItems = initialActivity?.items ?? [];
+  const [activeTab, setActiveTab] = useState<ProfileTab>("challenge");
+
+  const challengeItems = initialChallengeActivity?.items ?? [];
+  const interviewItems = initialInterviewActivity?.items ?? [];
   const solutionItems = initialSolutions?.items ?? [];
   const discussItems = initialDiscuss?.items ?? [];
 
@@ -55,20 +64,37 @@ export function ProfileActivityTabs({
             Activity & Contributions
           </h2>
           <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
-            Your latest practice, shared solutions, and discussions across the platform.
+            Latest practice, shared solutions, and discussions across the platform.
           </p>
         </div>
       </div>
 
       <div className="mt-6">
-        <UnderlineTabs tabs={TABS} activeTab={activeTab} onChange={setActiveTab} />
+        <UnderlineTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
       </div>
 
       <div className="mt-5">
-        {activeTab === "activity" && (
+        {activeTab === "challenge" && (
           <>
-            <ProfileActivityList items={activityItems} />
-            {activityItems.length > 0 && (
+            <ProfileActivityList items={challengeItems} kind="CHALLENGE" />
+            {challengeItems.length > 0 && isOwn && (
+              <div className="mt-4 flex justify-center">
+                <Link
+                  href="/practice-history"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
+                >
+                  View all practice activities
+                  <ArrowRight className="size-4" />
+                </Link>
+              </div>
+            )}
+          </>
+        )}
+
+        {activeTab === "interview" && isOwn && (
+          <>
+            <ProfileActivityList items={interviewItems} kind="INTERVIEW" />
+            {interviewItems.length > 0 && (
               <div className="mt-4 flex justify-center">
                 <Link
                   href="/practice-history"

@@ -320,10 +320,22 @@
     .input::placeholder {
       color: var(--text-muted);
     }
+  }
 
-    .btn {
-      @apply !w-full !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-full !min-h-10 !font-bold !px-5 cursor-pointer;
-    }
+  .btn {
+    @apply !w-full !bg-primary-200 !text-dark-100 hover:!bg-primary-200/80 !rounded-xl !h-12 !font-semibold !px-5 cursor-pointer transition-colors;
+  }
+
+  .btn-oauth {
+    @apply !w-full !rounded-xl !h-12 !font-semibold flex items-center justify-center gap-3 transition-colors;
+    background: var(--surface-card) !important;
+    border: 1px solid var(--surface-border) !important;
+    color: var(--text-heading) !important;
+  }
+
+  .btn-oauth:hover {
+    background: var(--surface-card-hover, var(--surface-card)) !important;
+    border-color: var(--primary-200, var(--surface-border)) !important;
   }
 
   .call-view {

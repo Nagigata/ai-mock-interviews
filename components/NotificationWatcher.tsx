@@ -104,9 +104,20 @@ const dispatchNotificationCenterEvent = (notification: NotificationPayload) => {
   );
 };
 
-const NotificationWatcher = () => {
+interface NotificationWatcherProps {
+  soundEnabled?: boolean;
+}
+
+const NOTIFICATION_SOUND_URL = "/sounds/notification.mp3";
+
+const NotificationWatcher = ({ soundEnabled = true }: NotificationWatcherProps) => {
   const router = useRouter();
   const socketRef = useRef<Socket | null>(null);
+  const soundEnabledRef = useRef(soundEnabled);
+
+  useEffect(() => {
+    soundEnabledRef.current = soundEnabled;
+  }, [soundEnabled]);
 
   useEffect(() => {
     const hasSeen = (notificationId: string) => {
@@ -117,6 +128,19 @@ const NotificationWatcher = () => {
     const markSeen = (notificationId: string) => {
       if (typeof window === "undefined") return;
       window.localStorage.setItem(getStorageKey(notificationId), "1");
+    };
+
+    const playSound = () => {
+      if (!soundEnabledRef.current || typeof Audio === "undefined") return;
+      try {
+        const audio = new Audio(NOTIFICATION_SOUND_URL);
+        audio.volume = 0.4;
+        void audio.play().catch(() => {
+          /* Autoplay policy: ignore until user interacts with page */
+        });
+      } catch {
+        /* Audio constructor unavailable, fail silently */
+      }
     };
 
     const handleNotification = (notification: NotificationPayload) => {
@@ -141,6 +165,8 @@ const NotificationWatcher = () => {
       if (processingToastId) {
         toast.dismiss(processingToastId);
       }
+
+      playSound();
 
       const toastOptions = {
         id: `notification-${notification.id}`,

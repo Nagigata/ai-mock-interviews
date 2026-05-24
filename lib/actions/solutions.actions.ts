@@ -76,3 +76,33 @@ export async function getProfileDiscuss(
     return null;
   }
 }
+
+export async function getProfileSolutionsByUserId(
+  userId: string,
+  page = 1,
+  limit = 10,
+): Promise<ProfileSolutionsResponse | null> {
+  try {
+    return await apiGet<ProfileSolutionsResponse>(
+      `/solutions/user/${userId}?page=${page}&limit=${limit}`,
+    );
+  } catch (error) {
+    console.error("Error fetching user solutions:", error);
+    return null;
+  }
+}
+
+export async function getProfileDiscussByUserId(
+  userId: string,
+  page = 1,
+  limit = 10,
+): Promise<ProfileDiscussResponse | null> {
+  try {
+    return await apiGet<ProfileDiscussResponse>(
+      `/solutions/user/${userId}/comments?page=${page}&limit=${limit}`,
+    );
+  } catch (error) {
+    console.error("Error fetching user discuss:", error);
+    return null;
+  }
+}

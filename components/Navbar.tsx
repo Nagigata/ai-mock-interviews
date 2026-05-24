@@ -129,27 +129,26 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
       {isMobileMenuOpen && (
         <div
           id="mobile-nav-menu"
-          className="md:hidden border-t border-[var(--surface-border)] backdrop-blur-md"
-          style={{ background: "var(--navbar-bg)" }}
+          className="md:hidden border-t border-[var(--surface-border)] shadow-lg backdrop-blur-xl"
+          style={{ background: "var(--menu-bg)" }}
         >
-          <ul className="flex flex-col gap-1 px-6 py-3">
+          <div className="flex flex-col gap-1 px-6 py-3">
             {navItems.map((item) => (
-              <li key={item.href}>
-                <Link
-                  href={item.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "block rounded-xl px-3 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-(--navbar-bg)",
-                    item.isActive
-                      ? "bg-primary-100/10 text-primary-100"
-                      : "text-[var(--text-muted)] hover:bg-[var(--surface-overlay-hover)] hover:text-[var(--text-heading)]"
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </li>
+              <Link
+                key={item.href}
+                href={item.href}
+                onClick={() => setIsMobileMenuOpen(false)}
+                className={cn(
+                  "block rounded-xl px-3 py-2.5 text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-100 focus-visible:ring-offset-2 focus-visible:ring-offset-(--navbar-bg)",
+                  item.isActive
+                    ? "bg-primary-100/10 text-primary-100"
+                    : "text-[var(--text-muted)] hover:bg-[var(--surface-overlay-hover)] hover:text-[var(--text-heading)]"
+                )}
+              >
+                {item.label}
+              </Link>
             ))}
-          </ul>
+          </div>
         </div>
       )}
     </header>

@@ -4,9 +4,10 @@ import { useState } from "react";
 import ReactMarkdown from "react-markdown";
 import { ArrowBigUp, ArrowLeft, Eye, Trash2 } from "lucide-react";
 import { CodeBlock } from "@/components/ui/CodeBlock";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
+import UserHoverCard from "@/components/UserHoverCard";
+import UserAvatar from "@/components/UserAvatar";
 import { formatDistanceToNow } from "date-fns";
 import { toggleSolutionUpvote, deleteSolution } from "@/lib/actions/solutions.actions";
 import { toast } from "sonner";
@@ -67,8 +68,6 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
     }
   };
 
-  const initial = solution.user.name?.[0]?.toUpperCase() ?? "?";
-
   return (
     <div className="space-y-6">
       <div className="space-y-3">
@@ -89,16 +88,20 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
           </span>
         </div>
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Avatar size="sm">
-            {solution.user.avatarUrl && (
-              <AvatarImage
-                src={solution.user.avatarUrl}
-                alt={solution.user.name}
+          <UserHoverCard
+            userId={solution.user.id}
+            defaultName={solution.user.name}
+            defaultAvatarUrl={solution.user.avatarUrl}
+          >
+            <span className="inline-flex items-center gap-2">
+              <UserAvatar
+                size="sm"
+                name={solution.user.name}
+                avatarUrl={solution.user.avatarUrl}
               />
-            )}
-            <AvatarFallback>{initial}</AvatarFallback>
-          </Avatar>
-          <span>{solution.user.name}</span>
+              <span>{solution.user.name}</span>
+            </span>
+          </UserHoverCard>
           <span>·</span>
           <span>
             {formatDistanceToNow(new Date(solution.createdAt), {

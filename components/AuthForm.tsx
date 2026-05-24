@@ -40,14 +40,27 @@ const GithubIcon = () => (
 );
 
 const authFormSchema = (type: FormType) => {
-  return z.object({
+  const schema = z.object({
     name:
       type === "sign-up"
         ? z.string().min(3, "Name must be at least 3 characters.")
         : z.string().optional(),
-    email: z.string().email("Please enter a valid email address."),
+    email: z.email("Please enter a valid email address."),
     password: z.string().min(3, "Password must be at least 3 characters."),
+    confirmPassword:
+      type === "sign-up"
+        ? z.string().min(1, "Please confirm your password.")
+        : z.string().optional(),
   });
+
+  if (type === "sign-up") {
+    return schema.refine((data) => data.password === data.confirmPassword, {
+      message: "Passwords do not match.",
+      path: ["confirmPassword"],
+    });
+  }
+
+  return schema;
 };
 
 const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any }) => {
@@ -60,6 +73,7 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
       name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -143,6 +157,18 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
               type="password"
             />
 
+            {!isSignIn && (
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                label={t?.auth?.confirmPasswordLabel || "Confirm password"}
+                placeholder={
+                  t?.auth?.confirmPasswordPlaceholder || "Re-enter your password"
+                }
+                type="password"
+              />
+            )}
+
             {isSignIn && (
               <div className="flex justify-end -mt-2">
                 <Link
@@ -181,16 +207,16 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
 
         <div className="flex flex-col gap-3">
           <Link href={`${OAUTH_BASE}/google`} className="w-full">
-            <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
+            <Button variant="outline" className="btn-oauth">
               <GoogleIcon />
-              <span className="font-semibold">Google</span>
+              <span>Google</span>
             </Button>
           </Link>
 
           <Link href={`${OAUTH_BASE}/github`} className="w-full">
-            <Button variant="outline" className="w-full flex justify-center gap-3 border py-6 rounded-xl transition" style={{ background: "var(--surface-card)", borderColor: "var(--surface-border)", color: "var(--text-heading)" }}>
+            <Button variant="outline" className="btn-oauth">
               <GithubIcon />
-              <span className="font-semibold">GitHub</span>
+              <span>GitHub</span>
             </Button>
           </Link>
         </div>

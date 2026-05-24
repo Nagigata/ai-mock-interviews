@@ -2,11 +2,12 @@
 
 import { ArrowBigUp, Eye, MessageSquare } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { toggleSolutionUpvote } from "@/lib/actions/solutions.actions";
 import { useState } from "react";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import UserHoverCard from "@/components/UserHoverCard";
+import UserAvatar from "@/components/UserAvatar";
 
 interface Solution {
   id: string;
@@ -47,8 +48,6 @@ export function SolutionCard({ solution, onSelect }: Props) {
     }
   };
 
-  const initial = solution.user.name?.[0]?.toUpperCase() ?? "?";
-
   return (
     <div
       role="button"
@@ -85,16 +84,20 @@ export function SolutionCard({ solution, onSelect }: Props) {
           className="flex min-w-0 items-center gap-2 text-xs"
           style={{ color: "var(--text-muted)" }}
         >
-          <Avatar size="sm">
-            {solution.user.avatarUrl && (
-              <AvatarImage
-                src={solution.user.avatarUrl}
-                alt={solution.user.name}
+          <UserHoverCard
+            userId={solution.user.id}
+            defaultName={solution.user.name}
+            defaultAvatarUrl={solution.user.avatarUrl}
+          >
+            <span className="inline-flex items-center gap-2">
+              <UserAvatar
+                size="sm"
+                name={solution.user.name}
+                avatarUrl={solution.user.avatarUrl}
               />
-            )}
-            <AvatarFallback>{initial}</AvatarFallback>
-          </Avatar>
-          <span className="truncate font-medium">{solution.user.name}</span>
+              <span className="truncate font-medium">{solution.user.name}</span>
+            </span>
+          </UserHoverCard>
           <span>·</span>
           <span className="shrink-0">
             {formatDistanceToNow(new Date(solution.createdAt), {

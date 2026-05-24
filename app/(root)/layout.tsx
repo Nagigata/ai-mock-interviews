@@ -20,7 +20,7 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "var(--surface-base)" }}>
       <Navbar locale={locale} t={t} user={profile} />
-      <NotificationWatcher />
+      <NotificationWatcher soundEnabled={profile?.notifySound ?? true} />
 
       {/* Main Content Area - Increased spacing (pt-24) to avoid "stuck" feeling */}
       <main className="flex-1 pt-24 pb-12 w-full max-w-7xl mx-auto px-6 lg:px-8">
