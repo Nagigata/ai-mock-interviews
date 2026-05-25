@@ -34,6 +34,7 @@ interface Props {
   solutionId: string;
   currentUserId?: string;
   isReply?: boolean;
+  onChange?: (updated: Comment) => void;
 }
 
 export function SolutionCommentItem({
@@ -41,14 +42,13 @@ export function SolutionCommentItem({
   solutionId,
   currentUserId,
   isReply = false,
+  onChange,
 }: Props) {
   const [upvoteCount, setUpvoteCount] = useState(comment.upvoteCount);
   const [isUpvoted, setIsUpvoted] = useState(comment.isUpvoted);
-  const [isDeleted, setIsDeleted] = useState(!!comment.deletedAt);
   const [showReply, setShowReply] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [content, setContent] = useState(comment.content);
-  const [replies, setReplies] = useState<Comment[]>(comment.replies);
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -68,7 +68,7 @@ export function SolutionCommentItem({
         content: replyContent,
         parentId: comment.id,
       }) as Comment;
-      setReplies((prev) => [...prev, newReply]);
+      onChange?.({ ...comment, replies: [...comment.replies, newReply] });
       setShowReply(false);
     } catch {
       toast.error("Failed to post reply");
@@ -89,7 +89,7 @@ export function SolutionCommentItem({
     setIsDeleting(true);
     try {
       await deleteComment(solutionId, comment.id);
-      setIsDeleted(true);
+      onChange?.({ ...comment, deletedAt: new Date().toISOString() });
       setConfirmOpen(false);
     } catch {
       toast.error("Failed to delete comment");
@@ -98,7 +98,7 @@ export function SolutionCommentItem({
     }
   };
 
-  if (isDeleted) {
+  if (comment.deletedAt) {
     return null;
   }
 
@@ -138,7 +138,7 @@ export function SolutionCommentItem({
         </div>
       )}
 
-      <div className="flex items-center gap-1 pl-7 mt-1">
+      <div className="flex items-center gap-1 pl-4 mt-1">
         <Button
           variant="ghost"
           size="sm"
@@ -212,13 +212,21 @@ export function SolutionCommentItem({
       )}
 
       <div className="mt-3 space-y-3">
-        {replies.map((reply) => (
+        {comment.replies.map((reply) => (
           <SolutionCommentItem
             key={reply.id}
             comment={reply}
             solutionId={solutionId}
             currentUserId={currentUserId}
             isReply
+            onChange={(updatedReply) => {
+              onChange?.({
+                ...comment,
+                replies: comment.replies.map((r) =>
+                  r.id === updatedReply.id ? updatedReply : r,
+                ),
+              });
+            }}
           />
         ))}
       </div>

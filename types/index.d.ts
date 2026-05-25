@@ -139,6 +139,8 @@ export interface InterviewAttemptDetail extends InterviewAttempt {
   transcripts: Transcript[];
 }
 
+export type OAuthProvider = "GOOGLE" | "GITHUB";
+
 export interface User {
   name: string;
   email: string;
@@ -149,6 +151,7 @@ export interface User {
   createdAt?: string;
   provider?: string | null;
   hasPassword?: boolean;
+  linkedProviders?: OAuthProvider[];
   gender?: Gender | null;
   birthday?: string | null;
   location?: string | null;

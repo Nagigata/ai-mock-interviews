@@ -7,6 +7,7 @@ import {
   Bell,
   CheckCircle2,
   Loader2,
+  Megaphone,
   MessageCircle,
   Sparkles,
 } from "lucide-react";
@@ -59,6 +60,10 @@ const getLoadingToastId = (notification: NotificationPayload) => {
 };
 
 const getNotificationIcon = (type: NotificationType) => {
+  if (type === "SYSTEM") {
+    return <Megaphone className="size-4 text-amber-400" />;
+  }
+
   if (type.endsWith("_PROCESSING")) {
     return <Loader2 className="size-4 animate-spin text-primary-200" />;
   }
@@ -83,11 +88,15 @@ const getNotificationIcon = (type: NotificationType) => {
 };
 
 const getToastKind = (type: NotificationType) => {
+  if (type === "SYSTEM") return "system";
   if (type.endsWith("_PROCESSING")) return "loading";
   if (type.endsWith("_FAILED")) return "error";
   if (type.endsWith("_COMPLETED")) return "success";
   return "message";
 };
+
+const SYSTEM_TOAST_CLASSES =
+  "!border-amber-400/40 !bg-gradient-to-br !from-amber-500/15 !via-[#1c1f26] !to-[#1c1f26] !text-amber-50 !shadow-lg !shadow-amber-500/10";
 
 const isPersistentNotification = (type: NotificationType) =>
   !type.endsWith("_PROCESSING");
@@ -168,11 +177,13 @@ const NotificationWatcher = ({ soundEnabled = true }: NotificationWatcherProps) 
 
       playSound();
 
+      const isSystem = kind === "system";
       const toastOptions = {
         id: `notification-${notification.id}`,
         description: notification.message,
         icon: getNotificationIcon(notification.type),
-        duration: 12000,
+        duration: isSystem ? 20000 : 12000,
+        className: isSystem ? SYSTEM_TOAST_CLASSES : undefined,
         action: notification.actionUrl
           ? {
               label: "Open",

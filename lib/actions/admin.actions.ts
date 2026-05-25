@@ -90,6 +90,25 @@ export async function updateAdminUser(
   }
 }
 
+export async function sendUserSystemNotification(
+  userId: string,
+  data: { title: string; message: string; actionUrl?: string }
+) {
+  return apiPost<any>(`/admin/users/${userId}/notify`, data);
+}
+
+export async function broadcastSystemNotification(data: {
+  title: string;
+  message: string;
+  actionUrl?: string;
+  audience: "ALL" | "ADMIN" | "USER";
+}) {
+  return apiPost<{ audience: string; recipientCount: number }>(
+    "/admin/broadcast",
+    data
+  );
+}
+
 export async function getAdminInterviews(params?: {
   page?: number;
   limit?: number;

@@ -7,12 +7,14 @@ import {
   User,
   Users,
   Ban,
+  Bell,
   CheckCircle2,
   ShieldCheck,
   UserMinus,
 } from "lucide-react";
 import { updateAdminUser } from "@/lib/actions/admin.actions";
 import AdminConfirmDialog from "@/components/admin/AdminConfirmDialog";
+import AdminNotifyUserDialog from "@/components/admin/AdminNotifyUserDialog";
 import AdminFilterBar from "@/components/admin/AdminFilterBar";
 import AdminPageHeader from "@/components/admin/AdminPageHeader";
 import AdminPagination from "@/components/admin/AdminPagination";
@@ -99,6 +101,11 @@ export default function AdminUsersClient({
   const [search, setSearch] = useState(currentSearch);
   const [updating, setUpdating] = useState<string | null>(null);
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
+  const [notifyTarget, setNotifyTarget] = useState<{
+    id: string;
+    name: string;
+    email: string;
+  } | null>(null);
 
   const buildParams = (overrides?: {
     page?: number;
@@ -330,51 +337,69 @@ export default function AdminUsersClient({
                     {isSelf ? (
                       <span className="text-xs italic text-light-600">-</span>
                     ) : (
-                      <div className="flex justify-end gap-2">
+                      <div className="flex justify-end gap-1">
                         <button
+                          type="button"
+                          onClick={() =>
+                            setNotifyTarget({
+                              id: user.id,
+                              name: user.name,
+                              email: user.email,
+                            })
+                          }
+                          disabled={updating === user.id}
+                          className="rounded-lg p-1.5 text-primary-200/70 transition-colors hover:bg-primary-200/10 hover:text-primary-200 disabled:opacity-50"
+                          title="Send notification"
+                          aria-label="Send notification"
+                        >
+                          <Bell className="size-4" />
+                        </button>
+                        <button
+                          type="button"
                           onClick={() => openStatusConfirm(user)}
                           disabled={updating === user.id}
-                          className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border px-3 py-1.5 text-xs transition-colors disabled:opacity-50 ${
+                          className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                             user.isActive === false
-                              ? "border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
-                              : "border-red-500/20 text-red-400 hover:bg-red-500/10"
+                              ? "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                              : "text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
                           }`}
+                          title={
+                            user.isActive === false ? "Reactivate" : "Deactivate"
+                          }
+                          aria-label={
+                            user.isActive === false ? "Reactivate" : "Deactivate"
+                          }
                         >
-                          {updating === user.id ? (
-                            "..."
-                          ) : user.isActive === false ? (
-                            <>
-                              <CheckCircle2 className="size-3.5" />
-                              Reactivate
-                            </>
+                          {user.isActive === false ? (
+                            <CheckCircle2 className="size-4" />
                           ) : (
-                            <>
-                              <Ban className="size-3.5" />
-                              Deactivate
-                            </>
+                            <Ban className="size-4" />
                           )}
                         </button>
                         <button
+                          type="button"
                           onClick={() => openRoleConfirm(user)}
                           disabled={updating === user.id}
-                          className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-lg border px-3 py-1.5 text-xs transition-colors disabled:opacity-50 ${
+                          className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                             user.role === "ADMIN"
-                              ? "border-red-500/20 text-red-400 hover:bg-red-500/10"
-                              : "border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10"
+                              ? "text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
+                              : "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
                           }`}
+                          title={
+                            user.role === "ADMIN"
+                              ? "Demote to USER"
+                              : "Promote to ADMIN"
+                          }
+                          aria-label={
+                            user.role === "ADMIN"
+                              ? "Demote to USER"
+                              : "Promote to ADMIN"
+                          }
                         >
-                          {updating === user.id ? (
-                            "..."
-                          ) : user.role === "ADMIN" ? (
-                            <>
-                              <UserMinus className="size-3.5" />
-                              Demote
-                            </>
+                          {user.role === "ADMIN" ? (
+                            <UserMinus className="size-4" />
                           ) : (
-                            <>
-                              <ShieldCheck className="size-3.5" />
-                              Promote
-                            </>
+                            <ShieldCheck className="size-4" />
                           )}
                         </button>
                       </div>
@@ -410,6 +435,13 @@ export default function AdminUsersClient({
           loading={updating === confirm.userId}
           onCancel={() => setConfirm(null)}
           onConfirm={handleConfirmAction}
+        />
+      )}
+
+      {notifyTarget && (
+        <AdminNotifyUserDialog
+          user={notifyTarget}
+          onClose={() => setNotifyTarget(null)}
         />
       )}
     </div>

@@ -4,6 +4,7 @@ import {
   AlertCircle,
   Bell,
   CheckCircle2,
+  Megaphone,
   MessageCircle,
   Sparkles,
 } from "lucide-react";
@@ -12,6 +13,9 @@ import { cn } from "@/lib/utils";
 import { NotificationItem, NotificationType } from "@/types";
 
 const getNotificationIcon = (type: NotificationType) => {
+  if (type === "SYSTEM") {
+    return <Megaphone className="size-4 text-amber-400" />;
+  }
   if (type.endsWith("_FAILED")) {
     return <AlertCircle className="size-4 text-destructive-100" />;
   }
@@ -63,6 +67,7 @@ export function NotificationCard({
   compact = false,
 }: Props) {
   const unread = !notification.readAt;
+  const isSystem = notification.type === "SYSTEM";
 
   return (
     <button
@@ -72,30 +77,59 @@ export function NotificationCard({
       className={cn(
         "group flex w-full gap-3 rounded-2xl text-left transition",
         compact ? "p-3" : "p-4",
-        unread
-          ? "bg-primary-200/[0.08] hover:bg-primary-200/[0.12]"
+        isSystem
+          ? "hover:bg-amber-500/[0.06]"
           : compact
             ? "hover:bg-white/[0.04]"
             : "border border-[var(--surface-border)] hover:bg-white/[0.04]",
       )}
     >
-      <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl border border-[var(--surface-border)] bg-white/[0.04]">
+      <div
+        className={cn(
+          "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl border",
+          isSystem
+            ? "border-amber-400/40 bg-amber-500/10"
+            : "border-[var(--surface-border)] bg-white/[0.04]",
+        )}
+      >
         {getNotificationIcon(notification.type)}
       </div>
 
       <div className="min-w-0 flex-1">
         <div className="flex items-start justify-between gap-3">
-          <p className="line-clamp-1 text-sm font-bold text-[var(--text-heading)]">
-            {notification.title}
-          </p>
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            {isSystem && (
+              <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-amber-300">
+                System
+              </span>
+            )}
+            <p
+              className={cn(
+                "line-clamp-1 text-sm font-bold",
+                isSystem ? "text-amber-50" : "text-[var(--text-heading)]",
+              )}
+            >
+              {notification.title}
+            </p>
+          </div>
           {unread && (
-            <span className="mt-1 size-2 shrink-0 rounded-full bg-primary-200" />
+            <span
+              className={cn(
+                "mt-1 size-2 shrink-0 rounded-full",
+                isSystem ? "bg-amber-400" : "bg-primary-200",
+              )}
+            />
           )}
         </div>
         <p className="mt-1 line-clamp-2 text-xs leading-5 text-[var(--text-muted)]">
           {notification.message}
         </p>
-        <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-primary-100/70">
+        <p
+          className={cn(
+            "mt-2 text-[11px] font-semibold uppercase tracking-[0.18em]",
+            isSystem ? "text-amber-300/70" : "text-primary-100/70",
+          )}
+        >
           {formatRelativeTime(notification.createdAt)}
         </p>
       </div>

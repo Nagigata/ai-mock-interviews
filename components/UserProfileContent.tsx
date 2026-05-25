@@ -1,7 +1,7 @@
 import Link from "next/link";
 import dayjs from "dayjs";
 import {
-  AlertTriangle,
+  Award,
   CalendarCheck2,
   CheckCircle2,
   Flame,
@@ -30,7 +30,8 @@ import {
 interface InterviewSummary {
   created: number;
   completedAttempts: number;
-  attentionAttempts: number;
+  averageScore: number | null;
+  scoredFeedbacks: number;
   latestLabel: string;
   latestDate?: string | null;
 }
@@ -109,10 +110,18 @@ const UserProfileContent = ({
       tone: "border-cyan-400/20 bg-cyan-400/10 text-cyan-300",
     },
     {
-      label: "Needs Review",
-      value: interviewSummary.attentionAttempts,
-      helper: "Too short or failed attempts",
-      icon: AlertTriangle,
+      label: "Avg Score",
+      value:
+        interviewSummary.averageScore === null
+          ? "--"
+          : Math.round(interviewSummary.averageScore).toString(),
+      helper:
+        interviewSummary.scoredFeedbacks > 0
+          ? `Across ${interviewSummary.scoredFeedbacks} scored feedback${
+              interviewSummary.scoredFeedbacks === 1 ? "" : "s"
+            }`
+          : "No scored feedback yet",
+      icon: Award,
       tone: "border-amber-400/20 bg-amber-400/10 text-amber-300",
     },
     {

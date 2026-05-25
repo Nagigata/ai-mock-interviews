@@ -14,6 +14,7 @@ import {
   PanelLeftOpen,
   FileCode2,
   MessagesSquare,
+  Megaphone,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -25,6 +26,7 @@ const sidebarItems = [
   { href: "/admin/solutions", label: "Solutions", icon: FileCode2 },
   { href: "/admin/comments", label: "Comments", icon: MessagesSquare },
   { href: "/admin/skills", label: "Skills", icon: Layers },
+  { href: "/admin/broadcast", label: "Broadcast", icon: Megaphone },
   { href: "/admin/audit-logs", label: "Audit Logs", icon: ScrollText },
 ];
 

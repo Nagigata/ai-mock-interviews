@@ -356,6 +356,22 @@ export async function changeMyPassword(input: {
   }
 }
 
+export async function unlinkProvider(provider: "google" | "github") {
+  try {
+    await apiDelete(`/auth/unlink/${provider}`);
+    revalidatePath("/settings");
+    return { success: true as const };
+  } catch (error) {
+    return {
+      success: false as const,
+      message:
+        error instanceof Error
+          ? error.message
+          : `Failed to unlink ${provider}.`,
+    };
+  }
+}
+
 export async function getUserProfileById(
   userId: string,
 ): Promise<UserProfile | null> {

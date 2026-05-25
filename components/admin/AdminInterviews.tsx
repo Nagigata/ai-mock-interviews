@@ -317,30 +317,40 @@ export default function AdminInterviewsClient({
                   {new Date(interview.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-5 py-4 text-right">
-                  <div className="flex items-center justify-end gap-2">
+                  <div className="flex items-center justify-end gap-1">
                     <Link
                       href={`/admin/interviews/${interview.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-light-100 transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 hover:text-primary-200"
+                      className="rounded-lg p-1.5 text-light-400 transition-colors hover:bg-primary-200/10 hover:text-primary-200"
+                      title="View interview"
+                      aria-label="View interview"
                     >
-                      <Eye className="size-3.5" />
-                      View
+                      <Eye className="size-4" />
                     </Link>
                     <button
                       type="button"
                       onClick={() => openArchiveDialog(interview)}
                       disabled={archiveUpdatingId === interview.id}
-                      className={`inline-flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors disabled:opacity-50 ${
+                      className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                         interview.archivedAt
-                          ? "border-emerald-400/15 text-emerald-400 hover:bg-emerald-500/10"
-                          : "border-amber-400/15 text-amber-400 hover:bg-amber-500/10"
+                          ? "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                          : "text-amber-400/70 hover:bg-amber-500/10 hover:text-amber-400"
                       }`}
+                      title={
+                        interview.archivedAt
+                          ? "Restore interview"
+                          : "Archive interview"
+                      }
+                      aria-label={
+                        interview.archivedAt
+                          ? "Restore interview"
+                          : "Archive interview"
+                      }
                     >
                       {interview.archivedAt ? (
-                        <RotateCcw className="size-3.5" />
+                        <RotateCcw className="size-4" />
                       ) : (
-                        <Archive className="size-3.5" />
+                        <Archive className="size-4" />
                       )}
-                      {interview.archivedAt ? "Restore" : "Archive"}
                     </button>
                   </div>
                 </td>

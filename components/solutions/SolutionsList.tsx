@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
+import { useSearchParams } from "next/navigation";
 import { SolutionCard } from "./SolutionCard";
 import { getSolutions } from "@/lib/actions/solutions.actions";
 import { Button } from "@/components/ui/button";
@@ -21,9 +22,28 @@ interface Props {
   challengeId: string;
   onSelectSolution: (solutionId: string) => void;
   limit?: number;
+  onAvailableLanguagesChange?: (languages: string[]) => void;
+  onTotalChange?: (total: number) => void;
 }
 
-export function SolutionsList({ challengeId, onSelectSolution, limit = 20 }: Props) {
+type SortKey = "newest" | "top-views" | "top-votes";
+const ALLOWED_SORTS: readonly SortKey[] = ["newest", "top-views", "top-votes"];
+
+export function SolutionsList({
+  challengeId,
+  onSelectSolution,
+  limit = 20,
+  onAvailableLanguagesChange,
+  onTotalChange,
+}: Props) {
+  const searchParams = useSearchParams();
+  const language = searchParams.get("language") || undefined;
+  const sortParam = searchParams.get("sort");
+  const sort: SortKey | undefined =
+    sortParam && (ALLOWED_SORTS as readonly string[]).includes(sortParam)
+      ? (sortParam as SortKey)
+      : undefined;
+
   const [solutions, setSolutions] = useState<Solution[]>([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -33,13 +53,21 @@ export function SolutionsList({ challengeId, onSelectSolution, limit = 20 }: Pro
   useEffect(() => {
     let ignore = false;
     setIsInitialLoading(true);
-    getSolutions(challengeId, 1, limit)
+    getSolutions(challengeId, 1, limit, { language, sort })
       .then((raw) => {
         if (ignore) return;
-        const data = raw as { solutions: Solution[]; total: number };
+        const data = raw as {
+          solutions: Solution[];
+          total: number;
+          availableLanguages?: string[];
+        };
         setSolutions(data.solutions);
         setTotal(data.total);
         setPage(1);
+        onTotalChange?.(data.total);
+        if (data.availableLanguages) {
+          onAvailableLanguagesChange?.(data.availableLanguages);
+        }
       })
       .catch(() => {
         if (!ignore) setSolutions([]);
@@ -50,14 +78,15 @@ export function SolutionsList({ challengeId, onSelectSolution, limit = 20 }: Pro
     return () => {
       ignore = true;
     };
-  }, [challengeId, limit]);
+  }, [challengeId, limit, language, sort, onAvailableLanguagesChange]);
 
   const loadMore = () => {
     const nextPage = page + 1;
     startTransition(async () => {
-      const data = (await getSolutions(challengeId, nextPage, limit)) as {
-        solutions: Solution[];
-      };
+      const data = (await getSolutions(challengeId, nextPage, limit, {
+        language,
+        sort,
+      })) as { solutions: Solution[] };
       setSolutions((prev) => [...prev, ...data.solutions]);
       setPage(nextPage);
     });

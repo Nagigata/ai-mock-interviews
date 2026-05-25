@@ -20,6 +20,7 @@ import SubmissionResultView, { SubmissionResultViewSkeleton } from "@/components
 import UnderlineTabs from "@/components/UnderlineTabs";
 import { SolutionsList } from "@/components/solutions/SolutionsList";
 import { SolutionDetailLoader } from "@/components/solutions/SolutionDetailLoader";
+import SolutionsFilterBar from "@/components/solutions/SolutionsFilterBar";
 
 interface ProblemDescriptionProps {
   challenge: Challenge;
@@ -162,6 +163,10 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
   const [selectedSubmission, setSelectedSubmission] =
     useState<ChallengeSubmissionDetail | null>(null);
   const [isLoadingSubmission, setIsLoadingSubmission] = useState(false);
+  const [availableLanguages, setAvailableLanguages] = useState<string[]>([]);
+  const [solutionsTotal, setSolutionsTotal] = useState<number | undefined>(
+    undefined,
+  );
 
   // `submission-result` is a transient view — it overrides whatever the URL says.
   const activeTab: ProblemTab = (selectedSubmission || isLoadingSubmission) ? "submission-result" : urlTab;
@@ -311,10 +316,18 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
               onBack={handleBackToSolutionsList}
             />
           ) : (
-            <SolutionsList
-              challengeId={challenge.id}
-              onSelectSolution={handleSelectSolution}
-            />
+            <>
+              <SolutionsFilterBar
+                availableLanguages={availableLanguages}
+                totalCount={solutionsTotal}
+              />
+              <SolutionsList
+                challengeId={challenge.id}
+                onSelectSolution={handleSelectSolution}
+                onAvailableLanguagesChange={setAvailableLanguages}
+                onTotalChange={setSolutionsTotal}
+              />
+            </>
           )}
         </div>
       ) : activeTab === "submissions" ? (

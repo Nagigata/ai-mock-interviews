@@ -24,7 +24,8 @@ export const metadata: Metadata = {
 type RawInterviewSummary = {
   created?: number;
   completedAttempts?: number;
-  attentionAttempts?: number;
+  averageScore?: number | null;
+  scoredFeedbacks?: number;
   latestRole?: string | null;
   latestStatus?: string | null;
   latestDate?: string | null;
@@ -40,7 +41,8 @@ const buildInterviewSummary = (
   return {
     created: r.created ?? 0,
     completedAttempts: r.completedAttempts ?? 0,
-    attentionAttempts: r.attentionAttempts ?? 0,
+    averageScore: r.averageScore ?? null,
+    scoredFeedbacks: r.scoredFeedbacks ?? 0,
     latestLabel,
     latestDate: r.latestDate ? dayjs(r.latestDate).toISOString() : null,
   };

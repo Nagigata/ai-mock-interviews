@@ -10,8 +10,23 @@ export async function createSolution(
   return apiPost(`/challenges/${challengeId}/solutions`, data);
 }
 
-export async function getSolutions(challengeId: string, page = 1, limit = 20) {
-  return apiGet(`/challenges/${challengeId}/solutions?page=${page}&limit=${limit}`);
+export interface GetSolutionsFilters {
+  language?: string;
+  sort?: "newest" | "top-views" | "top-votes";
+}
+
+export async function getSolutions(
+  challengeId: string,
+  page = 1,
+  limit = 20,
+  filters: GetSolutionsFilters = {},
+) {
+  const params = new URLSearchParams();
+  params.set("page", String(page));
+  params.set("limit", String(limit));
+  if (filters.language) params.set("language", filters.language);
+  if (filters.sort) params.set("sort", filters.sort);
+  return apiGet(`/challenges/${challengeId}/solutions?${params.toString()}`);
 }
 
 export async function getSolutionById(solutionId: string) {
