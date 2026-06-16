@@ -14,11 +14,11 @@ interface RecentActivityTableProps {
 }
 
 const statusClasses: Record<string, string> = {
-  ACCEPTED: "text-emerald-400",
-  COMPLETED: "text-emerald-400",
-  REJECTED: "text-red-400",
-  WRONG_ANSWER: "text-red-400",
-  PENDING: "text-light-400",
+  ACCEPTED: "text-emerald-700 dark:text-emerald-400",
+  COMPLETED: "text-emerald-700 dark:text-emerald-400",
+  REJECTED: "text-red-700 dark:text-red-400",
+  WRONG_ANSWER: "text-red-700 dark:text-red-400",
+  PENDING: "text-muted-foreground",
 };
 
 const getActivityHref = (item: RecentActivityItem) => {
@@ -58,7 +58,7 @@ const RecentActivityTable = ({
   const displayTotal = totalItems ?? items.length;
 
   return (
-    <section className="rounded-[32px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
+    <section className="rounded-[32px] border border-foreground/[0.08] bg-card p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
@@ -69,7 +69,7 @@ const RecentActivityTable = ({
               {title}
             </h3>
             {!compact && (
-              <p className="mt-1 text-sm text-light-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 {displayTotal} item{displayTotal !== 1 ? "s" : ""} found
               </p>
             )}
@@ -80,7 +80,7 @@ const RecentActivityTable = ({
           {actionHref && actionLabel ? (
             <Link
               href={actionHref}
-              className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
+              className="inline-flex items-center gap-2 rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
             >
               {actionLabel}
               <ArrowRight className="size-4" />
@@ -89,9 +89,9 @@ const RecentActivityTable = ({
         </div>
       </div>
 
-      <div className="mt-5 overflow-x-auto rounded-[24px] border border-white/[0.08] bg-white/[0.025]">
+      <div className="mt-5 overflow-x-auto rounded-[24px] border border-foreground/[0.08] bg-foreground/[0.025]">
         <table className="w-full min-w-[760px] border-collapse">
-          <thead className="bg-white/[0.04] text-left text-xs uppercase tracking-[0.16em] text-light-400">
+          <thead className="bg-foreground/[0.04] text-left text-xs uppercase tracking-[0.16em] text-muted-foreground">
             <tr>
               <th className="px-4 py-3 font-bold">Activity</th>
               <th className="px-4 py-3 font-bold">Context</th>
@@ -104,7 +104,7 @@ const RecentActivityTable = ({
               items.map((item) => (
                 <tr
                   key={item.id}
-                  className="relative cursor-pointer border-t border-white/[0.07] transition hover:bg-white/[0.035]"
+                  className="relative cursor-pointer border-t border-foreground/[0.07] transition hover:bg-foreground/[0.035]"
                 >
                   <td className="px-4 py-3">
                     <Link
@@ -114,29 +114,29 @@ const RecentActivityTable = ({
                       {getActivityTitle(item)}
                     </Link>
                     {item.activityType === "INTERVIEW_ATTEMPT" ? (
-                      <p className="mt-1 text-xs text-light-400">
+                      <p className="mt-1 text-xs text-muted-foreground">
                         {item.interviewLevel || "Practice"} session
                       </p>
                     ) : null}
                   </td>
-                  <td className="px-4 py-3 text-sm text-light-100">
+                  <td className="px-4 py-3 text-sm text-foreground">
                     {getActivityContext(item)}
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`rounded-full border border-current/15 bg-current/10 px-2.5 py-1 text-xs font-bold ${statusClasses[item.status] || "text-light-100"}`}
+                      className={`rounded-full border border-current/15 bg-current/10 px-2.5 py-1 text-xs font-bold ${statusClasses[item.status] || "text-foreground"}`}
                     >
                       {item.status.replaceAll("_", " ")}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-sm text-light-400">
+                  <td className="px-4 py-3 text-sm text-muted-foreground">
                     {dayjs(item.submittedAt).format(compact ? "MMM D" : "MMM D, YYYY HH:mm")}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-light-400">
+                <td colSpan={4} className="px-4 py-8 text-center text-muted-foreground">
                   No recent activity yet.
                 </td>
               </tr>

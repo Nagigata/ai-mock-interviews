@@ -68,7 +68,7 @@ const UserAvatar = ({
     <div
       aria-label={`${name || "User"} avatar`}
       className={cn(
-        "group/avatar relative isolate overflow-hidden rounded-full border border-white/10 bg-[radial-gradient(circle_at_30%_20%,rgba(202,197,254,0.26),transparent_34%),linear-gradient(135deg,#2b3140_0%,#151a23_48%,#090c11_100%)] text-primary-100 shadow-[0_10px_28px_rgba(0,0,0,0.28)] ring-1 ring-white/[0.04] transition-all duration-200",
+        "group/avatar relative isolate overflow-hidden rounded-full border border-foreground/10 bg-[radial-gradient(circle_at_30%_20%,rgba(202,197,254,0.26),transparent_34%),linear-gradient(135deg,#2b3140_0%,#151a23_48%,#090c11_100%)] text-primary-100 shadow-[0_10px_28px_rgba(0,0,0,0.28)] ring-1 ring-foreground/[0.04] transition-all duration-200",
         "after:pointer-events-none after:absolute after:inset-0 after:rounded-full after:bg-[linear-gradient(135deg,rgba(255,255,255,0.18),transparent_35%,rgba(255,255,255,0.05))] after:opacity-80",
         sizeClasses[size],
         className,

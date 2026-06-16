@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -10,7 +11,8 @@ import { vapi } from "@/lib/vapi.sdk";
 import { interviewer_en, interviewer_vi } from "@/constants";
 import { createInterviewAttempt, startFeedbackGeneration } from "@/lib/actions/general.action";
 import UserAvatar from "./UserAvatar";
-import { AlertTriangle, ChevronDown, Mic, Phone, PhoneOff, Settings, Volume2, X } from "lucide-react";
+import TranscriptPanel from "./TranscriptPanel";
+import { AlertTriangle, ChevronDown, MessageSquare, Mic, Phone, PhoneOff, Settings, Volume2, X } from "lucide-react";
 import { AgentProps } from "@/types";
 
 
@@ -54,9 +56,24 @@ const Agent = ({
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
   const [isEndConfirmOpen, setIsEndConfirmOpen] = useState(false);
   const [attemptId, setAttemptId] = useState<string | null>(initialAttemptId ?? null);
+  const [isTranscriptExpanded, setIsTranscriptExpanded] = useState(false);
+  const [portalEl, setPortalEl] = useState<HTMLElement | null>(null);
   const langMenuRef = useRef<HTMLDivElement>(null);
   const feedbackRequestedRef = useRef(false);
-  const lastMessage = messages[messages.length - 1]?.content || "";
+
+  useEffect(() => {
+    // Portal target: a plain div appended to <body>. Portaling straight to
+    // document.body fails because the global `body.pattern > *` rule forces
+    // position:relative on body's direct children, overriding the sidebar's
+    // `fixed`. A nested wrapper escapes that selector while still letting
+    // `fixed` pin to the viewport (the wrapper has no transform).
+    const el = document.createElement("div");
+    document.body.appendChild(el);
+    setPortalEl(el);
+    return () => {
+      document.body.removeChild(el);
+    };
+  }, []);
 
   useEffect(() => {
     const onCallStart = () => {
@@ -248,23 +265,74 @@ const Agent = ({
     vapi.stop();
   };
 
+  // Conversation rendered as a slide-in sidebar on the RIGHT, toggled by a
+  // floating tab. Overlay (fixed) so it never shifts the centered call layout.
+  const transcriptSidebar = messages.length > 0 && (
+    <>
+      {!isTranscriptExpanded && (
+        <button
+          type="button"
+          onClick={() => setIsTranscriptExpanded(true)}
+          aria-label={t?.agent?.showConversation || "Show conversation"}
+          className="fixed right-0 top-1/2 z-[80] flex -translate-y-1/2 items-center gap-2 rounded-l-xl bg-primary-200 px-3 py-3 font-bold text-dark-100 shadow-lg transition hover:bg-primary-200/90"
+        >
+          <MessageSquare className="size-5" />
+        </button>
+      )}
+
+      <div
+        className={cn(
+          "fixed right-0 top-0 z-[90] h-full w-full max-w-md transform p-4 transition-transform duration-300 ease-in-out",
+          isTranscriptExpanded
+            ? "translate-x-0"
+            : "pointer-events-none translate-x-full",
+        )}
+        aria-hidden={!isTranscriptExpanded}
+      >
+        <div className="relative h-full">
+          <button
+            type="button"
+            onClick={() => setIsTranscriptExpanded(false)}
+            aria-label={t?.agent?.hideConversation || "Hide conversation"}
+            className="absolute right-4 top-4 z-10 text-muted-foreground transition hover:text-white"
+          >
+            <X className="size-5" />
+          </button>
+          <TranscriptPanel
+            messages={messages}
+            userName={userName}
+            userAvatarUrl={userAvatarUrl}
+            aiName={t?.agent?.aiInterviewer || "AI Interviewer"}
+            title={t?.agent?.conversation || "Conversation"}
+            emptyText={
+              t?.agent?.conversationEmpty ||
+              "The conversation will appear here once the call starts."
+            }
+            className="h-full bg-card"
+          />
+        </div>
+      </div>
+    </>
+  );
+
   return (
     <div className="w-full flex justify-center mt-6 px-6 ">
       {type === "generate" ? (
-        <div className="w-full max-w-lg bg-dark-200/50 backdrop-blur-sm border border-dark-300 rounded-3xl p-8 flex flex-col items-center gap-6 shadow-2xl">
+        <div className="w-full flex flex-col items-center gap-6">
+        <div className="w-full max-w-lg bg-card/50 backdrop-blur-sm border border-border rounded-3xl p-8 flex flex-col items-center gap-6 shadow-2xl">
           <div className="bg-primary-200/10 p-4 rounded-full border border-primary-200/30">
             <Settings className="size-10 text-primary-200" />
           </div>
 
           <div className="text-center">
             <h2 className="text-xl font-bold text-white mb-2">{t?.agent?.aiInterviewer || "AI Interviewer Setup"}</h2>
-            <p className="text-light-100 text-sm">
+            <p className="text-foreground text-sm">
               {t?.agent?.setupInstruction || "Please select your preferred language before we proceed."}
             </p>
           </div>
 
-          <div className="w-full bg-dark-300/50 rounded-xl p-4 flex justify-between items-center border border-dark-300 gap-4">
-            <span className="font-semibold text-light-100 flex items-center gap-2">
+          <div className="w-full bg-muted/50 rounded-xl p-4 flex justify-between items-center border border-border gap-4">
+            <span className="font-semibold text-foreground flex items-center gap-2">
               <Mic className="size-5" />
               {t?.agent?.selectLanguage || "Select Language"}
             </span>
@@ -275,7 +343,7 @@ const Agent = ({
                 aria-haspopup="menu"
                 aria-expanded={isLangMenuOpen}
                 aria-label="Select interview language"
-                className="bg-dark-100 border border-primary-200/50 rounded-lg px-4 py-2 flex items-center gap-3 text-white hover:border-primary-200 transition-all cursor-pointer disabled:opacity-50 min-w-[160px] justify-between shadow-md"
+                className="bg-background border border-primary-200/50 rounded-lg px-4 py-2 flex items-center gap-3 text-white hover:border-primary-200 transition-all cursor-pointer disabled:opacity-50 min-w-[160px] justify-between shadow-md"
               >
                 <div className="flex items-center gap-2">
                   <Image
@@ -292,17 +360,17 @@ const Agent = ({
               </button>
 
               {isLangMenuOpen && (
-                <div className="absolute top-full right-0 mt-2 w-full bg-dark-100 border border-primary-200/30 rounded-xl shadow-2xl overflow-hidden z-100 animate-in fade-in slide-in-from-top-2 duration-200">
+                <div className="absolute top-full right-0 mt-2 w-full bg-background border border-primary-200/30 rounded-xl shadow-2xl overflow-hidden z-100 animate-in fade-in slide-in-from-top-2 duration-200">
                   <button
                     onClick={() => { setSelectedLanguage("en"); setIsLangMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-dark-300 transition-colors ${selectedLanguage === "en" ? "bg-dark-300 text-primary-200 font-bold" : "text-white"}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors ${selectedLanguage === "en" ? "bg-muted text-primary-200 font-bold" : "text-white"}`}
                   >
                     <Image src="https://flagcdn.com/gb.svg" alt="English" width={24} height={16} />
                     <span>English</span>
                   </button>
                   <button
                     onClick={() => { setSelectedLanguage("vi"); setIsLangMenuOpen(false); }}
-                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-dark-300 transition-colors ${selectedLanguage === "vi" ? "bg-dark-300 text-primary-200 font-bold" : "text-white"}`}
+                    className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-muted transition-colors ${selectedLanguage === "vi" ? "bg-muted text-primary-200 font-bold" : "text-white"}`}
                   >
                     <Image src="https://flagcdn.com/vn.svg" alt="Tiếng Việt" width={24} height={14} />
                     <span>Tiếng Việt</span>
@@ -318,7 +386,7 @@ const Agent = ({
               onClick={handleCall}
               disabled={callStatus === "CONNECTING"}
             >
-              {callStatus === "CONNECTING" && <span className="absolute inset-0 bg-white/20 animate-pulse" />}
+              {callStatus === "CONNECTING" && <span className="absolute inset-0 bg-foreground/20 animate-pulse" />}
               <Phone className="size-5" />
               {callStatus === "CONNECTING" ? "Connecting..." : (t?.agent?.callBtn || "Begin Setup")}
             </button>
@@ -339,28 +407,15 @@ const Agent = ({
             </div>
           )}
 
-          {messages.length > 0 && (
-            <div className="border border-dark-300 bg-dark-200/50 p-4 rounded-xl w-full mx-auto shadow-inner min-h-[80px] flex items-center justify-center mt-2">
-              <p
-                key={lastMessage}
-                className={cn(
-                  "transition-opacity duration-500 opacity-0 text-md text-center text-white/90 font-medium leading-relaxed",
-                  "animate-fadeIn opacity-100",
-                )}
-              >
-                {lastMessage}
-              </p>
-            </div>
-          )}
+        </div>
+
         </div>
       ) : (
-        <div className="w-full max-w-6xl flex flex-col gap-10">
-          <div className="flex sm:flex-row flex-col gap-6 lg:gap-10 items-stretch justify-between w-full relative">
-            {/* Connection Status line between cards (visual only on large screens) */}
-            <div className="hidden sm:block absolute top-1/2 left-1/4 right-1/4 h-1 border-t-2 border-dashed border-dark-300 z-0"></div>
-
-            {/* AI Interviewer Card */}
-            <div className="flex flex-col gap-6 justify-center items-center p-10 bg-dark-200 border border-primary-200/20 rounded-3xl shadow-2xl flex-1 min-h-[450px] z-10 relative">
+        <div className="w-full max-w-4xl flex flex-col items-center gap-8">
+          {/* AI + User cards side by side (classic layout) */}
+          <div className="flex w-full flex-col sm:flex-row gap-6 items-stretch justify-center">
+              {/* AI Interviewer Card */}
+              <div className="flex flex-col gap-4 justify-center items-center p-8 bg-card border border-primary-200/20 rounded-3xl shadow-2xl flex-1 min-h-[210px] z-10 relative">
               <div className="relative p-2 rounded-full border-2 border-dashed border-primary-200/50">
                 <div className={cn("absolute inset-[-10px] rounded-full bg-primary-200/20", isSpeaking ? "animate-ping opacity-75" : "opacity-0")}></div>
                 <div className="rounded-full w-[140px] h-[140px] relative z-10 bg-[#eef0ff] flex items-center justify-center shadow-inner border border-white">
@@ -376,60 +431,46 @@ const Agent = ({
               <h3 className="mt-4 text-primary-100 truncate w-full text-center px-4" title={t?.agent?.aiInterviewer || "AI Interviewer"}>
                 {t?.agent?.aiInterviewer || "AI Interviewer"}
               </h3>
-              <div className="mt-2 flex items-center gap-2 bg-dark-300 py-1.5 px-3 rounded-full border border-dark-100">
-                <div className={cn("size-2.5 rounded-full shadow-[0_0_8px_rgba(73,222,80,0.8)]", isSpeaking ? "bg-success-100" : "bg-light-600")}></div>
-                <span className="text-xs text-light-100 font-bold tracking-widest uppercase">
+              <div className="mt-2 flex items-center gap-2 bg-muted py-1.5 px-3 rounded-full border border-border">
+                <div className={cn("size-2.5 rounded-full shadow-[0_0_8px_rgba(73,222,80,0.8)]", isSpeaking ? "bg-success-100" : "bg-muted")}></div>
+                <span className="text-xs text-foreground font-bold tracking-widest uppercase">
                   {isSpeaking ? "Speaking" : "Listening"}
                 </span>
               </div>
             </div>
 
-            {/* User Profile Card */}
-            <div className="flex flex-col gap-6 justify-center items-center p-10 bg-dark-200 border border-dark-300 rounded-3xl shadow-2xl flex-1 min-h-[450px] z-10 relative">
-              <div className="relative p-2 rounded-full border-2 border-dashed border-light-600">
+              {/* User Profile Card */}
+              <div className="flex flex-col gap-4 justify-center items-center p-8 bg-card border border-border rounded-3xl shadow-2xl flex-1 min-h-[210px] z-10 relative">
+              <div className="relative p-2 rounded-full border-2 border-dashed border-border">
                 <UserAvatar
                   name={userName || "User"}
                   avatarUrl={userAvatarUrl}
                   size="xl"
-                  className="border border-light-400"
+                  className="border border-border"
                 />
               </div>
               <h3 className="mt-4 truncate w-full text-center px-4" title={userName}>
                 {userName}
               </h3>
-              <div className="mt-2 flex items-center gap-2 bg-dark-300 py-1.5 px-3 rounded-full border border-dark-100">
+              <div className="mt-2 flex items-center gap-2 bg-muted py-1.5 px-3 rounded-full border border-border">
                 <div className="size-2.5 rounded-full bg-success-100 shadow-[0_0_8px_rgba(73,222,80,0.8)] flex items-center justify-center">
                   {!isSpeaking && callStatus === "ACTIVE" && <span className="size-full animate-ping rounded-full bg-success-100 opacity-75"></span>}
                 </div>
-                <span className="text-xs text-light-100 font-bold tracking-widest uppercase">
+                <span className="text-xs text-foreground font-bold tracking-widest uppercase">
                   Ready
                 </span>
               </div>
-            </div>
+              </div>
           </div>
 
-          {messages.length > 0 && (
-            <div className="border border-dark-300 bg-dark-200/50 p-6 rounded-2xl w-full mx-auto shadow-inner min-h-[100px] flex items-center justify-center">
-              <p
-                key={lastMessage}
-                className={cn(
-                  "transition-opacity duration-500 opacity-0 text-xl text-center text-white/90 font-medium leading-relaxed",
-                  "animate-fadeIn opacity-100",
-                )}
-              >
-                {lastMessage}
-              </p>
-            </div>
-          )}
-
-          <div className="flex items-center justify-center mt-4">
+          <div className="flex items-center justify-center">
             {callStatus !== "ACTIVE" ? (
               <button
                 className="bg-primary-200 text-dark-100 font-bold py-4 px-12 rounded-full flex items-center justify-center gap-3 hover:bg-primary-200/80 transition-all disabled:opacity-50 relative overflow-hidden"
                 onClick={handleCall}
                 disabled={callStatus === "CONNECTING" || isGenerating}
               >
-                {(callStatus === "CONNECTING" || isGenerating) && <span className="absolute inset-0 bg-white/20 animate-pulse" />}
+                {(callStatus === "CONNECTING" || isGenerating) && <span className="absolute inset-0 bg-foreground/20 animate-pulse" />}
                 <Phone className={cn("size-5", isGenerating && "animate-spin")} />
                 {isGenerating
                   ? (language === "vi" ? "Đang tạo đánh giá..." : "Generating Feedback...")
@@ -451,6 +492,8 @@ const Agent = ({
         </div>
       )}
 
+      {portalEl && createPortal(transcriptSidebar, portalEl)}
+
       {isEndConfirmOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
           <div
@@ -458,25 +501,25 @@ const Agent = ({
             aria-modal="true"
             aria-labelledby="end-interview-title"
             aria-describedby="end-interview-desc"
-            className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#151922] p-6 shadow-[0_24px_70px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200"
+            className="relative w-full max-w-md rounded-[28px] border border-foreground/10 bg-card p-6 shadow-[0_24px_70px_rgba(0,0,0,0.5)] animate-in fade-in zoom-in-95 duration-200"
           >
             <button
               onClick={() => setIsEndConfirmOpen(false)}
-              className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white"
+              className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-white"
               aria-label="Close end interview confirmation"
             >
               <X className="size-5" />
             </button>
 
             <div className="mb-5 flex items-start gap-3">
-              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-amber-300/20 bg-amber-300/10 text-amber-300">
+              <div className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-amber-300/20 bg-amber-300/10 text-amber-700 dark:text-amber-300">
                 <AlertTriangle className="size-5" />
               </div>
               <div>
                 <h3 id="end-interview-title" className="text-lg font-bold text-white">
                   End this interview?
                 </h3>
-                <p id="end-interview-desc" className="mt-2 text-sm leading-6 text-light-100/75">
+                <p id="end-interview-desc" className="mt-2 text-sm leading-6 text-foreground/75">
                   Feedback will only be generated if you answered at least 2
                   questions with enough detail. If the interview is too short,
                   we will save the attempt as too short and return you to the
@@ -485,14 +528,14 @@ const Agent = ({
               </div>
             </div>
 
-            <div className="rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm leading-6 text-light-100">
+            <div className="rounded-2xl border border-foreground/10 bg-foreground/[0.04] p-4 text-sm leading-6 text-foreground">
               Make sure you are ready to finish before ending the call.
             </div>
 
             <div className="mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
               <button
                 onClick={() => setIsEndConfirmOpen(false)}
-                className="rounded-2xl border border-white/10 bg-white/[0.04] px-5 py-3 text-sm font-bold text-light-100 transition hover:bg-white/[0.08]"
+                className="rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-5 py-3 text-sm font-bold text-foreground transition hover:bg-foreground/[0.08]"
               >
                 Continue Interview
               </button>

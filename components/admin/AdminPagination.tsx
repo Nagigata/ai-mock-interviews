@@ -42,7 +42,7 @@ export default function AdminPagination({
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage <= 1}
         aria-label="Go to previous page"
-        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+        className="flex size-9 items-center justify-center rounded-lg border border-foreground/10 text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
       >
         <ChevronLeft className="size-4" />
       </button>
@@ -51,7 +51,7 @@ export default function AdminPagination({
         page === "..." ? (
           <span
             key={`ellipsis-${index}`}
-            className="flex size-9 items-center justify-center text-sm text-light-600"
+            className="flex size-9 items-center justify-center text-sm text-muted-foreground"
           >
             ...
           </span>
@@ -64,7 +64,7 @@ export default function AdminPagination({
             className={`flex size-9 items-center justify-center rounded-lg border text-sm font-medium transition-colors ${
               page === currentPage
                 ? "border-primary-200 bg-primary-200 text-dark-100"
-                : "border-white/10 text-light-400 hover:bg-white/5 hover:text-white"
+                : "border-foreground/10 text-muted-foreground hover:bg-foreground/5 hover:text-white"
             }`}
           >
             {page}
@@ -76,7 +76,7 @@ export default function AdminPagination({
         onClick={() => onPageChange(currentPage + 1)}
         disabled={currentPage >= totalPages}
         aria-label="Go to next page"
-        className="flex size-9 items-center justify-center rounded-lg border border-white/10 text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
+        className="flex size-9 items-center justify-center rounded-lg border border-foreground/10 text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white disabled:cursor-not-allowed disabled:opacity-30"
       >
         <ChevronRight className="size-4" />
       </button>

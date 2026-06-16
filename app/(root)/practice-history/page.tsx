@@ -112,7 +112,7 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
+      <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
@@ -122,14 +122,14 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
               <h1 className="text-3xl font-bold tracking-tight text-white">
                 Practice History
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-light-100/75">
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/75">
                 Review your latest challenge submissions and completed mock
                 interview attempts in one place.
               </p>
             </div>
           </div>
 
-          <span className="w-fit rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-light-100">
+          <span className="w-fit rounded-full border border-foreground/10 bg-foreground/[0.04] px-4 py-2 text-sm font-semibold text-foreground">
             {summary.total} total records
           </span>
         </div>
@@ -144,14 +144,14 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
       />
 
       {totalPages > 1 && (
-        <section className="flex flex-col flex-wrap gap-2 rounded-[24px] border border-white/[0.08] bg-[#101318] px-5 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2">
+        <section className="flex flex-col flex-wrap gap-2 rounded-[24px] border border-foreground/[0.08] bg-card px-5 py-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-between sm:gap-2">
           <Link
             href={hasPreviousPage ? createPageHref(currentPage - 1) : "#"}
             aria-disabled={!hasPreviousPage}
             className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold transition-colors ${
               hasPreviousPage
-                ? "border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]"
-                : "pointer-events-none border border-white/5 bg-white/[0.02] text-light-400"
+                ? "border border-foreground/10 bg-foreground/[0.04] text-white hover:bg-foreground/[0.08]"
+                : "pointer-events-none border border-foreground/5 bg-foreground/[0.02] text-muted-foreground"
             }`}
           >
             <ChevronLeft className="size-4" />
@@ -170,7 +170,7 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
                   className={`flex h-10 w-10 items-center justify-center rounded-2xl border text-sm font-bold transition-colors ${
                     isActive
                       ? "border-primary-200 bg-primary-200 text-dark-100"
-                      : "border-white/8 bg-white/[0.035] text-light-100 hover:bg-white/[0.08] hover:text-white"
+                      : "border-foreground/8 bg-foreground/[0.035] text-foreground hover:bg-foreground/[0.08] hover:text-white"
                   }`}
                 >
                   {pageNumber}
@@ -185,7 +185,7 @@ const PracticeHistoryPage = async ({ searchParams }: Props) => {
             className={`inline-flex items-center justify-center gap-2 rounded-2xl px-4 py-2.5 text-sm font-bold transition-colors ${
               hasNextPage
                 ? "bg-primary-200 text-dark-100 hover:bg-primary-100"
-                : "pointer-events-none border border-white/5 bg-white/[0.02] text-light-400"
+                : "pointer-events-none border border-foreground/5 bg-foreground/[0.02] text-muted-foreground"
             }`}
           >
             Next

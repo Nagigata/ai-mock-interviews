@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 import { Check, Copy } from "lucide-react";
+import { useTheme } from "next-themes";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { oneDark, oneLight } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 interface Props {
   code: string;
@@ -14,6 +15,8 @@ interface Props {
 
 export function CodeBlock({ code, language, showCopy = true, showLineNumbers = true }: Props) {
   const [copied, setCopied] = useState(false);
+  const { resolvedTheme } = useTheme();
+  const isLight = resolvedTheme === "light";
 
   const handleCopy = () => {
     navigator.clipboard.writeText(code);
@@ -28,7 +31,7 @@ export function CodeBlock({ code, language, showCopy = true, showLineNumbers = t
           type="button"
           onClick={handleCopy}
           aria-label="Copy code"
-          className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.06] px-2 py-1 text-xs text-light-400 transition-colors hover:text-white"
+          className="absolute right-3 top-3 z-10 inline-flex items-center gap-1.5 rounded-md border border-foreground/10 bg-foreground/[0.06] px-2 py-1 text-xs text-muted-foreground transition-colors hover:text-foreground"
         >
           {copied ? <Check className="size-3.5" /> : <Copy className="size-3.5" />}
           {copied ? "Copied!" : "Copy"}
@@ -36,9 +39,9 @@ export function CodeBlock({ code, language, showCopy = true, showLineNumbers = t
       )}
       <SyntaxHighlighter
         language={language}
-        style={oneDark}
+        style={isLight ? oneLight : oneDark}
         showLineNumbers={showLineNumbers}
-        customStyle={{ margin: 0, background: "#0b0c10" }}
+        customStyle={{ margin: 0, background: isLight ? "#f5f6fc" : "#0b0c10" }}
       >
         {code}
       </SyntaxHighlighter>

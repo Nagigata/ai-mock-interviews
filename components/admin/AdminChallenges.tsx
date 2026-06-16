@@ -40,9 +40,9 @@ interface AdminChallengesProps {
 }
 
 const difficultyColors: Record<string, string> = {
-  EASY: "bg-emerald-500/20 text-emerald-400",
-  MEDIUM: "bg-amber-500/20 text-amber-400",
-  HARD: "bg-red-500/20 text-red-400",
+  EASY: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400",
+  MEDIUM: "bg-amber-500/20 text-amber-700 dark:text-amber-400",
+  HARD: "bg-red-500/20 text-red-700 dark:text-red-400",
 };
 
 const statusOptions = [
@@ -120,12 +120,12 @@ const FieldLabel = ({
   children: ReactNode;
   required?: boolean;
 }) => (
-  <label className="mb-1 flex items-center gap-1.5 text-xs text-light-400">
+  <label className="mb-1 flex items-center gap-1.5 text-xs text-muted-foreground">
     <span>{children}</span>
     {required ? (
-      <span className="text-red-400">*</span>
+      <span className="text-red-700 dark:text-red-400">*</span>
     ) : (
-      <span className="rounded-full bg-white/5 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-light-600">
+      <span className="rounded-full bg-foreground/5 px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-foreground">
         optional
       </span>
     )}
@@ -158,16 +158,16 @@ const ExpandedFieldModal = ({
     onClick={onClose}
   >
     <motion.div
-      className="flex h-[min(860px,calc(100vh-2rem))] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-[#101219] shadow-2xl"
+      className="flex h-[min(860px,calc(100vh-2rem))] w-full max-w-6xl flex-col overflow-hidden rounded-3xl border border-foreground/10 bg-background shadow-2xl"
       initial={{ opacity: 0, scale: 0.96, y: 18 }}
       animate={{ opacity: 1, scale: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.96, y: 18 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
       onClick={(event) => event.stopPropagation()}
     >
-      <div className="flex items-center justify-between gap-4 border-b border-white/10 px-5 py-4">
+      <div className="flex items-center justify-between gap-4 border-b border-foreground/10 px-5 py-4">
         <div>
-          <p className="text-xs uppercase tracking-[0.28em] text-light-500">
+          <p className="text-xs uppercase tracking-[0.28em] text-muted-foreground">
             Editing
           </p>
           <h3 className="mt-1 text-lg font-semibold text-white">{label}</h3>
@@ -175,7 +175,7 @@ const ExpandedFieldModal = ({
         <button
           type="button"
           onClick={onClose}
-          className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2 text-sm font-medium text-light-200 transition-colors hover:bg-white/5 hover:text-white"
+          className="inline-flex items-center gap-2 rounded-xl border border-foreground/10 px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
         >
           <Minimize2 className="size-4" />
           Collapse
@@ -210,14 +210,14 @@ const AdminCodeField = ({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1 text-[11px] font-medium text-light-400 transition-colors hover:bg-white/5 hover:text-white"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-foreground/10 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
         >
           <Maximize2 className="size-3.5" />
           Expand
         </button>
       </div>
       <div
-        className="overflow-hidden rounded-lg border border-white/10"
+        className="overflow-hidden rounded-lg border border-foreground/10"
         style={{ height }}
       >
         <CodeEditor
@@ -233,7 +233,7 @@ const AdminCodeField = ({
             label={label}
             onClose={() => setExpanded(false)}
           >
-            <div className="h-full overflow-hidden rounded-2xl border border-white/10">
+            <div className="h-full overflow-hidden rounded-2xl border border-foreground/10">
               <CodeEditor
                 value={value}
                 language={language}
@@ -273,7 +273,7 @@ const AdminTextareaField = ({
         <button
           type="button"
           onClick={() => setExpanded(true)}
-          className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-2.5 py-1 text-[11px] font-medium text-light-400 transition-colors hover:bg-white/5 hover:text-white"
+          className="inline-flex items-center gap-1.5 rounded-lg border border-foreground/10 px-2.5 py-1 text-[11px] font-medium text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
         >
           <Maximize2 className="size-3.5" />
           Expand
@@ -284,7 +284,7 @@ const AdminTextareaField = ({
         rows={rows}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className={`w-full resize-none rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-white focus:border-primary-200/50 focus:outline-none ${
+        className={`w-full resize-none rounded-lg border border-foreground/10 bg-background px-3 py-2 text-white focus:border-primary-200/50 focus:outline-none ${
           mono ? "font-mono text-xs" : "text-sm"
         }`}
         placeholder={placeholder}
@@ -300,7 +300,7 @@ const AdminTextareaField = ({
               required={required}
               value={value}
               onChange={(event) => onChange(event.target.value)}
-              className={`h-full w-full resize-none rounded-2xl border border-white/10 bg-dark-100 px-4 py-4 text-white focus:border-primary-200/50 focus:outline-none ${
+              className={`h-full w-full resize-none rounded-2xl border border-foreground/10 bg-background px-4 py-4 text-white focus:border-primary-200/50 focus:outline-none ${
                 mono ? "font-mono text-sm" : "text-base leading-7"
               }`}
               placeholder={placeholder}
@@ -616,22 +616,22 @@ export default function AdminChallengesClient({
       {formMode && (
         <form
           onSubmit={handleSubmit}
-          className="rounded-2xl border border-white/10 bg-dark-200/50 p-6 space-y-4"
+          className="rounded-2xl border border-foreground/10 bg-card/50 p-6 space-y-4"
         >
           <div className="flex items-start justify-between gap-4">
             <div>
               <h3 className="text-base font-semibold text-white">
                 {formMode === "edit" ? "Edit Challenge" : "Create Challenge"}
               </h3>
-              <p className="mt-1 text-xs text-light-400">
-                Fields marked with <span className="text-red-400">*</span> are required.
+              <p className="mt-1 text-xs text-muted-foreground">
+                Fields marked with <span className="text-red-700 dark:text-red-400">*</span> are required.
                 Optional JSON fields can stay as empty arrays.
               </p>
             </div>
             <button
               type="button"
               onClick={handleCancelForm}
-              className="rounded-lg border border-white/10 px-3 py-1.5 text-xs text-light-400 transition-colors hover:bg-white/5 hover:text-white"
+              className="rounded-lg border border-foreground/10 px-3 py-1.5 text-xs text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
             >
               Cancel
             </button>
@@ -644,7 +644,7 @@ export default function AdminChallengesClient({
                 required
                 value={form.title}
                 onChange={(e) => handleTitleChange(e.target.value)}
-                className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-200/50"
+                className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-200/50"
               />
             </div>
             <div>
@@ -654,7 +654,7 @@ export default function AdminChallengesClient({
                 required
                 value={form.slug}
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-200/50"
+                className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:outline-none focus:border-primary-200/50"
               />
             </div>
             <div>
@@ -666,7 +666,7 @@ export default function AdminChallengesClient({
                 onChange={(value) => setForm({ ...form, skillId: value })}
                 hideLabel
                 className="min-w-0"
-                triggerClassName="rounded-lg bg-dark-100 py-2"
+                triggerClassName="rounded-lg bg-background py-2"
               />
             </div>
             <div>
@@ -678,7 +678,7 @@ export default function AdminChallengesClient({
                 onChange={(value) => setForm({ ...form, difficulty: value })}
                 hideLabel
                 className="min-w-0"
-                triggerClassName="rounded-lg bg-dark-100 py-2"
+                triggerClassName="rounded-lg bg-background py-2"
               />
             </div>
           </div>
@@ -690,7 +690,7 @@ export default function AdminChallengesClient({
               onChange={(event) =>
                 setForm({ ...form, topics: event.target.value })
               }
-              className="w-full resize-none rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+              className="w-full resize-none rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
               placeholder="Array,String,Dynamic Programming"
             />
           </div>
@@ -815,44 +815,44 @@ export default function AdminChallengesClient({
       <AdminTableContainer>
           <table className="w-full min-w-[980px]">
             <thead>
-              <tr className="border-b border-white/5">
-                <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <tr className="border-b border-foreground/5">
+                <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Title
                 </th>
-                <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Skill
                 </th>
-                <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Difficulty
                 </th>
-                <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Topics
                 </th>
-                <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Submissions
                 </th>
-                <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Status
                 </th>
-                <th className="text-right px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+                <th className="text-right px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-foreground/5">
               {data.items?.length ? data.items.map((challenge: any) => (
                 <tr
                   key={challenge.id}
-                  className="hover:bg-white/[0.02] transition-colors"
+                  className="hover:bg-foreground/[0.02] transition-colors"
                 >
                   <td className="px-5 py-4">
                     <p className="text-sm font-medium text-white">
                       {challenge.title}
                     </p>
-                    <p className="text-xs text-light-400">{challenge.slug}</p>
+                    <p className="text-xs text-muted-foreground">{challenge.slug}</p>
                   </td>
                   <td className="px-5 py-4">
-                    <span className="text-xs text-light-400 bg-white/5 px-2 py-1 rounded-md">
+                    <span className="text-xs text-muted-foreground bg-foreground/5 px-2 py-1 rounded-md">
                       {challenge.skill?.name}
                     </span>
                   </td>
@@ -860,26 +860,26 @@ export default function AdminChallengesClient({
                     <span
                       className={`text-xs px-2.5 py-1 rounded-full font-medium ${
                         difficultyColors[challenge.difficulty] ||
-                        "bg-white/10 text-light-400"
+                        "bg-foreground/10 text-muted-foreground"
                       }`}
                     >
                       {challenge.difficulty}
                     </span>
                   </td>
                   <td className="px-5 py-4">
-                    <p className="text-xs text-light-400 truncate max-w-[200px]">
+                    <p className="text-xs text-muted-foreground truncate max-w-[200px]">
                       {challenge.topics}
                     </p>
                   </td>
-                  <td className="px-5 py-4 text-center text-sm text-light-100">
+                  <td className="px-5 py-4 text-center text-sm text-foreground">
                     {challenge.totalSubmissions}
                   </td>
                   <td className="px-5 py-4 text-center">
                     <span
                       className={`inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-medium ${
                         challenge.isActive === false
-                          ? "bg-red-500/15 text-red-400"
-                          : "bg-emerald-500/15 text-emerald-400"
+                          ? "bg-red-500/15 text-red-700 dark:text-red-400"
+                          : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                       }`}
                     >
                       {challenge.isActive === false ? (
@@ -894,7 +894,7 @@ export default function AdminChallengesClient({
                     <div className="flex items-center justify-end gap-1">
                       <button
                         onClick={() => handleStartEdit(challenge)}
-                        className="p-1.5 rounded-lg text-light-400 hover:text-primary-200 hover:bg-primary-200/10 transition-colors"
+                        className="p-1.5 rounded-lg text-muted-foreground hover:text-primary-200 hover:bg-primary-200/10 transition-colors"
                         title="Edit"
                       >
                         <Pencil className="size-4" />
@@ -904,8 +904,8 @@ export default function AdminChallengesClient({
                         disabled={statusUpdating === challenge.id}
                         className={`p-1.5 rounded-lg transition-colors disabled:opacity-50 ${
                           challenge.isActive === false
-                            ? "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
-                            : "text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
+                            ? "text-emerald-700 dark:text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                            : "text-red-700 dark:text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
                         }`}
                         title={
                           challenge.isActive === false

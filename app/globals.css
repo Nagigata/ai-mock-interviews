@@ -31,7 +31,7 @@
 /* ── Light mode tokens ───────────────────────────────── */
 :root {
   --radius: 0.625rem;
-  --background: oklch(0.985 0.002 247);
+  --background: oklch(0.976 0.004 264);
   --foreground: oklch(0.16 0.02 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.16 0.02 260);
@@ -39,15 +39,15 @@
   --popover-foreground: oklch(0.16 0.02 260);
   --primary: oklch(0.28 0.06 280);
   --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.955 0.01 260);
+  --secondary: oklch(0.948 0.009 264);
   --secondary-foreground: oklch(0.28 0.06 280);
-  --muted: oklch(0.955 0.01 260);
-  --muted-foreground: oklch(0.45 0.03 260);
-  --accent: oklch(0.955 0.01 260);
+  --muted: oklch(0.948 0.009 264);
+  --muted-foreground: oklch(0.398 0.04 268);
+  --accent: oklch(0.948 0.009 264);
   --accent-foreground: oklch(0.28 0.06 280);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.88 0.015 260);
-  --input: oklch(0.88 0.015 260);
+  --border: oklch(0.876 0.016 264);
+  --input: oklch(0.876 0.016 264);
   --ring: oklch(0.708 0 0);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
@@ -64,14 +64,14 @@
   --sidebar-ring: oklch(0.708 0 0);
 
   /* ── Theme-aware surface tokens (light) ── */
-  --surface-base: #eaecf4;
+  --surface-base: #f3f4fb;
   --surface-card: #ffffff;
   --surface-card-gradient-from: #ffffff;
   --surface-card-gradient-to: #f5f6fc;
-  --surface-overlay: rgba(75, 85, 130, 0.07);
-  --surface-overlay-hover: rgba(75, 85, 130, 0.13);
-  --surface-border: rgba(75, 85, 130, 0.18);
-  --surface-border-hover: rgba(75, 85, 130, 0.3);
+  --surface-overlay: rgba(99, 110, 170, 0.07);
+  --surface-overlay-hover: rgba(99, 110, 170, 0.13);
+  --surface-border: rgba(75, 85, 130, 0.24);
+  --surface-border-hover: rgba(75, 85, 130, 0.36);
   --text-heading: #0d1224;
   --text-body: #28304d;
   --text-muted: #4f5980;
@@ -256,6 +256,17 @@
 /* Ensure text-white elements get dark text in light mode for readability */
 :root:not(.dark) .text-white {
   color: var(--text-heading) !important;
+}
+
+/* Brand buttons are bright in dark mode (light surface + dark text). In light
+   mode their solid brand backgrounds turn dark/saturated, making the dark
+   button text hard to read — so soften the backgrounds in light mode. Hover
+   keeps the deeper brand color for natural feedback. */
+:root:not(.dark) .bg-primary-200 {
+  background-color: #b8a7fb !important;
+}
+:root:not(.dark) .bg-red-500 {
+  background-color: #f87171 !important;
 }
 
 @layer components {

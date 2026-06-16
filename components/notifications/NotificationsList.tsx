@@ -137,8 +137,8 @@ export function NotificationsList({ initialData }: Props) {
 
   return (
     <section
-      className="rounded-[32px] border border-white/[0.08] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7"
-      style={{ background: "#101318" }}
+      className="rounded-[32px] border border-foreground/[0.08] p-5 shadow-[0_24px_60px_var(--shadow-color)] sm:p-7"
+      style={{ background: "var(--surface-card)" }}
     >
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="flex items-start gap-3">
@@ -152,7 +152,7 @@ export function NotificationsList({ initialData }: Props) {
             <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
               All Notifications
             </h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground/75">
               {unreadCount > 0
                 ? `You have ${unreadCount} unread notification${unreadCount > 1 ? "s" : ""}.`
                 : "You're all caught up."}
@@ -183,7 +183,7 @@ export function NotificationsList({ initialData }: Props) {
           </div>
         ) : isEmpty ? (
           <div className="flex flex-col items-center justify-center px-6 py-16 text-center">
-            <div className="mb-3 flex size-12 items-center justify-center rounded-2xl border border-[var(--surface-border)] bg-white/[0.03]">
+            <div className="mb-3 flex size-12 items-center justify-center rounded-2xl border border-[var(--surface-border)] bg-foreground/[0.03]">
               <Inbox className="size-5 text-[var(--text-muted)]" />
             </div>
             <p className="text-sm font-bold text-[var(--text-heading)]">

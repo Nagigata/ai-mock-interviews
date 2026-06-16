@@ -15,15 +15,15 @@ interface FilterGroupProps {
 
 const FilterGroup = ({ title, options, selectedValues, onChange }: FilterGroupProps) => {
   return (
-    <div className="mb-6 border-b border-dark-300 pb-6 last:mb-0 last:border-0 last:pb-0">
-      <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-light-400">{title}</h3>
+    <div className="mb-6 border-b border-border pb-6 last:mb-0 last:border-0 last:pb-0">
+      <h3 className="mb-4 text-xs font-bold uppercase tracking-widest text-muted-foreground">{title}</h3>
       <div className="flex flex-col gap-3">
         {options.map((option) => (
           <label key={option.value} className="flex cursor-pointer items-center gap-3 group">
             <div className="relative flex items-center">
               <input
                 type="checkbox"
-                className="peer size-5 cursor-pointer appearance-none rounded border border-dark-300 bg-dark-200 transition-all checked:border-primary-200 checked:bg-primary-200"
+                className="peer size-5 cursor-pointer appearance-none rounded border border-border bg-card transition-all checked:border-primary-200 checked:bg-primary-200"
                 checked={selectedValues.includes(option.value)}
                 onChange={() => onChange(option.value)}
               />
@@ -33,7 +33,7 @@ const FilterGroup = ({ title, options, selectedValues, onChange }: FilterGroupPr
               />
             </div>
             <span className={cn(
-              "text-sm text-light-100 transition-colors group-hover:text-white",
+              "text-sm text-foreground transition-colors group-hover:text-white",
               selectedValues.includes(option.value) && "text-white"
             )}>
               {option.label}
@@ -77,7 +77,7 @@ const BookmarkFilters = () => {
 
   return (
     <aside className="hidden w-64 shrink-0 lg:block">
-      <div className="sticky top-28 rounded-3xl border border-white/5 bg-dark-200/50 p-6 backdrop-blur-xl">
+      <div className="sticky top-28 rounded-3xl border border-foreground/5 bg-card/50 p-6 backdrop-blur-xl">
         <FilterGroup
           title="Status"
           options={[

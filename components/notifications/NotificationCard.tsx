@@ -14,7 +14,7 @@ import { NotificationItem, NotificationType } from "@/types";
 
 const getNotificationIcon = (type: NotificationType) => {
   if (type === "SYSTEM") {
-    return <Megaphone className="size-4 text-amber-400" />;
+    return <Megaphone className="size-4 text-amber-700 dark:text-amber-400" />;
   }
   if (type.endsWith("_FAILED")) {
     return <AlertCircle className="size-4 text-destructive-100" />;
@@ -26,9 +26,9 @@ const getNotificationIcon = (type: NotificationType) => {
     return <CheckCircle2 className="size-4 text-success-100" />;
   }
   if (type.startsWith("CHALLENGE_COMMENT")) {
-    return <MessageCircle className="size-4 text-cyan-300" />;
+    return <MessageCircle className="size-4 text-cyan-700 dark:text-cyan-300" />;
   }
-  return <Bell className="size-4 text-light-200" />;
+  return <Bell className="size-4 text-muted-foreground" />;
 };
 
 const formatRelativeTime = (value: string) => {
@@ -80,8 +80,8 @@ export function NotificationCard({
         isSystem
           ? "hover:bg-amber-500/[0.06]"
           : compact
-            ? "hover:bg-white/[0.04]"
-            : "border border-[var(--surface-border)] hover:bg-white/[0.04]",
+            ? "hover:bg-foreground/[0.04]"
+            : "border border-[var(--surface-border)] hover:bg-foreground/[0.04]",
       )}
     >
       <div
@@ -89,7 +89,7 @@ export function NotificationCard({
           "mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl border",
           isSystem
             ? "border-amber-400/40 bg-amber-500/10"
-            : "border-[var(--surface-border)] bg-white/[0.04]",
+            : "border-[var(--surface-border)] bg-foreground/[0.04]",
         )}
       >
         {getNotificationIcon(notification.type)}
@@ -99,14 +99,14 @@ export function NotificationCard({
         <div className="flex items-start justify-between gap-3">
           <div className="flex min-w-0 flex-1 items-center gap-2">
             {isSystem && (
-              <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-amber-300">
+              <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300">
                 System
               </span>
             )}
             <p
               className={cn(
                 "line-clamp-1 text-sm font-bold",
-                isSystem ? "text-amber-50" : "text-[var(--text-heading)]",
+                isSystem ? "text-amber-800 dark:text-amber-50" : "text-[var(--text-heading)]",
               )}
             >
               {notification.title}
@@ -127,7 +127,7 @@ export function NotificationCard({
         <p
           className={cn(
             "mt-2 text-[11px] font-semibold uppercase tracking-[0.18em]",
-            isSystem ? "text-amber-300/70" : "text-primary-100/70",
+            isSystem ? "text-amber-700 dark:text-amber-300/70" : "text-primary-100/70",
           )}
         >
           {formatRelativeTime(notification.createdAt)}

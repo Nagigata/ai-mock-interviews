@@ -47,9 +47,9 @@ const NotificationsTab = ({ profile }: NotificationsTabProps) => {
   );
 
   return (
-    <section className="flex flex-col gap-2 rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 sm:p-6">
+    <section className="flex flex-col gap-2 rounded-[28px] border border-foreground/[0.08] bg-card p-5 sm:p-6">
       <h2 className="text-xl font-bold text-white">Notifications</h2>
-      <p className="mb-4 text-sm leading-6 text-light-100/70">
+      <p className="mb-4 text-sm leading-6 text-foreground/70">
         Pick what you want to hear about. Your choices save automatically.
       </p>
 
@@ -105,10 +105,10 @@ const PreferenceRow = ({
   onChange,
   disabled,
 }: PreferenceRowProps) => (
-  <div className="flex items-center justify-between gap-4 border-t border-white/[0.06] py-4 first:border-t-0 first:pt-0">
+  <div className="flex items-center justify-between gap-4 border-t border-foreground/[0.06] py-4 first:border-t-0 first:pt-0">
     <div className="flex-1">
       <p className="text-sm font-semibold text-white">{title}</p>
-      <p className="text-xs leading-5 text-light-100/65">{description}</p>
+      <p className="text-xs leading-5 text-foreground/65">{description}</p>
     </div>
     <button
       type="button"
@@ -118,7 +118,7 @@ const PreferenceRow = ({
       onClick={() => onChange?.(!checked)}
       disabled={disabled}
       className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-60 ${
-        checked ? "bg-primary-200" : "bg-white/[0.12]"
+        checked ? "bg-primary-200" : "bg-foreground/[0.12]"
       }`}
     >
       <span

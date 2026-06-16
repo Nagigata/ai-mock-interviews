@@ -61,7 +61,7 @@ const getLoadingToastId = (notification: NotificationPayload) => {
 
 const getNotificationIcon = (type: NotificationType) => {
   if (type === "SYSTEM") {
-    return <Megaphone className="size-4 text-amber-400" />;
+    return <Megaphone className="size-4 text-amber-700 dark:text-amber-400" />;
   }
 
   if (type.endsWith("_PROCESSING")) {
@@ -81,10 +81,10 @@ const getNotificationIcon = (type: NotificationType) => {
   }
 
   if (type.startsWith("CHALLENGE_COMMENT")) {
-    return <MessageCircle className="size-4 text-cyan-300" />;
+    return <MessageCircle className="size-4 text-cyan-700 dark:text-cyan-300" />;
   }
 
-  return <Bell className="size-4 text-light-200" />;
+  return <Bell className="size-4 text-muted-foreground" />;
 };
 
 const getToastKind = (type: NotificationType) => {
@@ -96,7 +96,7 @@ const getToastKind = (type: NotificationType) => {
 };
 
 const SYSTEM_TOAST_CLASSES =
-  "!border-amber-400/40 !bg-gradient-to-br !from-amber-500/15 !via-[#1c1f26] !to-[#1c1f26] !text-amber-50 !shadow-lg !shadow-amber-500/10";
+  "!border-amber-400/40 !bg-gradient-to-br !from-amber-500/15 !via-muted !to-muted !text-amber-50 !shadow-lg !shadow-amber-500/10";
 
 const isPersistentNotification = (type: NotificationType) =>
   !type.endsWith("_PROCESSING");

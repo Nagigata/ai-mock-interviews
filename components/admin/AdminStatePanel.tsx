@@ -18,12 +18,12 @@ const toneStyles = {
     icon: "text-primary-200",
   },
   warning: {
-    frame: "border-amber-400/15 bg-amber-500/10 text-amber-100",
-    icon: "text-amber-300",
+    frame: "border-amber-400/15 bg-amber-500/10 text-amber-800 dark:text-amber-100",
+    icon: "text-amber-700 dark:text-amber-300",
   },
   danger: {
-    frame: "border-red-400/15 bg-red-500/10 text-red-100",
-    icon: "text-red-300",
+    frame: "border-red-400/15 bg-red-500/10 text-red-800 dark:text-red-100",
+    icon: "text-red-700 dark:text-red-300",
   },
 };
 
@@ -41,7 +41,7 @@ export default function AdminStatePanel({
   return (
     <div
       className={cn(
-        "flex min-h-[220px] items-center justify-center rounded-2xl border border-white/5 bg-dark-200/50 px-6 py-12 text-center",
+        "flex min-h-[220px] items-center justify-center rounded-2xl border border-foreground/5 bg-card/50 px-6 py-12 text-center",
         className,
       )}
     >
@@ -56,7 +56,7 @@ export default function AdminStatePanel({
         </div>
         <p className="text-sm font-semibold text-white">{title}</p>
         {description && (
-          <p className="mt-2 text-sm leading-relaxed text-light-400">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             {description}
           </p>
         )}

@@ -41,7 +41,7 @@ const LanguageSwitcher = ({ currentLocale }: LanguageSwitcherProps) => {
     <div className="relative z-50" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center gap-2 bg-dark-200 border border-dark-300 rounded-lg px-3 py-1.5 text-sm text-white hover:border-primary-200 transition-all shadow-md min-w-[150px] justify-between"
+        className="flex items-center gap-2 bg-card border border-border rounded-lg px-3 py-1.5 text-sm text-white hover:border-primary-200 transition-all shadow-md min-w-[150px] justify-between"
       >
         <div className="flex items-center gap-2">
           <Image src={currentLanguage.flag} alt={currentLanguage.label} width={20} height={14} />
@@ -51,12 +51,12 @@ const LanguageSwitcher = ({ currentLocale }: LanguageSwitcherProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 mt-2 w-full min-w-[100px] bg-dark-200 border border-dark-300 rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
+        <div className="absolute top-full right-0 mt-2 w-full min-w-[100px] bg-card border border-border rounded-lg shadow-xl overflow-hidden animate-in fade-in zoom-in duration-200">
           {languages.map((lang) => (
             <button
               key={lang.code}
               onClick={() => handleLanguageChange(lang.code)}
-              className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-dark-300 transition-colors ${currentLocale === lang.code ? "bg-dark-300 text-primary-200 font-bold" : "text-white"
+              className={`w-full flex items-center gap-3 px-3 py-2 text-sm text-left hover:bg-muted transition-colors ${currentLocale === lang.code ? "bg-muted text-primary-200 font-bold" : "text-white"
                 }`}
             >
               <Image src={lang.flag} alt={lang.label} width={20} height={14} />

@@ -15,7 +15,7 @@ interface ChangePasswordDialogProps {
 }
 
 const inputClass =
-  "h-11 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white placeholder:text-light-100/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
+  "h-11 w-full rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 text-sm text-white placeholder:text-foreground/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
 
 const ChangePasswordDialog = ({
   open,
@@ -74,14 +74,14 @@ const ChangePasswordDialog = ({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#101318] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-md rounded-[28px] border border-foreground/10 bg-card p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
       >
         <button
           type="button"
           onClick={onClose}
           disabled={isPending}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 text-light-100/60 transition-colors hover:text-white disabled:opacity-50"
+          className="absolute right-4 top-4 text-foreground/60 transition-colors hover:text-white disabled:opacity-50"
         >
           <X className="size-5" />
         </button>
@@ -95,7 +95,7 @@ const ChangePasswordDialog = ({
           </h3>
         </div>
 
-        <p id={descId} className="mb-5 text-sm leading-6 text-light-100/75">
+        <p id={descId} className="mb-5 text-sm leading-6 text-foreground/75">
           {hasPassword
             ? "You'll be signed out on your other devices after the change."
             : "Once set, you can sign in with your email and password — or keep using your social account."}

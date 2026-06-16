@@ -102,18 +102,18 @@ export function SolutionsList({
             style={{ background: `linear-gradient(180deg, var(--surface-card-gradient-from), var(--surface-card-gradient-to))` }}
           >
             <div className="flex items-start justify-between gap-3">
-              <div className="h-4 w-2/3 animate-pulse rounded-md bg-white/[0.06]" />
-              <div className="h-6 w-16 animate-pulse rounded-lg bg-white/[0.06]" />
+              <div className="h-4 w-2/3 animate-pulse rounded-md bg-foreground/[0.06]" />
+              <div className="h-6 w-16 animate-pulse rounded-lg bg-foreground/[0.06]" />
             </div>
             <div className="flex items-center justify-between pt-1">
               <div className="flex items-center gap-2">
-                <div className="size-6 animate-pulse rounded-full bg-white/[0.06]" />
-                <div className="h-3 w-24 animate-pulse rounded bg-white/[0.06]" />
+                <div className="size-6 animate-pulse rounded-full bg-foreground/[0.06]" />
+                <div className="h-3 w-24 animate-pulse rounded bg-foreground/[0.06]" />
               </div>
               <div className="flex gap-2">
-                <div className="h-6 w-12 animate-pulse rounded-lg bg-white/[0.06]" />
-                <div className="h-6 w-8 animate-pulse rounded bg-white/[0.06]" />
-                <div className="h-6 w-8 animate-pulse rounded bg-white/[0.06]" />
+                <div className="h-6 w-12 animate-pulse rounded-lg bg-foreground/[0.06]" />
+                <div className="h-6 w-8 animate-pulse rounded bg-foreground/[0.06]" />
+                <div className="h-6 w-8 animate-pulse rounded bg-foreground/[0.06]" />
               </div>
             </div>
           </div>

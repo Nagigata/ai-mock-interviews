@@ -2,6 +2,8 @@
 
 import dayjs from "dayjs";
 import advancedFormat from "dayjs/plugin/advancedFormat";
+import { useEffect, useState } from "react";
+import { useTheme } from "next-themes";
 import { ActivityCalendar } from "react-activity-calendar";
 import { Activity } from "lucide-react";
 import { ActivityDay } from "@/types";
@@ -17,8 +19,12 @@ interface ActivityHeatmapProps {
 const ActivityHeatmap = ({
   activity,
 }: ActivityHeatmapProps) => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const colorScheme = mounted && resolvedTheme === "light" ? "light" : "dark";
   return (
-    <section className="rounded-[32px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
+    <section className="rounded-[32px] border border-foreground/[0.08] bg-card p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7">
       <style jsx global>{`
         .react-activity-calendar__tooltip {
           padding: 6px 10px !important;
@@ -44,28 +50,28 @@ const ActivityHeatmap = ({
       `}</style>
 
       <div className="flex items-start gap-3">
-        <div className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
+        <div className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-300">
           <Activity className="size-5" />
         </div>
         <div>
-          <p className="text-xs font-bold uppercase tracking-[0.28em] text-cyan-300">
+          <p className="text-xs font-bold uppercase tracking-[0.28em] text-cyan-700 dark:text-cyan-300">
             Activity
           </p>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
             Practice Calendar
           </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground/75">
             Daily submission rhythm across the past year.
           </p>
         </div>
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-[26px] border border-white/[0.08] bg-white/[0.035] p-4">
+      <div className="mt-6 overflow-x-auto rounded-[26px] border border-foreground/[0.08] bg-foreground/[0.035] p-4">
         <div className="flex min-w-max justify-center">
-          <div className="[&_.react-activity-calendar__count]:hidden [&_.react-activity-calendar__legend-colors]:gap-1.5 [&_.react-activity-calendar__legend-month]:text-light-400 [&_.react-activity-calendar__month-label]:fill-[#d6e0ff] [&_.react-activity-calendar__svg]:mx-auto [&_.react-activity-calendar__svg]:w-auto">
+          <div className="[&_.react-activity-calendar__count]:hidden [&_.react-activity-calendar__legend-colors]:gap-1.5 [&_.react-activity-calendar__legend-month]:text-muted-foreground [&_.react-activity-calendar__month-label]:fill-muted-foreground [&_.react-activity-calendar__svg]:mx-auto [&_.react-activity-calendar__svg]:w-auto">
           <ActivityCalendar
             data={activity}
-            colorScheme="dark"
+            colorScheme={colorScheme}
             blockSize={12}
             blockMargin={5}
             blockRadius={3}
@@ -73,6 +79,7 @@ const ActivityHeatmap = ({
             showWeekdayLabels={true}
             weekStart={0}
             theme={{
+              light: ["#e4e7f0", "#a7e8c4", "#5cc98c", "#28a96a", "#149f4e"],
               dark: ["#2b2d31", "#0e5e54", "#148f67", "#20b36f", "#49de50"],
             }}
             labels={{

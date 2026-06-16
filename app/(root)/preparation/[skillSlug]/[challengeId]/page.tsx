@@ -31,7 +31,7 @@ const ChallengeEditorPage = async ({ params }: Props) => {
   }
 
   return (
-    <div className="fixed inset-x-0 bottom-0 top-16 z-40 bg-dark-100">
+    <div className="fixed inset-x-0 bottom-0 top-16 z-40 bg-background">
       <ChallengeEditorView
         challenge={challenge}
         skillSlug={skillSlug}

@@ -92,7 +92,7 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.12)" }}>
+          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "var(--surface-overlay)" }}>
             <div className="mb-4 px-1">
               <h2 className="text-lg font-bold" style={{ color: "var(--text-heading)" }}>
                 Practice library
@@ -122,7 +122,7 @@ const ChallengesLibraryPage = async ({ searchParams }: Props) => {
                   <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
                     Focus
                   </span>
-                  <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-300">
+                  <span className="flex size-8 items-center justify-center rounded-xl border border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-300">
                     <Code2 className="size-4" />
                   </span>
                 </div>

@@ -48,10 +48,10 @@ const formatStatus = (status: string) =>
 
 const getStatusTone = (status: string) => {
   if (status === "ACCEPTED") {
-    return "border-emerald-400/25 bg-emerald-400/10 text-emerald-300";
+    return "border-emerald-400/25 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300";
   }
 
-  return "border-amber-400/25 bg-amber-400/10 text-amber-300";
+  return "border-amber-400/25 bg-amber-400/10 text-amber-700 dark:text-amber-300";
 };
 
 const SectionHeader = ({
@@ -190,13 +190,13 @@ const PreparationLanding = ({
       label: isVietnamese ? "Đã giải" : "Solved",
       value: stats?.totalSolvedChallenges ?? 0,
       icon: Target,
-      tone: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+      tone: "border-emerald-400/20 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300",
     },
     {
       label: isVietnamese ? "Chuỗi ngày" : "Streak",
       value: stats?.currentStreak ?? 0,
       icon: Flame,
-      tone: "border-orange-400/20 bg-orange-400/10 text-orange-300",
+      tone: "border-orange-400/20 bg-orange-400/10 text-orange-700 dark:text-orange-300",
     },
     {
       label: isVietnamese ? "Tỉ lệ đúng" : "Acceptance",
@@ -208,7 +208,7 @@ const PreparationLanding = ({
       label: isVietnamese ? "Interviews" : "Interviews",
       value: stats?.totalInterviews ?? 0,
       icon: BrainCircuit,
-      tone: "border-cyan-400/20 bg-cyan-400/10 text-cyan-300",
+      tone: "border-cyan-400/20 bg-cyan-400/10 text-cyan-700 dark:text-cyan-300",
     },
   ];
 
@@ -261,7 +261,7 @@ const PreparationLanding = ({
 
               <Link
                 href="/interview"
-                className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-bold text-cyan-200 transition-colors hover:bg-cyan-400/15"
+                className="inline-flex items-center gap-2 rounded-2xl border border-cyan-400/20 bg-cyan-400/10 px-5 py-3 text-sm font-bold text-cyan-700 transition-colors hover:bg-cyan-400/15 dark:text-cyan-200"
               >
                 <BrainCircuit className="size-4" />
                 {copy.interviewLabel}
@@ -269,7 +269,7 @@ const PreparationLanding = ({
             </div>
           </div>
 
-          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "rgba(0,0,0,0.12)" }}>
+          <div className="rounded-[28px] border border-[var(--surface-border)] p-4 backdrop-blur-xl" style={{ background: "var(--surface-overlay)" }}>
             <div className="mb-4 flex items-start justify-between gap-4 px-1">
               <div>
                 <h2 className="text-lg font-bold" style={{ color: "var(--text-heading)" }}>
@@ -289,7 +289,7 @@ const PreparationLanding = ({
                   <div
                     key={stat.label}
                     className="rounded-[22px] border border-[var(--surface-border)] p-4"
-                    style={{ background: "var(--surface-overlay)" }}
+                    style={{ background: "var(--surface-card)" }}
                   >
                     <div className="mb-5 flex items-center justify-between">
                       <span className="text-sm font-medium" style={{ color: "var(--text-body)", opacity: 0.8 }}>
@@ -384,7 +384,7 @@ const PreparationLanding = ({
                   style={{ background: "var(--surface-overlay)" }}
                 >
                   <div className="min-w-0">
-                    <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300/80">
+                    <p className="mb-1 text-xs font-semibold uppercase tracking-[0.2em] text-cyan-700 dark:text-cyan-300/80">
                       Track {index + 1}
                     </p>
                     <h3 className="truncate text-lg font-semibold transition-colors group-hover:text-cyan-200" style={{ color: "var(--text-heading)" }}>
@@ -395,7 +395,7 @@ const PreparationLanding = ({
                       {dictionary.preparation.challenges.toLowerCase()}
                     </p>
                   </div>
-                  <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/15 bg-cyan-400/10 text-cyan-200">
+                  <span className="flex size-10 shrink-0 items-center justify-center rounded-2xl border border-cyan-400/15 bg-cyan-400/10 text-cyan-700 dark:text-cyan-200">
                     <BookOpen className="size-4" />
                   </span>
                 </Link>

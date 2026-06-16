@@ -16,21 +16,21 @@ const difficultyConfig = [
     label: "Easy",
     trackColor: "rgba(52, 211, 153, 0.18)",
     fillColor: "#34d399",
-    accentClass: "text-emerald-400",
+    accentClass: "text-emerald-700 dark:text-emerald-400",
   },
   {
     key: "medium",
     label: "Med.",
     trackColor: "rgba(251, 191, 36, 0.18)",
     fillColor: "#fbbf24",
-    accentClass: "text-amber-400",
+    accentClass: "text-amber-700 dark:text-amber-400",
   },
   {
     key: "hard",
     label: "Hard",
     trackColor: "rgba(248, 113, 113, 0.18)",
     fillColor: "#f87171",
-    accentClass: "text-red-400",
+    accentClass: "text-red-700 dark:text-red-400",
   },
 ] as const;
 
@@ -126,15 +126,15 @@ const AcceptanceOverview = ({ stats, className }: AcceptanceOverviewProps) => {
               <p className="text-4xl font-bold text-white">
                 {stats.totalSolvedChallenges}
               </p>
-              <p className="text-lg font-semibold text-light-400">
+              <p className="text-lg font-semibold text-muted-foreground">
                 /{totalChallenges}
               </p>
             </div>
-            <div className="mt-2 flex items-center gap-2 text-light-100">
-              <Check className="size-4 text-emerald-400" />
+            <div className="mt-2 flex items-center gap-2 text-foreground">
+              <Check className="size-4 text-emerald-700 dark:text-emerald-400" />
               <span className="text-lg">Solved</span>
             </div>
-            <p className="mt-5 text-sm text-light-400">
+            <p className="mt-5 text-sm text-muted-foreground">
               {stats.attemptingChallenges} Attempting
             </p>
           </div>
@@ -150,7 +150,7 @@ const AcceptanceOverview = ({ stats, className }: AcceptanceOverviewProps) => {
             return (
               <div
                 key={item.key}
-                className="rounded-2xl border border-white/8 bg-[#2a2d33] px-5 py-4"
+                className="rounded-2xl border border-foreground/8 bg-muted px-5 py-4"
               >
                 <p className={`text-xl font-semibold ${item.accentClass}`}>
                   {item.label}

@@ -173,7 +173,7 @@ const AuthForm = ({ type, dictionary: t }: { type: FormType, dictionary?: any })
               <div className="flex justify-end -mt-2">
                 <Link
                   href="/forgot-password"
-                  className="text-sm text-light-400 hover:text-primary-200 transition-colors"
+                  className="text-sm text-muted-foreground hover:text-primary-200 transition-colors"
                 >
                   Forgot password?
                 </Link>

@@ -29,6 +29,10 @@ export const en = {
     endBtn: "End",
     selectLanguage: "System Language:",
     setupInstruction: "Please select your preferred language before we proceed.",
+    conversation: "Conversation",
+    conversationEmpty: "The conversation will appear here once the call starts.",
+    showConversation: "Show conversation",
+    hideConversation: "Hide conversation",
   },
   interviewCard: {
     questions: "questions",

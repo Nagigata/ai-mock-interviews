@@ -44,14 +44,14 @@ export default async function AdminInterviewDetailPage({
         Back to Interviews
       </Link>
 
-      <div className="rounded-[28px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.14),_transparent_35%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div className="rounded-[28px] border border-[var(--surface-border)] p-7 shadow-[0_24px_70px_var(--shadow-heavy)]" style={{ background: "var(--hero-gradient)" }}>
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-4">
             <div>
               <h1 className="text-3xl font-bold capitalize text-white">
                 {interview.role}
               </h1>
-              <p className="mt-2 max-w-2xl text-sm leading-6 text-light-400">
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">
                 Admin view for interview configuration, attempts, feedback
                 availability, and transcript counts.
               </p>
@@ -61,20 +61,20 @@ export default async function AdminInterviewDetailPage({
               <span className="rounded-full bg-primary-200/15 px-3 py-1 text-xs font-medium capitalize text-primary-200">
                 {interview.level}
               </span>
-              <span className="rounded-full bg-white/8 px-3 py-1 text-xs font-medium capitalize text-light-100">
+              <span className="rounded-full bg-foreground/8 px-3 py-1 text-xs font-medium capitalize text-foreground">
                 {interview.type}
               </span>
-              <span className="rounded-full bg-white/8 px-3 py-1 text-xs font-medium text-light-100">
+              <span className="rounded-full bg-foreground/8 px-3 py-1 text-xs font-medium text-foreground">
                 {interview.language?.toUpperCase()}
               </span>
               {interview.finalized && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
                   <CheckCircle2 className="size-3" />
                   Finalized
                 </span>
               )}
               {interview.archivedAt && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-medium text-amber-400">
+                <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/15 px-3 py-1 text-xs font-medium text-amber-700 dark:text-amber-400">
                   <Archive className="size-3" />
                   Archived
                 </span>
@@ -83,14 +83,14 @@ export default async function AdminInterviewDetailPage({
           </div>
 
           <div className="grid grid-cols-2 gap-3 sm:min-w-[320px]">
-            <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
-              <p className="text-xs text-light-400">Attempts</p>
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] p-4">
+              <p className="text-xs text-muted-foreground">Attempts</p>
               <p className="mt-1 text-2xl font-bold text-white">
                 {interview.totalAttempts}
               </p>
             </div>
-            <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
-              <p className="text-xs text-light-400">Feedbacks</p>
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] p-4">
+              <p className="text-xs text-muted-foreground">Feedbacks</p>
               <p className="mt-1 text-2xl font-bold text-white">
                 {interview.totalFeedbacks}
               </p>
@@ -101,12 +101,12 @@ export default async function AdminInterviewDetailPage({
 
       <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-4">
         <div className="flex gap-3">
-          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-amber-400" />
+          <ShieldAlert className="mt-0.5 size-5 shrink-0 text-amber-700 dark:text-amber-400" />
           <div>
-            <h2 className="text-sm font-bold text-amber-400">
+            <h2 className="text-sm font-bold text-amber-700 dark:text-amber-400">
               Privacy Notice
             </h2>
-            <p className="mt-1 text-sm leading-6 text-light-300">
+            <p className="mt-1 text-sm leading-6 text-muted-foreground">
               Interview transcript and feedback may contain personal
               information. Admin access is intended only for moderation, support,
               and quality review.
@@ -116,14 +116,14 @@ export default async function AdminInterviewDetailPage({
       </div>
 
       {interview.archivedAt && (
-        <div className="rounded-2xl border border-white/8 bg-white/[0.04] p-4">
+        <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] p-4">
           <div className="flex gap-3">
-            <Archive className="mt-0.5 size-5 shrink-0 text-amber-400" />
+            <Archive className="mt-0.5 size-5 shrink-0 text-amber-700 dark:text-amber-400" />
             <div>
               <h2 className="text-sm font-bold text-white">
                 Archived Interview
               </h2>
-              <p className="mt-1 text-sm leading-6 text-light-400">
+              <p className="mt-1 text-sm leading-6 text-muted-foreground">
                 This interview is hidden from Explore since{" "}
                 {formatDate(interview.archivedAt)}. Existing attempts,
                 transcripts, and feedback remain available for admin review.
@@ -134,26 +134,26 @@ export default async function AdminInterviewDetailPage({
       )}
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <div className="rounded-2xl border border-white/6 bg-dark-200/50 p-5">
+        <div className="rounded-2xl border border-foreground/6 bg-card/50 p-5">
           <div className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
             <UserRound className="size-4 text-primary-200" />
             Creator
           </div>
-          <p className="text-sm text-light-100">{interview.user?.name}</p>
-          <p className="mt-1 text-xs text-light-400">{interview.user?.email}</p>
+          <p className="text-sm text-foreground">{interview.user?.name}</p>
+          <p className="mt-1 text-xs text-muted-foreground">{interview.user?.email}</p>
         </div>
 
-        <div className="rounded-2xl border border-white/6 bg-dark-200/50 p-5">
+        <div className="rounded-2xl border border-foreground/6 bg-card/50 p-5">
           <div className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
             <CalendarDays className="size-4 text-primary-200" />
             Created
           </div>
-          <p className="text-sm text-light-100">
+          <p className="text-sm text-foreground">
             {formatDate(interview.createdAt)}
           </p>
         </div>
 
-        <div className="rounded-2xl border border-white/6 bg-dark-200/50 p-5">
+        <div className="rounded-2xl border border-foreground/6 bg-card/50 p-5">
           <div className="mb-3 flex items-center gap-2 text-sm font-bold text-white">
             <MessageSquareText className="size-4 text-primary-200" />
             Tech Stack
@@ -172,7 +172,7 @@ export default async function AdminInterviewDetailPage({
       </div>
 
       {interview.questions?.length > 0 && (
-        <div className="rounded-2xl border border-white/6 bg-dark-200/50 p-5">
+        <div className="rounded-2xl border border-foreground/6 bg-card/50 p-5">
           <h2 className="mb-4 text-lg font-bold text-white">
             Generated Questions
           </h2>
@@ -180,7 +180,7 @@ export default async function AdminInterviewDetailPage({
             {interview.questions.map((question: string, index: number) => (
               <li
                 key={`${question}-${index}`}
-                className="rounded-xl border border-white/6 bg-white/[0.03] p-4 text-sm leading-6 text-light-100"
+                className="rounded-xl border border-foreground/6 bg-foreground/[0.03] p-4 text-sm leading-6 text-foreground"
               >
                 <span className="mr-2 text-primary-200">{index + 1}.</span>
                 {question}
@@ -190,79 +190,79 @@ export default async function AdminInterviewDetailPage({
         </div>
       )}
 
-      <div className="rounded-2xl border border-white/5 bg-dark-200/50 overflow-hidden">
-        <div className="border-b border-white/5 px-5 py-4">
+      <div className="rounded-2xl border border-foreground/5 bg-card/50 overflow-hidden">
+        <div className="border-b border-foreground/5 px-5 py-4">
           <h2 className="text-lg font-bold text-white">Attempts</h2>
-          <p className="mt-1 text-sm text-light-400">
+          <p className="mt-1 text-sm text-muted-foreground">
             Review who attempted this interview and whether feedback exists.
           </p>
         </div>
 
         {interview.attempts?.length === 0 ? (
           <div className="p-10 text-center">
-            <MessageSquareText className="mx-auto mb-3 size-9 text-light-600" />
+            <MessageSquareText className="mx-auto mb-3 size-9 text-muted-foreground" />
             <p className="text-sm font-semibold text-white">No attempts yet</p>
-            <p className="mt-1 text-sm text-light-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               This interview has not been taken by any user.
             </p>
           </div>
         ) : (
           <table className="w-full">
             <thead>
-              <tr className="border-b border-white/5">
-                <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+              <tr className="border-b border-foreground/5">
+                <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   User
                 </th>
-                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Transcript
                 </th>
-                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Feedback
                 </th>
-                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+                <th className="px-5 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Completed
                 </th>
-                <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-light-400">
+                <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5">
+            <tbody className="divide-y divide-foreground/5">
               {interview.attempts.map((attempt: any) => (
                 <tr
                   key={attempt.id}
-                  className="transition-colors hover:bg-white/[0.02]"
+                  className="transition-colors hover:bg-foreground/[0.02]"
                 >
                   <td className="px-5 py-4">
                     <p className="text-sm font-medium text-white">
                       {attempt.user?.name}
                     </p>
-                    <p className="text-xs text-light-400">
+                    <p className="text-xs text-muted-foreground">
                       {attempt.user?.email}
                     </p>
                   </td>
-                  <td className="px-5 py-4 text-center text-sm text-light-100">
+                  <td className="px-5 py-4 text-center text-sm text-foreground">
                     {attempt.transcriptCount}
                   </td>
                   <td className="px-5 py-4 text-center">
                     {attempt.hasFeedback ? (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-medium text-emerald-400">
+                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/15 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:text-emerald-400">
                         <Star className="size-3" />
                         {attempt.feedback?.totalScore}/100
                       </span>
                     ) : (
-                      <span className="rounded-full bg-white/8 px-2.5 py-1 text-xs text-light-400">
+                      <span className="rounded-full bg-foreground/8 px-2.5 py-1 text-xs text-muted-foreground">
                         No feedback
                       </span>
                     )}
                   </td>
-                  <td className="px-5 py-4 text-center text-xs text-light-400">
+                  <td className="px-5 py-4 text-center text-xs text-muted-foreground">
                     {formatDate(attempt.completedAt)}
                   </td>
                   <td className="px-5 py-4 text-right">
                     <Link
                       href={`/admin/interviews/${interview.id}/attempts/${attempt.id}`}
-                      className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 px-3 py-1.5 text-xs font-medium text-light-100 transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 hover:text-primary-200"
+                      className="inline-flex items-center gap-1.5 rounded-lg border border-foreground/10 px-3 py-1.5 text-xs font-medium text-foreground transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 hover:text-primary-200"
                     >
                       <Eye className="size-3.5" />
                       View Attempt

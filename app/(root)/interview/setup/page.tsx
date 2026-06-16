@@ -41,7 +41,7 @@ const InterviewSetupPage = async () => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.2),_transparent_28%),linear-gradient(155deg,_rgba(18,22,30,0.98),_rgba(8,10,14,0.98))] px-7 py-8 shadow-[0_28px_80px_rgba(0,0,0,0.3)] sm:px-10 sm:py-10">
+      <section className="relative animate-fadeIn overflow-hidden rounded-[34px] border border-[var(--surface-border)] px-7 py-8 shadow-[0_28px_80px_var(--shadow-heavy)] sm:px-10 sm:py-10" style={{ background: "var(--hero-gradient)" }}>
         <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-primary-200/10 blur-3xl" />
         <div className="absolute bottom-0 left-0 h-32 w-32 rounded-full bg-cyan-400/10 blur-3xl" />
 
@@ -58,7 +58,7 @@ const InterviewSetupPage = async () => {
                 {t.home.startBtn}
               </h1>
             </div>
-            <p className="max-w-2xl text-base leading-7 text-light-100 sm:text-lg">
+            <p className="max-w-2xl text-base leading-7 text-foreground sm:text-lg">
               Pick your preferred language, connect with the assistant, and start a fresh mock interview session.
             </p>
           </div>

@@ -24,7 +24,7 @@ const GENDER_OPTIONS = [
 ];
 
 const inputClass =
-  "h-11 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white placeholder:text-light-100/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
+  "h-11 w-full rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 text-sm text-white placeholder:text-foreground/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
 
 const labelClass = "text-sm font-semibold text-white";
 
@@ -88,16 +88,16 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
   const readmeCount = readme.length;
 
   return (
-    <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 sm:p-6">
+    <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 sm:p-6">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center">
         <div className="relative">
           <UserAvatar
             name={name || profile.name}
             avatarUrl={avatarUrl}
             size="xl"
-            className="border-white/15"
+            className="border-foreground/15"
           />
-          <label className="absolute bottom-1 right-1 flex size-9 cursor-pointer items-center justify-center rounded-full border border-primary-200/25 bg-[#151922] text-primary-100 transition hover:bg-primary-200/10">
+          <label className="absolute bottom-1 right-1 flex size-9 cursor-pointer items-center justify-center rounded-full border border-primary-200/25 bg-card text-primary-100 transition hover:bg-primary-200/10">
             <Camera className="size-4" />
             <input
               type="file"
@@ -109,7 +109,7 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
         </div>
         <div>
           <h2 className="text-xl font-bold text-white">Public profile</h2>
-          <p className="mt-1 text-sm leading-6 text-light-100/70">
+          <p className="mt-1 text-sm leading-6 text-foreground/70">
             Anyone visiting your profile sees these details. Leave a field empty
             to hide it.
           </p>
@@ -140,7 +140,7 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
               setGender(value === "NONE" ? "" : (value as Gender))
             }
             hideLabel
-            triggerClassName="h-11 rounded-2xl border-white/10 bg-white/[0.04] px-4 text-white"
+            triggerClassName="h-11 rounded-2xl border-foreground/10 bg-foreground/[0.04] px-4 text-white"
           />
         </div>
 
@@ -177,7 +177,7 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
             <label htmlFor="settings-readme" className={labelClass}>
               About me
             </label>
-            <span className="text-xs text-light-100/60">
+            <span className="text-xs text-foreground/60">
               {readmeCount}/2000
             </span>
           </div>
@@ -187,7 +187,7 @@ const ProfileTab = ({ profile }: ProfileTabProps) => {
             onChange={(e) => setReadme(e.target.value.slice(0, 2000))}
             placeholder="Tell people a bit about yourself. Markdown works here."
             rows={6}
-            className="w-full resize-none rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white placeholder:text-light-100/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50"
+            className="w-full resize-none rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 py-3 text-sm text-white placeholder:text-foreground/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50"
           />
         </div>
       </div>

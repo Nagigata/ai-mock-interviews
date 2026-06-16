@@ -24,7 +24,7 @@ const AdminShell = ({ children }: { children: ReactNode }) => {
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-dark-100"
+      className="fixed inset-x-0 bottom-0 top-16 overflow-y-auto bg-background"
       style={
         {
           "--admin-sidebar-width": collapsed ? "4.75rem" : "15rem",

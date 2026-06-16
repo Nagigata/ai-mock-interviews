@@ -1,7 +1,8 @@
 "use client";
 
 import Editor, { OnMount } from "@monaco-editor/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useTheme } from "next-themes";
 
 interface CodeEditorProps {
   value: string;
@@ -19,9 +20,19 @@ const CodeEditor = ({
   readOnly = false,
 }: CodeEditorProps) => {
   const editorRef = useRef<Parameters<OnMount>[0] | null>(null);
+  const monacoRef = useRef<Parameters<OnMount>[1] | null>(null);
+  const { resolvedTheme } = useTheme();
+
+  // Keep Monaco's theme in sync with the app theme toggle.
+  useEffect(() => {
+    monacoRef.current?.editor.setTheme(
+      resolvedTheme === "light" ? "prepwise-light" : "prepwise-dark",
+    );
+  }, [resolvedTheme]);
 
   const handleEditorDidMount: OnMount = (editor, monaco) => {
     editorRef.current = editor;
+    monacoRef.current = monaco;
 
     // Define custom theme to match PrepWise branding
     monaco.editor.defineTheme("prepwise-dark", {
@@ -41,7 +52,26 @@ const CodeEditor = ({
       },
     });
 
-    monaco.editor.setTheme("prepwise-dark");
+    monaco.editor.defineTheme("prepwise-light", {
+      base: "vs",
+      inherit: true,
+      rules: [
+        { token: "comment", foreground: "8a90b8" },
+        { token: "keyword", foreground: "5b4fc7" },
+        { token: "string", foreground: "2f9e44" },
+      ],
+      colors: {
+        "editor.background": "#ffffff",
+        "editor.lineHighlightBackground": "#f1f2f9",
+        "editorCursor.foreground": "#5b4fc7",
+        "editor.selectionBackground": "#cac5fe55",
+        "editorIndentGuide.background": "#e2e5f0",
+      },
+    });
+
+    monaco.editor.setTheme(
+      resolvedTheme === "light" ? "prepwise-light" : "prepwise-dark",
+    );
 
     // Add hotkey Ctrl+Enter to run code
     editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, () => {
@@ -67,7 +97,7 @@ const CodeEditor = ({
   const monacoLanguage = getMonacoLanguage(language);
 
   return (
-    <div className="h-full w-full bg-[#08090D] overflow-hidden">
+    <div className="h-full w-full bg-background overflow-hidden">
       <Editor
         height="100%"
         defaultLanguage={monacoLanguage}

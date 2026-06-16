@@ -75,7 +75,7 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
           <button
             type="button"
             onClick={onBack}
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-light-400 transition-colors hover:text-primary-100"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-primary-100"
           >
             <ArrowLeft className="size-3.5" />
             Back to solutions
@@ -83,7 +83,7 @@ export function SolutionDetail({ solution, currentUserId, onBack }: Props) {
         )}
         <div className="flex items-start justify-between gap-4">
           <h1 className="text-xl font-semibold">{solution.title}</h1>
-          <span className="rounded-lg border border-white/8 bg-white/[0.03] px-3 py-1 text-xs font-semibold capitalize text-light-300">
+          <span className="rounded-lg border border-foreground/8 bg-foreground/[0.03] px-3 py-1 text-xs font-semibold capitalize text-muted-foreground">
             {solution.language}
           </span>
         </div>

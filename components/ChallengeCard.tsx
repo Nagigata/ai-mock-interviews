@@ -16,9 +16,9 @@ interface ChallengeCardProps {
 }
 
 const difficultyStyles: Record<Difficulty, string> = {
-  EASY: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-  MEDIUM: "bg-amber-500/15 text-amber-300 border-amber-500/20",
-  HARD: "bg-red-500/15 text-red-300 border-red-500/20",
+  EASY: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/20",
+  MEDIUM: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/20",
+  HARD: "bg-red-500/15 text-red-700 dark:text-red-300 border-red-500/20",
 };
 
 const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
@@ -94,7 +94,7 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
             className={cn(
               "rounded-full p-1 transition-all duration-200",
               isStarred
-                ? "text-yellow-400"
+                ? "text-yellow-700 dark:text-yellow-400"
                 : "text-[var(--text-muted)] hover:text-[var(--text-body)]",
             )}
             title={isStarred ? "Unmark" : "Mark Star"}
@@ -108,7 +108,7 @@ const ChallengeCard = ({ challenge, skillSlug }: ChallengeCardProps) => {
           </button>
 
           {challenge.isSolved ? (
-            <div className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-400">
+            <div className="inline-flex min-w-[160px] items-center justify-center gap-2 rounded-xl border border-emerald-500/20 bg-emerald-500/[0.06] px-5 py-2.5 text-xs font-bold text-emerald-700 dark:text-emerald-400">
               Solved
               <Check size={14} strokeWidth={3} />
             </div>

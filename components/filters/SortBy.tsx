@@ -25,7 +25,7 @@ const SortBy = ({
   return (
     <div className={cn("min-w-[170px]", className)}>
       {!hideLabel && (
-        <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-light-500">
+        <span className="mb-1.5 flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
           <ArrowUpDown className="size-3" />
           {label}
         </span>

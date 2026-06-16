@@ -42,7 +42,7 @@ const SettingsView = ({ profile }: SettingsViewProps) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
+      <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
         <div className="flex items-start gap-3">
           <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
             <SettingsIcon className="size-5" />
@@ -51,7 +51,7 @@ const SettingsView = ({ profile }: SettingsViewProps) => {
             <h1 className="text-3xl font-bold tracking-tight text-white">
               Settings
             </h1>
-            <p className="mt-2 max-w-3xl text-sm leading-6 text-light-100/75">
+            <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/75">
               Update your profile, choose what to be notified about, and keep
               your account secure.
             </p>

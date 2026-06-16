@@ -81,13 +81,13 @@ export default function AdminNotifyUserDialog({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#1c1f26] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-lg rounded-2xl border border-foreground/10 bg-muted p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
       >
         <button
           onClick={onClose}
           disabled={submitting}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white disabled:opacity-50"
+          className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-white disabled:opacity-50"
         >
           <X className="size-5" />
         </button>
@@ -101,27 +101,27 @@ export default function AdminNotifyUserDialog({
           </h3>
         </div>
 
-        <p id={descId} className="mb-1 text-sm text-light-100">
+        <p id={descId} className="mb-1 text-sm text-foreground">
           This notification will be delivered directly to the user&apos;s inbox
           and bypass their notification preferences.
         </p>
 
-        <div className="my-4 rounded-xl bg-white/5 px-4 py-3">
+        <div className="my-4 rounded-xl bg-foreground/5 px-4 py-3">
           <p className="text-sm font-medium text-white">{user.name}</p>
-          <p className="mt-0.5 text-xs text-light-400">{user.email}</p>
+          <p className="mt-0.5 text-xs text-muted-foreground">{user.email}</p>
         </div>
 
         <div className="space-y-4">
           <label className="block">
-            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>
-                Title <span className="text-red-400">*</span>
+                Title <span className="text-red-700 dark:text-red-400">*</span>
               </span>
               <span
                 className={
                   title.length > TITLE_MAX
-                    ? "text-red-400"
-                    : "text-light-600"
+                    ? "text-red-700 dark:text-red-400"
+                    : "text-muted-foreground"
                 }
               >
                 {title.length}/{TITLE_MAX}
@@ -134,20 +134,20 @@ export default function AdminNotifyUserDialog({
               disabled={submitting}
               maxLength={TITLE_MAX}
               placeholder="e.g. Scheduled maintenance tonight"
-              className="w-full rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+              className="w-full rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
             />
           </label>
 
           <label className="block">
-            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>
-                Message <span className="text-red-400">*</span>
+                Message <span className="text-red-700 dark:text-red-400">*</span>
               </span>
               <span
                 className={
                   message.length > MESSAGE_MAX
-                    ? "text-red-400"
-                    : "text-light-600"
+                    ? "text-red-700 dark:text-red-400"
+                    : "text-muted-foreground"
                 }
               >
                 {message.length}/{MESSAGE_MAX}
@@ -160,18 +160,18 @@ export default function AdminNotifyUserDialog({
               rows={4}
               maxLength={MESSAGE_MAX}
               placeholder="Explain the reason or context. This is what the user will see."
-              className="w-full resize-none rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+              className="w-full resize-none rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
             />
           </label>
 
           <label className="block">
-            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+            <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
               <span>Action URL (optional)</span>
               <span
                 className={
                   actionUrl.length > ACTION_URL_MAX
-                    ? "text-red-400"
-                    : "text-light-600"
+                    ? "text-red-700 dark:text-red-400"
+                    : "text-muted-foreground"
                 }
               >
                 {actionUrl.length}/{ACTION_URL_MAX}
@@ -184,9 +184,9 @@ export default function AdminNotifyUserDialog({
               disabled={submitting}
               maxLength={ACTION_URL_MAX}
               placeholder="/preparation or https://..."
-              className="w-full rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+              className="w-full rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
             />
-            <p className="mt-1.5 text-xs text-light-400">
+            <p className="mt-1.5 text-xs text-muted-foreground">
               When clicked, the notification will route the user to this URL.
             </p>
           </label>
@@ -196,7 +196,7 @@ export default function AdminNotifyUserDialog({
           <button
             onClick={onClose}
             disabled={submitting}
-            className="rounded-xl border border-white/10 px-4 py-2 text-sm text-light-400 transition-colors hover:bg-white/5 hover:text-white disabled:opacity-50"
+            className="rounded-xl border border-foreground/10 px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white disabled:opacity-50"
           >
             Cancel
           </button>

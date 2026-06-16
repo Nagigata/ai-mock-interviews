@@ -27,7 +27,7 @@ const FilterGroup = ({ title, options, selectedValues, onChange, scrollable, sea
       
       {searchable && (
         <div className="relative">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-light-400 size-4" />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground size-4" />
           <input
             type="text"
             placeholder={`Search ${title.toLowerCase()}...`}

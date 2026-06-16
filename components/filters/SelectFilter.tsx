@@ -32,7 +32,7 @@ const SelectFilter = ({
   return (
     <div className={cn("min-w-[150px]", className)}>
       {!hideLabel && (
-        <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.22em] text-light-500">
+        <span className="mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.22em] text-muted-foreground">
           {label}
         </span>
       )}
@@ -46,7 +46,7 @@ const SelectFilter = ({
         >
           <SelectPrimitive.Value />
           <SelectPrimitive.Icon asChild>
-            <ChevronDown className="size-4 text-light-400 transition-transform group-data-[state=open]:rotate-180" />
+            <ChevronDown className="size-4 text-muted-foreground transition-transform group-data-[state=open]:rotate-180" />
           </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
 

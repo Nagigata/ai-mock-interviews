@@ -55,7 +55,7 @@ const TabContent = <T extends string>({
             tab.onClose!();
           }}
           aria-label={`Close ${tab.label}`}
-          className="ml-0.5 flex size-4 items-center justify-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-white/10 hover:text-[var(--text-heading)]"
+          className="ml-0.5 flex size-4 items-center justify-center rounded-md text-[var(--text-muted)] transition-colors hover:bg-foreground/10 hover:text-[var(--text-heading)]"
         >
           <X className="size-3" />
         </button>

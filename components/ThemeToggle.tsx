@@ -15,7 +15,7 @@ const ThemeToggle = () => {
 
   if (!mounted) {
     return (
-      <div className="flex size-9 items-center justify-center rounded-xl border border-white/10 bg-white/[0.04]">
+      <div className="flex size-9 items-center justify-center rounded-xl border border-foreground/10 bg-foreground/[0.04]">
         <div className="size-4" />
       </div>
     );
@@ -48,7 +48,7 @@ const ThemeToggle = () => {
             exit={{ opacity: 0, rotate: -90, scale: 0.5 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
           >
-            <Sun className="size-[18px] text-amber-500 transition-colors group-hover:text-amber-400" />
+            <Sun className="size-[18px] text-amber-800 dark:text-amber-500 transition-colors group-hover:text-amber-400" />
           </motion.div>
         )}
       </AnimatePresence>

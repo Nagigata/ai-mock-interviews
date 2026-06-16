@@ -184,7 +184,7 @@ export default function AdminCommentsClient({
             onChange={handleHasRepliesChange}
           />
           <label className="flex flex-col gap-1.5">
-            <span className="text-[11px] uppercase tracking-wider text-light-500">
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Created from
             </span>
             <input
@@ -193,11 +193,11 @@ export default function AdminCommentsClient({
               onChange={(event) =>
                 handleDateChange("createdFrom", event.target.value)
               }
-              className="rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+              className="rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
             />
           </label>
           <label className="flex flex-col gap-1.5">
-            <span className="text-[11px] uppercase tracking-wider text-light-500">
+            <span className="text-[11px] uppercase tracking-wider text-muted-foreground">
               Created to
             </span>
             <input
@@ -206,7 +206,7 @@ export default function AdminCommentsClient({
               onChange={(event) =>
                 handleDateChange("createdTo", event.target.value)
               }
-              className="rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+              className="rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
             />
           </label>
         </div>
@@ -215,43 +215,43 @@ export default function AdminCommentsClient({
       <AdminTableContainer>
         <table className="w-full min-w-[1000px]">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+            <tr className="border-b border-foreground/5">
+              <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Content
               </th>
-              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Author
               </th>
-              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Solution
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Replies
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Upvotes
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Created
               </th>
-              <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-foreground/5">
             {data.items.length ? (
               data.items.map((comment) => (
                 <tr
                   key={comment.id}
-                  className="transition-colors hover:bg-white/[0.02]"
+                  className="transition-colors hover:bg-foreground/[0.02]"
                 >
                   <td className="px-5 py-4">
-                    <p className="max-w-[360px] truncate text-sm text-light-100">
+                    <p className="max-w-[360px] truncate text-sm text-foreground">
                       {truncate(comment.content)}
                     </p>
                     {comment.parentId && (
-                      <p className="mt-0.5 text-[10px] uppercase tracking-wider text-light-500">
+                      <p className="mt-0.5 text-[10px] uppercase tracking-wider text-muted-foreground">
                         Reply
                       </p>
                     )}
@@ -269,7 +269,7 @@ export default function AdminCommentsClient({
                           {comment.author.name}
                         </p>
                         {comment.author.email && (
-                          <p className="truncate text-[11px] text-light-500">
+                          <p className="truncate text-[11px] text-muted-foreground">
                             {comment.author.email}
                           </p>
                         )}
@@ -277,20 +277,20 @@ export default function AdminCommentsClient({
                     </div>
                   </td>
                   <td className="px-4 py-4">
-                    <p className="max-w-[200px] truncate text-sm text-light-100">
+                    <p className="max-w-[200px] truncate text-sm text-foreground">
                       {comment.solution.title}
                     </p>
-                    <p className="text-[11px] text-light-500">
+                    <p className="text-[11px] text-muted-foreground">
                       {comment.solution.challenge.title}
                     </p>
                   </td>
-                  <td className="px-4 py-4 text-center text-sm text-light-100">
+                  <td className="px-4 py-4 text-center text-sm text-foreground">
                     {comment.replyCount}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm text-light-100">
+                  <td className="px-4 py-4 text-center text-sm text-foreground">
                     {comment.upvoteCount}
                   </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-center text-xs text-light-400">
+                  <td className="whitespace-nowrap px-4 py-4 text-center text-xs text-muted-foreground">
                     {new Date(comment.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-5 py-4 text-right">
@@ -299,7 +299,7 @@ export default function AdminCommentsClient({
                         type="button"
                         onClick={() => handleOpenPreview(comment)}
                         disabled={previewLoadingId === comment.id}
-                        className="rounded-lg p-1.5 text-light-400 transition-colors hover:bg-primary-200/10 hover:text-primary-200 disabled:opacity-50"
+                        className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-primary-200/10 hover:text-primary-200 disabled:opacity-50"
                         title="View comment"
                         aria-label="View comment"
                       >
@@ -308,7 +308,7 @@ export default function AdminCommentsClient({
                       <button
                         type="button"
                         onClick={() => handleOpenConfirm(comment)}
-                        className="rounded-lg p-1.5 text-red-400/60 transition-colors hover:bg-red-500/10 hover:text-red-400"
+                        className="rounded-lg p-1.5 text-red-700 dark:text-red-400/60 transition-colors hover:bg-red-500/10 hover:text-red-400"
                         title="Delete comment"
                         aria-label="Delete comment"
                       >

@@ -263,12 +263,12 @@ export default function AdminSkillsClient({
       {showCreateForm && (
         <form
           onSubmit={handleCreate}
-          className="space-y-4 rounded-2xl border border-white/10 bg-dark-200/50 p-6"
+          className="space-y-4 rounded-2xl border border-foreground/10 bg-card/50 p-6"
         >
           <h3 className="text-base font-semibold text-white">Create Skill</h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="mb-1 block text-xs text-light-400">Name</label>
+              <label className="mb-1 block text-xs text-muted-foreground">Name</label>
               <input
                 type="text"
                 required
@@ -277,22 +277,22 @@ export default function AdminSkillsClient({
                   const name = e.target.value;
                   setForm({ ...form, name, slug: toSlug(name) });
                 }}
-                className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+                className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
               />
             </div>
             <div>
-              <label className="mb-1 block text-xs text-light-400">Slug</label>
+              <label className="mb-1 block text-xs text-muted-foreground">Slug</label>
               <input
                 type="text"
                 required
                 value={form.slug}
                 onChange={(e) => setForm({ ...form, slug: e.target.value })}
-                className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+                className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
               />
             </div>
           </div>
           <div>
-            <label className="mb-1 block text-xs text-light-400">
+            <label className="mb-1 block text-xs text-muted-foreground">
               Description
             </label>
             <input
@@ -301,18 +301,18 @@ export default function AdminSkillsClient({
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+              className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
             />
           </div>
           <div>
-            <label className="mb-1 block text-xs text-light-400">
+            <label className="mb-1 block text-xs text-muted-foreground">
               Icon URL
             </label>
             <input
               type="text"
               value={form.icon}
               onChange={(e) => setForm({ ...form, icon: e.target.value })}
-              className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
+              className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none"
               placeholder="https://cdn.jsdelivr.net/..."
             />
           </div>
@@ -341,7 +341,7 @@ export default function AdminSkillsClient({
         {skills.length ? skills.map((skill: any) => (
           <div
             key={skill.id}
-            className="flex min-h-[160px] rounded-2xl border border-white/5 bg-dark-200/50 p-5 transition-all hover:border-white/10"
+            className="flex min-h-[160px] rounded-2xl border border-foreground/5 bg-card/50 p-5 transition-all hover:border-foreground/10"
           >
             {editingId === skill.id ? (
               <div className="w-full space-y-3">
@@ -351,7 +351,7 @@ export default function AdminSkillsClient({
                   onChange={(e) =>
                     setEditForm({ ...editForm, name: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-1.5 text-sm text-white focus:outline-none"
+                  className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-1.5 text-sm text-white focus:outline-none"
                   placeholder="Name"
                 />
                 <input
@@ -360,7 +360,7 @@ export default function AdminSkillsClient({
                   onChange={(e) =>
                     setEditForm({ ...editForm, slug: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-1.5 text-sm text-white focus:outline-none"
+                  className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-1.5 text-sm text-white focus:outline-none"
                   placeholder="Slug"
                 />
                 <input
@@ -369,7 +369,7 @@ export default function AdminSkillsClient({
                   onChange={(e) =>
                     setEditForm({ ...editForm, description: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-1.5 text-sm text-white focus:outline-none"
+                  className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-1.5 text-sm text-white focus:outline-none"
                   placeholder="Description"
                 />
                 <input
@@ -378,7 +378,7 @@ export default function AdminSkillsClient({
                   onChange={(e) =>
                     setEditForm({ ...editForm, icon: e.target.value })
                   }
-                  className="w-full rounded-lg border border-white/10 bg-dark-100 px-3 py-1.5 text-sm text-white focus:outline-none"
+                  className="w-full rounded-lg border border-foreground/10 bg-background px-3 py-1.5 text-sm text-white focus:outline-none"
                   placeholder="Icon URL"
                 />
                 <div className="flex gap-2">
@@ -390,7 +390,7 @@ export default function AdminSkillsClient({
                   </button>
                   <button
                     onClick={() => setEditingId(null)}
-                    className="rounded-lg border border-white/10 px-3 py-1 text-xs text-light-400"
+                    className="rounded-lg border border-foreground/10 px-3 py-1 text-xs text-muted-foreground"
                   >
                     Cancel
                   </button>
@@ -418,27 +418,27 @@ export default function AdminSkillsClient({
                       <span
                         className={`rounded-full px-2 py-0.5 text-[10px] font-medium ${
                           skill.isActive === false
-                            ? "bg-red-500/15 text-red-400"
-                            : "bg-emerald-500/15 text-emerald-400"
+                            ? "bg-red-500/15 text-red-700 dark:text-red-400"
+                            : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                         }`}
                       >
                         {skill.isActive === false ? "Disabled" : "Active"}
                       </span>
                     </div>
-                    <p className="text-xs text-light-400">{skill.slug}</p>
+                    <p className="text-xs text-muted-foreground">{skill.slug}</p>
                   </div>
                 </div>
-                <p className="mt-3 line-clamp-2 text-xs text-light-400">
+                <p className="mt-3 line-clamp-2 text-xs text-muted-foreground">
                   {skill.description || "No description"}
                 </p>
                 <div className="mt-auto flex items-end justify-between gap-3 pt-5">
-                  <span className="text-xs text-light-400">
+                  <span className="text-xs text-muted-foreground">
                     {skill._count?.challenges || 0} challenges
                   </span>
                   <div className="flex items-center gap-2">
                     <button
                       onClick={() => handleStartEdit(skill)}
-                      className="rounded-lg border border-white/10 px-3 py-1 text-xs text-light-400 transition-colors hover:bg-white/5 hover:text-white"
+                      className="rounded-lg border border-foreground/10 px-3 py-1 text-xs text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
                     >
                       Edit
                     </button>
@@ -447,8 +447,8 @@ export default function AdminSkillsClient({
                       disabled={statusUpdatingId === skill.id}
                       className={`rounded-lg border p-1.5 transition-colors disabled:opacity-50 ${
                         skill.isActive === false
-                          ? "border-emerald-400/10 text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
-                          : "border-red-400/10 text-red-400/70 hover:bg-red-500/10 hover:text-red-400"
+                          ? "border-emerald-400/10 text-emerald-700 dark:text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                          : "border-red-400/10 text-red-700 dark:text-red-400/70 hover:bg-red-500/10 hover:text-red-400"
                       }`}
                       title={
                         skill.isActive === false

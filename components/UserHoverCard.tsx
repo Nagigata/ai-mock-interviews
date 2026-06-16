@@ -85,20 +85,20 @@ const UserHoverCard = ({
         <HoverCardPrimitive.Content
           align="start"
           sideOffset={8}
-          className="z-50 w-72 rounded-2xl border border-white/[0.08] bg-[#101318] p-4 text-light-100 shadow-[0_24px_60px_rgba(0,0,0,0.45)] animate-in fade-in zoom-in-95 duration-150"
+          className="z-50 w-72 rounded-2xl border border-foreground/[0.08] bg-card p-4 text-foreground shadow-[0_24px_60px_rgba(0,0,0,0.45)] animate-in fade-in zoom-in-95 duration-150"
         >
           <div className="flex items-center gap-3">
             <UserAvatar
               name={display.name}
               avatarUrl={display.avatarUrl}
               size="md"
-              className="border-white/15"
+              className="border-foreground/15"
             />
             <div className="min-w-0">
               <p className="truncate text-base font-bold text-white">
                 {display.name}
               </p>
-              <p className="text-xs text-light-100/55">
+              <p className="text-xs text-foreground/55">
                 {loading ? "Loading…" : error ? "Profile unavailable" : "Member"}
               </p>
             </div>
@@ -112,7 +112,7 @@ const UserHoverCard = ({
               loading={loading && !data}
             />
             <Stat
-              icon={<MessageSquare className="size-4 text-cyan-300" />}
+              icon={<MessageSquare className="size-4 text-cyan-700 dark:text-cyan-300" />}
               label="Discuss"
               value={data?.discussCount ?? 0}
               loading={loading && !data}
@@ -145,8 +145,8 @@ const Stat = ({
   value: number;
   loading: boolean;
 }) => (
-  <div className="rounded-xl border border-white/[0.06] bg-white/[0.03] px-3 py-2">
-    <div className="flex items-center gap-2 text-xs font-semibold text-light-100/70">
+  <div className="rounded-xl border border-foreground/[0.06] bg-foreground/[0.03] px-3 py-2">
+    <div className="flex items-center gap-2 text-xs font-semibold text-foreground/70">
       {icon}
       {label}
     </div>

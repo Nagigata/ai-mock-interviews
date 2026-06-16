@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import UserMenu from "@/components/UserMenu";
 import { UserProfile } from "@/types";
 import NotificationCenter from "@/components/NotificationCenter";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface NavbarProps {
   locale: string;
@@ -107,7 +108,7 @@ const Navbar = ({ locale, t, user }: NavbarProps) => {
             </div>
           </div>
 
-          {/* <ThemeToggle /> */}
+          <ThemeToggle />
           <NotificationCenter />
           <UserMenu currentLocale={locale} user={user} />
 

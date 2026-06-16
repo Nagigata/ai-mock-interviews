@@ -74,7 +74,7 @@ const statCards = [
     label: "Total Users",
     icon: Users,
     color: "from-indigo-500/20 to-indigo-600/5",
-    iconColor: "text-indigo-400",
+    iconColor: "text-indigo-700 dark:text-indigo-400",
     summary: (dashboard: any) => `+${dashboard.usersToday ?? 0} today`,
   },
   {
@@ -82,7 +82,7 @@ const statCards = [
     label: "Interviews",
     icon: MessageSquare,
     color: "from-emerald-500/20 to-emerald-600/5",
-    iconColor: "text-emerald-400",
+    iconColor: "text-emerald-700 dark:text-emerald-400",
     summary: (dashboard: any) => `+${dashboard.interviewsToday ?? 0} today`,
   },
   {
@@ -90,7 +90,7 @@ const statCards = [
     label: "Challenges",
     icon: Code2,
     color: "from-amber-500/20 to-amber-600/5",
-    iconColor: "text-amber-400",
+    iconColor: "text-amber-700 dark:text-amber-400",
     summary: (dashboard: any) =>
       `${dashboard.activeChallenges ?? 0} active / ${
         dashboard.disabledChallenges ?? 0
@@ -101,7 +101,7 @@ const statCards = [
     label: "Submissions",
     icon: FileCheck,
     color: "from-rose-500/20 to-rose-600/5",
-    iconColor: "text-rose-400",
+    iconColor: "text-rose-700 dark:text-rose-400",
     summary: (dashboard: any) => `+${dashboard.submissionsToday ?? 0} today`,
   },
   {
@@ -109,7 +109,7 @@ const statCards = [
     label: "Attempts",
     icon: TrendingUp,
     color: "from-cyan-500/20 to-cyan-600/5",
-    iconColor: "text-cyan-400",
+    iconColor: "text-cyan-700 dark:text-cyan-400",
     summary: (dashboard: any) => `+${dashboard.attemptsToday ?? 0} today`,
   },
   {
@@ -117,7 +117,7 @@ const statCards = [
     label: "Skills",
     icon: Layers,
     color: "from-violet-500/20 to-violet-600/5",
-    iconColor: "text-violet-400",
+    iconColor: "text-violet-700 dark:text-violet-400",
     summary: (dashboard: any) =>
       `${dashboard.activeSkills ?? 0} active / ${
         dashboard.disabledSkills ?? 0
@@ -129,8 +129,8 @@ const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-xl border border-white/10 bg-dark-200 px-4 py-2.5 shadow-xl">
-      <p className="mb-1 text-xs text-light-400">{label}</p>
+    <div className="rounded-xl border border-foreground/10 bg-card px-4 py-2.5 shadow-xl">
+      <p className="mb-1 text-xs text-muted-foreground">{label}</p>
       {payload.map((entry: any, index: number) => (
         <p
           key={index}
@@ -168,42 +168,42 @@ const formatAuditAction = (action: string) =>
 
 const getStatusTone = (status: string) => {
   if (status === "ACCEPTED" || status === "Active") {
-    return "bg-emerald-500/15 text-emerald-400";
+    return "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400";
   }
 
   if (status === "WRONG_ANSWER" || status.includes("ERROR")) {
-    return "bg-red-500/15 text-red-400";
+    return "bg-red-500/15 text-red-700 dark:text-red-400";
   }
 
   if (status === "Archived") {
     return "bg-slate-500/15 text-slate-300";
   }
 
-  return "bg-amber-500/15 text-amber-400";
+  return "bg-amber-500/15 text-amber-700 dark:text-amber-400";
 };
 
 const getAuditActionTone = (action: string) => {
   if (action.startsWith("CREATE") || action.startsWith("ENABLE")) {
-    return "bg-emerald-500/15 text-emerald-400";
+    return "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400";
   }
 
   if (action.startsWith("DISABLE")) {
-    return "bg-red-500/15 text-red-400";
+    return "bg-red-500/15 text-red-700 dark:text-red-400";
   }
 
   if (action.startsWith("ARCHIVE")) {
-    return "bg-amber-500/15 text-amber-400";
+    return "bg-amber-500/15 text-amber-700 dark:text-amber-400";
   }
 
   if (action.startsWith("RESTORE")) {
-    return "bg-cyan-500/15 text-cyan-300";
+    return "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300";
   }
 
   return "bg-primary-200/15 text-primary-200";
 };
 
 const EmptyState = ({ message }: { message: string }) => (
-  <div className="rounded-xl border border-dashed border-white/10 bg-white/[0.03] px-4 py-6 text-center text-sm text-light-400">
+  <div className="rounded-xl border border-dashed border-foreground/10 bg-foreground/[0.03] px-4 py-6 text-center text-sm text-muted-foreground">
     {message}
   </div>
 );
@@ -218,7 +218,7 @@ const SectionCard = ({
   className = "",
 }: SectionCardProps) => (
   <section
-    className={`rounded-2xl border border-white/5 bg-dark-200/50 p-6 ${className}`}
+    className={`rounded-2xl border border-foreground/5 bg-card/50 p-6 ${className}`}
   >
     <div className="mb-5 flex items-start justify-between gap-4">
       <div className="flex min-w-0 items-center gap-3">
@@ -228,7 +228,7 @@ const SectionCard = ({
         <div className="min-w-0">
           <h3 className="text-base font-semibold text-white">{title}</h3>
           {subtitle && (
-            <p className="mt-1 text-xs leading-relaxed text-light-400">
+            <p className="mt-1 text-xs leading-relaxed text-muted-foreground">
               {subtitle}
             </p>
           )}
@@ -251,7 +251,7 @@ const ActivityItem = ({
   avatar,
 }: ActivityItemProps) => {
   const content = (
-    <div className="flex items-start justify-between gap-4 rounded-xl border border-white/5 bg-white/[0.04] px-4 py-3 transition-colors hover:bg-white/[0.08]">
+    <div className="flex items-start justify-between gap-4 rounded-xl border border-foreground/5 bg-foreground/[0.04] px-4 py-3 transition-colors hover:bg-foreground/[0.08]">
       <div className="flex min-w-0 gap-3">
         {avatar}
         <div className="min-w-0">
@@ -263,8 +263,8 @@ const ActivityItem = ({
             </span>
           )}
           <p className="truncate text-sm font-semibold text-white">{title}</p>
-          <p className="mt-1 truncate text-xs text-light-400">{meta}</p>
-          {time && <p className="mt-2 text-[11px] text-light-500">{time}</p>}
+          <p className="mt-1 truncate text-xs text-muted-foreground">{meta}</p>
+          {time && <p className="mt-2 text-[11px] text-muted-foreground">{time}</p>}
         </div>
       </div>
       {side}
@@ -287,8 +287,8 @@ const GrowthBadge = ({ value }: { value: number }) => {
     <span
       className={`shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold ${
         isPositive
-          ? "bg-emerald-500/15 text-emerald-400"
-          : "bg-red-500/15 text-red-400"
+          ? "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
+          : "bg-red-500/15 text-red-700 dark:text-red-400"
       }`}
     >
       {isPositive ? "+" : ""}
@@ -300,7 +300,7 @@ const GrowthBadge = ({ value }: { value: number }) => {
 const SectionLink = ({ href, label }: { href: string; label: string }) => (
   <Link
     href={href}
-    className="inline-flex shrink-0 items-center gap-1 rounded-full border border-white/10 px-3 py-1.5 text-xs font-semibold text-light-300 transition-colors hover:border-primary-200/40 hover:text-white"
+    className="inline-flex shrink-0 items-center gap-1 rounded-full border border-foreground/10 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary-200/40 hover:text-white"
   >
     {label}
     <ArrowUpRight className="size-3.5" />
@@ -323,14 +323,14 @@ const RankItem = ({
   valueTone?: string;
 }) => {
   const content = (
-    <div className="flex items-center justify-between rounded-xl border border-white/5 bg-white/[0.04] px-3 py-2.5 transition-colors hover:bg-white/[0.08]">
+    <div className="flex items-center justify-between rounded-xl border border-foreground/5 bg-foreground/[0.04] px-3 py-2.5 transition-colors hover:bg-foreground/[0.08]">
       <div className="flex min-w-0 items-center gap-3">
-        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-white/5 text-xs font-bold text-light-300">
+        <span className="flex size-7 shrink-0 items-center justify-center rounded-lg bg-foreground/5 text-xs font-bold text-muted-foreground">
           {index + 1}
         </span>
         <div className="min-w-0">
           <p className="truncate text-sm font-semibold text-white">{title}</p>
-          <p className="truncate text-[11px] text-light-500">{meta}</p>
+          <p className="truncate text-[11px] text-muted-foreground">{meta}</p>
         </div>
       </div>
       <p className={`ml-3 text-sm font-bold ${valueTone}`}>
@@ -409,7 +409,7 @@ export default function AdminDashboardClient({
               type="button"
               onClick={handleRefresh}
               disabled={isRefreshing}
-              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/5 px-4 text-sm font-semibold text-light-100 transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 disabled:cursor-not-allowed disabled:opacity-60"
+              className="inline-flex h-[42px] items-center justify-center gap-2 rounded-xl border border-foreground/10 bg-foreground/5 px-4 text-sm font-semibold text-foreground transition-colors hover:border-primary-200/40 hover:bg-primary-200/10 disabled:cursor-not-allowed disabled:opacity-60"
             >
               <RefreshCw
                 className={`size-4 ${isRefreshing ? "animate-spin" : ""}`}
@@ -428,19 +428,19 @@ export default function AdminDashboardClient({
           return (
             <div
               key={card.key}
-              className={`relative overflow-hidden rounded-2xl border border-white/5 bg-gradient-to-br ${card.color} p-5 transition-all hover:-translate-y-0.5 hover:border-white/10 hover:shadow-lg`}
+              className={`relative overflow-hidden rounded-2xl border border-foreground/5 bg-gradient-to-br ${card.color} p-5 transition-all hover:-translate-y-0.5 hover:border-foreground/10 hover:shadow-lg`}
             >
               <div className="flex items-start justify-between gap-3">
                 <div>
-                  <p className="mb-1 text-sm text-light-400">{card.label}</p>
+                  <p className="mb-1 text-sm text-muted-foreground">{card.label}</p>
                   <p className="text-3xl font-bold text-white">
                     {value.toLocaleString()}
                   </p>
-                  <p className="mt-2 text-xs font-medium text-light-300">
+                  <p className="mt-2 text-xs font-medium text-muted-foreground">
                     {card.summary(dashboard)}
                   </p>
                 </div>
-                <div className={`rounded-xl bg-white/5 p-3 ${card.iconColor}`}>
+                <div className={`rounded-xl bg-foreground/5 p-3 ${card.iconColor}`}>
                   <Icon className="size-6" />
                 </div>
               </div>
@@ -455,7 +455,7 @@ export default function AdminDashboardClient({
             title={`User Growth (${selectedRangeLabel})`}
             subtitle="New user accounts created in the selected range."
             icon={Users}
-            iconTone="bg-indigo-500/10 text-indigo-400"
+            iconTone="bg-indigo-500/10 text-indigo-700 dark:text-indigo-400"
             action={<GrowthBadge value={stats.growth?.users ?? 0} />}
           >
             <ResponsiveContainer width="100%" height={240}>
@@ -497,7 +497,7 @@ export default function AdminDashboardClient({
             title={`Submissions Trend (${selectedRangeLabel})`}
             subtitle="Challenge submissions sent by learners."
             icon={FileCheck}
-            iconTone="bg-emerald-500/10 text-emerald-400"
+            iconTone="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
             action={<GrowthBadge value={stats.growth?.submissions ?? 0} />}
           >
             <ResponsiveContainer width="100%" height={240}>
@@ -534,7 +534,7 @@ export default function AdminDashboardClient({
             title={`Interview Trend (${selectedRangeLabel})`}
             subtitle="Mock interviews generated during the selected range."
             icon={MessageSquare}
-            iconTone="bg-amber-500/10 text-amber-400"
+            iconTone="bg-amber-500/10 text-amber-700 dark:text-amber-400"
             action={<GrowthBadge value={stats.growth?.interviews ?? 0} />}
           >
             <ResponsiveContainer width="100%" height={240}>
@@ -582,25 +582,25 @@ export default function AdminDashboardClient({
             title={`Submission Success Rate (${selectedRangeLabel})`}
             subtitle="Accepted submissions over all challenge submissions."
             icon={CheckCircle2}
-            iconTone="bg-emerald-500/10 text-emerald-400"
+            iconTone="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
           >
-            <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-5">
+            <div className="rounded-2xl border border-foreground/5 bg-foreground/[0.03] p-5">
               <div className="flex items-end justify-between gap-4">
                 <div>
                   <p className="text-5xl font-bold text-white">
                     {stats.submissionSuccessRate?.rate ?? 0}%
                   </p>
-                  <p className="mt-2 text-sm text-light-400">
+                  <p className="mt-2 text-sm text-muted-foreground">
                     {stats.submissionSuccessRate?.accepted ?? 0} accepted of{" "}
                     {stats.submissionSuccessRate?.total ?? 0} submissions
                   </p>
                 </div>
-                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-400">
+                <span className="rounded-full bg-emerald-500/15 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
                   Success
                 </span>
               </div>
 
-              <div className="mt-5 h-3 overflow-hidden rounded-full bg-white/10">
+              <div className="mt-5 h-3 overflow-hidden rounded-full bg-foreground/10">
                 <div
                   className="h-full rounded-full bg-gradient-to-r from-emerald-400 to-cyan-300"
                   style={{
@@ -626,7 +626,7 @@ export default function AdminDashboardClient({
                   </span>
                 ))
               ) : (
-                <p className="text-sm text-light-400">No submissions yet.</p>
+                <p className="text-sm text-muted-foreground">No submissions yet.</p>
               )}
             </div>
           </SectionCard>
@@ -638,7 +638,7 @@ export default function AdminDashboardClient({
           title="Recent Users"
           subtitle="Newest accounts created on the platform."
           icon={Users}
-          iconTone="bg-indigo-500/10 text-indigo-400"
+          iconTone="bg-indigo-500/10 text-indigo-700 dark:text-indigo-400"
           action={<SectionLink href="/admin/users" label="Manage" />}
         >
           <div className="space-y-3">
@@ -655,8 +655,8 @@ export default function AdminDashboardClient({
                   badge={user.role}
                   badgeTone={
                     user.role === "ADMIN"
-                      ? "bg-amber-500/15 text-amber-400"
-                      : "bg-white/10 text-light-300"
+                      ? "bg-amber-500/15 text-amber-700 dark:text-amber-400"
+                      : "bg-foreground/10 text-muted-foreground"
                   }
                   avatar={
                     <UserAvatar
@@ -677,7 +677,7 @@ export default function AdminDashboardClient({
           title="Recent Submissions"
           subtitle="Latest coding challenge submissions."
           icon={FileCheck}
-          iconTone="bg-emerald-500/10 text-emerald-400"
+          iconTone="bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
         >
           <div className="space-y-3">
             {dashboard.recentSubmissions?.length ? (
@@ -701,7 +701,7 @@ export default function AdminDashboardClient({
           title="Recent Interviews"
           subtitle="Latest generated interviews and attempt activity."
           icon={MessageSquare}
-          iconTone="bg-amber-500/10 text-amber-400"
+          iconTone="bg-amber-500/10 text-amber-700 dark:text-amber-400"
           action={<SectionLink href="/admin/interviews" label="View all" />}
         >
           <div className="space-y-3">
@@ -722,7 +722,7 @@ export default function AdminDashboardClient({
                       <p className="text-sm font-bold text-primary-200">
                         {interview.attempts}
                       </p>
-                      <p className="text-[11px] text-light-500">attempts</p>
+                      <p className="text-[11px] text-muted-foreground">attempts</p>
                     </div>
                   }
                 />
@@ -769,12 +769,12 @@ export default function AdminDashboardClient({
           title={`Top Content (${selectedRangeLabel})`}
           subtitle="Skills and challenges ranked by submissions in the selected range."
           icon={Trophy}
-          iconTone="bg-amber-500/10 text-amber-400"
+          iconTone="bg-amber-500/10 text-amber-700 dark:text-amber-400"
         >
           <div className="grid gap-5 lg:grid-cols-2">
             <div>
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-light-500">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground">
                   Top Skills
                 </p>
                 <Link
@@ -793,7 +793,7 @@ export default function AdminDashboardClient({
                       title={skill.name}
                       meta={skill.isActive ? "Active" : "Disabled"}
                       value={skill.submissionCount}
-                      valueTone="text-amber-300"
+                      valueTone="text-amber-700 dark:text-amber-300"
                     />
                   ))
                 ) : (
@@ -804,7 +804,7 @@ export default function AdminDashboardClient({
 
             <div>
               <div className="mb-3 flex items-center justify-between">
-                <p className="text-xs font-bold uppercase tracking-[0.22em] text-light-500">
+                <p className="text-xs font-bold uppercase tracking-[0.22em] text-muted-foreground">
                   Top Challenges
                 </p>
                 <Link
@@ -823,7 +823,7 @@ export default function AdminDashboardClient({
                       title={challenge.title}
                       meta={`${challenge.skillName} | ${challenge.difficulty}`}
                       value={challenge.submissionCount}
-                      valueTone="text-emerald-300"
+                      valueTone="text-emerald-700 dark:text-emerald-300"
                       href={`/admin/challenges?search=${encodeURIComponent(
                         challenge.title,
                       )}`}

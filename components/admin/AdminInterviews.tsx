@@ -165,10 +165,10 @@ export default function AdminInterviewsClient({
   }
 
   const levelColors: Record<string, string> = {
-    junior: "bg-emerald-500/20 text-emerald-400",
-    mid: "bg-amber-500/20 text-amber-400",
-    "mid-level": "bg-amber-500/20 text-amber-400",
-    senior: "bg-red-500/20 text-red-400",
+    junior: "bg-emerald-500/20 text-emerald-700 dark:text-emerald-400",
+    mid: "bg-amber-500/20 text-amber-700 dark:text-amber-400",
+    "mid-level": "bg-amber-500/20 text-amber-700 dark:text-amber-400",
+    senior: "bg-red-500/20 text-red-700 dark:text-red-400",
   };
 
   return (
@@ -218,41 +218,41 @@ export default function AdminInterviewsClient({
       <AdminTableContainer>
           <table className="w-full min-w-[1120px]">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+            <tr className="border-b border-foreground/5">
+              <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Role
               </th>
-              <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 User
               </th>
-              <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Level
               </th>
-              <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Type
               </th>
-              <th className="text-left px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-left px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Tech Stack
               </th>
-              <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Attempts
               </th>
-              <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Status
               </th>
-              <th className="text-center px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-center px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Created
               </th>
-              <th className="text-right px-5 py-3.5 text-xs font-medium text-light-400 uppercase tracking-wider">
+              <th className="text-right px-5 py-3.5 text-xs font-medium text-muted-foreground uppercase tracking-wider">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-foreground/5">
             {data.items?.length ? data.items.map((interview: any) => (
               <tr
                 key={interview.id}
-                className="hover:bg-white/[0.02] transition-colors"
+                className="hover:bg-foreground/[0.02] transition-colors"
               >
                 <td className="px-5 py-4">
                   <p className="text-sm font-medium text-white capitalize">
@@ -260,10 +260,10 @@ export default function AdminInterviewsClient({
                   </p>
                 </td>
                 <td className="px-5 py-4">
-                  <p className="text-sm text-light-100">
+                  <p className="text-sm text-foreground">
                     {interview.user?.name}
                   </p>
-                  <p className="text-xs text-light-400">
+                  <p className="text-xs text-muted-foreground">
                     {interview.user?.email}
                   </p>
                 </td>
@@ -271,14 +271,14 @@ export default function AdminInterviewsClient({
                   <span
                     className={`text-xs px-2.5 py-1 rounded-full font-medium capitalize ${
                       levelColors[interview.level?.toLowerCase()] ||
-                      "bg-white/10 text-light-400"
+                      "bg-foreground/10 text-muted-foreground"
                     }`}
                   >
                     {interview.level}
                   </span>
                 </td>
                 <td className="px-5 py-4 text-center">
-                  <span className="text-xs text-light-400 bg-white/5 px-2 py-1 rounded-md capitalize">
+                  <span className="text-xs text-muted-foreground bg-foreground/5 px-2 py-1 rounded-md capitalize">
                     {interview.type}
                   </span>
                 </td>
@@ -293,34 +293,34 @@ export default function AdminInterviewsClient({
                       </span>
                     ))}
                     {interview.techstack?.length > 3 && (
-                      <span className="text-[10px] text-light-400">
+                      <span className="text-[10px] text-muted-foreground">
                         +{interview.techstack.length - 3}
                       </span>
                     )}
                   </div>
                 </td>
-                <td className="px-5 py-4 text-center text-sm text-light-100">
+                <td className="px-5 py-4 text-center text-sm text-foreground">
                   {interview.totalAttempts}
                 </td>
                 <td className="px-5 py-4 text-center">
                   <span
                     className={`inline-flex items-center rounded-full px-2.5 py-1 text-xs font-medium ${
                       interview.archivedAt
-                        ? "bg-amber-500/15 text-amber-400"
-                        : "bg-emerald-500/15 text-emerald-400"
+                        ? "bg-amber-500/15 text-amber-700 dark:text-amber-400"
+                        : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                     }`}
                   >
                     {interview.archivedAt ? "Archived" : "Active"}
                   </span>
                 </td>
-                <td className="px-5 py-4 text-center text-xs text-light-400">
+                <td className="px-5 py-4 text-center text-xs text-muted-foreground">
                   {new Date(interview.createdAt).toLocaleDateString()}
                 </td>
                 <td className="px-5 py-4 text-right">
                   <div className="flex items-center justify-end gap-1">
                     <Link
                       href={`/admin/interviews/${interview.id}`}
-                      className="rounded-lg p-1.5 text-light-400 transition-colors hover:bg-primary-200/10 hover:text-primary-200"
+                      className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-primary-200/10 hover:text-primary-200"
                       title="View interview"
                       aria-label="View interview"
                     >
@@ -332,8 +332,8 @@ export default function AdminInterviewsClient({
                       disabled={archiveUpdatingId === interview.id}
                       className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                         interview.archivedAt
-                          ? "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
-                          : "text-amber-400/70 hover:bg-amber-500/10 hover:text-amber-400"
+                          ? "text-emerald-700 dark:text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                          : "text-amber-700 dark:text-amber-400/70 hover:bg-amber-500/10 hover:text-amber-400"
                       }`}
                       title={
                         interview.archivedAt

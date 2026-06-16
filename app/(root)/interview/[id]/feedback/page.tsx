@@ -94,10 +94,10 @@ const Feedback = async ({
   const score = feedback?.totalScore ?? 0;
   const scoreColor =
     score >= 80
-      ? "text-emerald-400"
+      ? "text-emerald-700 dark:text-emerald-400"
       : score >= 50
-        ? "text-amber-400"
-        : "text-red-400";
+        ? "text-amber-700 dark:text-amber-400"
+        : "text-red-700 dark:text-red-400";
   const scoreBg =
     score >= 80
       ? "bg-emerald-500/15 border-emerald-500/20"
@@ -173,10 +173,10 @@ const Feedback = async ({
             {feedback.categoryScores.map((category, index) => {
               const catScoreColor =
                 category.score >= 80
-                  ? "text-emerald-400"
+                  ? "text-emerald-700 dark:text-emerald-400"
                   : category.score >= 50
-                    ? "text-amber-400"
-                    : "text-red-400";
+                    ? "text-amber-700 dark:text-amber-400"
+                    : "text-red-700 dark:text-red-400";
               const catBarColor =
                 category.score >= 80
                   ? "bg-emerald-400"
@@ -223,8 +223,8 @@ const Feedback = async ({
         {feedback?.strengths && feedback.strengths.length > 0 && (
           <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-5 space-y-3">
             <div className="flex items-center gap-2">
-              <CheckCircle2 size={18} className="text-emerald-400" />
-              <h3 className="text-sm font-bold text-emerald-400">
+              <CheckCircle2 size={18} className="text-emerald-700 dark:text-emerald-400" />
+              <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-400">
                 {t.feedback.strengths}
               </h3>
             </div>
@@ -248,8 +248,8 @@ const Feedback = async ({
           feedback.areasForImprovement.length > 0 && (
             <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-5 space-y-3">
               <div className="flex items-center gap-2">
-                <TrendingUp size={18} className="text-amber-400" />
-                <h3 className="text-sm font-bold text-amber-400">
+                <TrendingUp size={18} className="text-amber-700 dark:text-amber-400" />
+                <h3 className="text-sm font-bold text-amber-700 dark:text-amber-400">
                   {t.feedback.areasForImprovement}
                 </h3>
               </div>

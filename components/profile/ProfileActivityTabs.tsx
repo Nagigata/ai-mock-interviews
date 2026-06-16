@@ -49,8 +49,8 @@ export function ProfileActivityTabs({
 
   return (
     <section
-      className="rounded-[32px] border border-white/[0.08] p-5 shadow-[0_24px_60px_rgba(0,0,0,0.22)] sm:p-7"
-      style={{ background: "#101318" }}
+      className="rounded-[32px] border border-foreground/[0.08] p-5 shadow-[0_24px_60px_var(--shadow-color)] sm:p-7"
+      style={{ background: "var(--surface-card)" }}
     >
       <div className="flex items-start gap-3">
         <div className="mt-1 flex size-10 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
@@ -63,7 +63,7 @@ export function ProfileActivityTabs({
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-white sm:text-3xl">
             Activity & Contributions
           </h2>
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-light-100/75">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-foreground/75">
             Latest practice, shared solutions, and discussions across the platform.
           </p>
         </div>
@@ -81,7 +81,7 @@ export function ProfileActivityTabs({
               <div className="mt-4 flex justify-center">
                 <Link
                   href="/practice-history"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
                 >
                   View all practice activities
                   <ArrowRight className="size-4" />
@@ -98,7 +98,7 @@ export function ProfileActivityTabs({
               <div className="mt-4 flex justify-center">
                 <Link
                   href="/practice-history"
-                  className="inline-flex items-center gap-2 rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
+                  className="inline-flex items-center gap-2 rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 py-2.5 text-sm font-bold text-primary-100 transition hover:border-primary-200/25 hover:bg-primary-200/10"
                 >
                   View all practice activities
                   <ArrowRight className="size-4" />

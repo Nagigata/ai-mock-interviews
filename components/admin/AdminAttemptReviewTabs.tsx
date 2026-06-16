@@ -19,7 +19,7 @@ type AdminAttemptReviewTabsProps = {
 const getScoreTone = (score = 0) => {
   if (score >= 80) {
     return {
-      text: "text-emerald-400",
+      text: "text-emerald-700 dark:text-emerald-400",
       bg: "bg-emerald-500/15 border-emerald-500/20",
       bar: "bg-emerald-400",
     };
@@ -27,14 +27,14 @@ const getScoreTone = (score = 0) => {
 
   if (score >= 50) {
     return {
-      text: "text-amber-400",
+      text: "text-amber-700 dark:text-amber-400",
       bg: "bg-amber-500/15 border-amber-500/20",
       bar: "bg-amber-400",
     };
   }
 
   return {
-    text: "text-red-400",
+    text: "text-red-700 dark:text-red-400",
     bg: "bg-red-500/15 border-red-500/20",
     bar: "bg-red-400",
   };
@@ -54,7 +54,7 @@ export default function AdminAttemptReviewTabs({
 
   return (
     <div className="space-y-5">
-      <div className="inline-flex rounded-2xl border border-white/8 bg-dark-200/70 p-1">
+      <div className="inline-flex rounded-2xl border border-foreground/8 bg-card/70 p-1">
         {tabs.map((tab) => {
           const Icon = tab.icon;
           const isActive = activeTab === tab.id;
@@ -68,7 +68,7 @@ export default function AdminAttemptReviewTabs({
                 "inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold transition-colors",
                 isActive
                   ? "bg-primary-200 text-dark-100"
-                  : "text-light-400 hover:bg-white/5 hover:text-white",
+                  : "text-muted-foreground hover:bg-foreground/5 hover:text-white",
               )}
             >
               <Icon className="size-4" />
@@ -78,8 +78,8 @@ export default function AdminAttemptReviewTabs({
                   className={cn(
                     "rounded-full px-2 py-0.5 text-[10px]",
                     isActive
-                      ? "bg-dark-100/15 text-dark-100"
-                      : "bg-white/8 text-light-400",
+                      ? "bg-background/15 text-dark-100"
+                      : "bg-foreground/8 text-muted-foreground",
                   )}
                 >
                   {attempt.transcripts?.length || 0}
@@ -102,12 +102,12 @@ export default function AdminAttemptReviewTabs({
 function FeedbackTab({ feedback }: { feedback: any }) {
   if (!feedback) {
     return (
-      <div className="rounded-2xl border border-white/6 bg-white/[0.03] p-12 text-center">
-        <Star className="mx-auto mb-4 size-10 text-light-600" />
+      <div className="rounded-2xl border border-foreground/6 bg-foreground/[0.03] p-12 text-center">
+        <Star className="mx-auto mb-4 size-10 text-muted-foreground" />
         <p className="text-lg font-semibold text-white">
           No feedback generated
         </p>
-        <p className="mx-auto mt-2 max-w-md text-sm text-light-400">
+        <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
           This attempt does not have AI feedback yet.
         </p>
       </div>
@@ -117,11 +117,11 @@ function FeedbackTab({ feedback }: { feedback: any }) {
   return (
     <div className="grid gap-5 xl:grid-cols-[1fr_360px]">
       <div className="space-y-5">
-        <div className="rounded-2xl border border-white/6 bg-white/[0.03] p-6">
+        <div className="rounded-2xl border border-foreground/6 bg-foreground/[0.03] p-6">
           <h2 className="mb-3 text-lg font-bold text-white">
             Final Assessment
           </h2>
-          <p className="text-sm leading-7 text-light-100">
+          <p className="text-sm leading-7 text-foreground">
             {feedback.finalAssessment}
           </p>
         </div>
@@ -135,7 +135,7 @@ function FeedbackTab({ feedback }: { feedback: any }) {
               return (
                 <div
                   key={category.id}
-                  className="rounded-2xl border border-white/6 bg-white/[0.03] p-5"
+                  className="rounded-2xl border border-foreground/6 bg-foreground/[0.03] p-5"
                 >
                   <div className="mb-2 flex items-center justify-between">
                     <h3 className="text-sm font-bold text-white">
@@ -145,13 +145,13 @@ function FeedbackTab({ feedback }: { feedback: any }) {
                       {category.score}/100
                     </span>
                   </div>
-                  <div className="mb-3 h-1.5 w-full rounded-full bg-white/10">
+                  <div className="mb-3 h-1.5 w-full rounded-full bg-foreground/10">
                     <div
                       className={`h-full rounded-full ${tone.bar}`}
                       style={{ width: `${category.score}%` }}
                     />
                   </div>
-                  <p className="text-sm leading-6 text-light-400">
+                  <p className="text-sm leading-6 text-muted-foreground">
                     {category.comment}
                   </p>
                 </div>
@@ -165,8 +165,8 @@ function FeedbackTab({ feedback }: { feedback: any }) {
         {feedback.strengths?.length > 0 && (
           <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.04] p-5">
             <div className="mb-3 flex items-center gap-2">
-              <CheckCircle2 className="size-4 text-emerald-400" />
-              <h3 className="text-sm font-bold text-emerald-400">
+              <CheckCircle2 className="size-4 text-emerald-700 dark:text-emerald-400" />
+              <h3 className="text-sm font-bold text-emerald-700 dark:text-emerald-400">
                 Strengths
               </h3>
             </div>
@@ -174,7 +174,7 @@ function FeedbackTab({ feedback }: { feedback: any }) {
               {feedback.strengths.map((strength: string, index: number) => (
                 <li
                   key={`${strength}-${index}`}
-                  className="flex items-start gap-2 text-sm leading-6 text-light-100"
+                  className="flex items-start gap-2 text-sm leading-6 text-foreground"
                 >
                   <span className="mt-2 size-1.5 shrink-0 rounded-full bg-emerald-400" />
                   {strength}
@@ -187,8 +187,8 @@ function FeedbackTab({ feedback }: { feedback: any }) {
         {feedback.areasForImprovement?.length > 0 && (
           <div className="rounded-2xl border border-amber-500/15 bg-amber-500/[0.04] p-5">
             <div className="mb-3 flex items-center gap-2">
-              <TrendingUp className="size-4 text-amber-400" />
-              <h3 className="text-sm font-bold text-amber-400">
+              <TrendingUp className="size-4 text-amber-700 dark:text-amber-400" />
+              <h3 className="text-sm font-bold text-amber-700 dark:text-amber-400">
                 Areas for Improvement
               </h3>
             </div>
@@ -197,7 +197,7 @@ function FeedbackTab({ feedback }: { feedback: any }) {
                 (area: string, index: number) => (
                   <li
                     key={`${area}-${index}`}
-                    className="flex items-start gap-2 text-sm leading-6 text-light-100"
+                    className="flex items-start gap-2 text-sm leading-6 text-foreground"
                   >
                     <span className="mt-2 size-1.5 shrink-0 rounded-full bg-amber-400" />
                     {area}
@@ -214,16 +214,16 @@ function FeedbackTab({ feedback }: { feedback: any }) {
 
 function TranscriptTab({ transcripts }: { transcripts: any[] }) {
   return (
-    <div className="rounded-[24px] border border-white/6 bg-[#12151b] p-5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] sm:p-6">
+    <div className="rounded-[24px] border border-foreground/6 bg-card p-5 shadow-[0_18px_60px_rgba(0,0,0,0.24)] sm:p-6">
       <h2 className="mb-5 text-lg font-bold text-white">Transcript</h2>
 
       {transcripts.length === 0 ? (
         <div className="py-12 text-center">
-          <MessageSquareText className="mx-auto mb-4 size-10 text-light-600" />
+          <MessageSquareText className="mx-auto mb-4 size-10 text-muted-foreground" />
           <p className="text-lg font-semibold text-white">
             No transcript messages saved
           </p>
-          <p className="mx-auto mt-2 max-w-md text-sm text-light-400">
+          <p className="mx-auto mt-2 max-w-md text-sm text-muted-foreground">
             This can happen if the call ended before transcript data was
             returned.
           </p>
@@ -252,7 +252,7 @@ function TranscriptTab({ transcripts }: { transcripts: any[] }) {
                     "max-w-[78%] rounded-2xl px-5 py-4",
                     isUser
                       ? "bg-primary-200 text-dark-100"
-                      : "border border-white/6 bg-white/[0.04] text-light-100",
+                      : "border border-foreground/6 bg-foreground/[0.04] text-foreground",
                   )}
                 >
                   <div
@@ -266,7 +266,7 @@ function TranscriptTab({ transcripts }: { transcripts: any[] }) {
                   <p
                     className={cn(
                       "whitespace-pre-wrap text-sm leading-7",
-                      isUser ? "text-dark-100" : "text-light-100",
+                      isUser ? "text-dark-100" : "text-foreground",
                     )}
                   >
                     {message.content}

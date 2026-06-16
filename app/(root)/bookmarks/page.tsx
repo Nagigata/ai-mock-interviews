@@ -110,7 +110,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
+      <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 shadow-[0_20px_50px_rgba(0,0,0,0.2)] sm:p-6">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
             <span className="flex size-11 shrink-0 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
@@ -120,14 +120,14 @@ const BookmarksPage = async ({ searchParams }: Props) => {
               <h1 className="text-3xl font-bold tracking-tight text-white">
                 Saved Items
               </h1>
-              <p className="mt-2 max-w-3xl text-sm leading-6 text-light-100/75">
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-foreground/75">
                 Keep important challenges and mock interviews in one place for
                 quick review.
               </p>
             </div>
           </div>
 
-          <span className="w-fit rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm font-semibold text-light-100">
+          <span className="w-fit rounded-full border border-foreground/10 bg-foreground/[0.04] px-4 py-2 text-sm font-semibold text-foreground">
             {totalSaved} saved
           </span>
         </div>
@@ -146,7 +146,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   <h2 className="text-xl font-bold text-white">
                     Saved Interviews
                   </h2>
-                  <p className="mt-1 text-sm text-light-400">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Mock interviews you marked for later practice.
                   </p>
                 </div>
@@ -175,7 +175,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   ))}
                 </div>
               ) : hasInterviewFilters ? (
-                <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
+                <div className="rounded-[28px] border border-dashed border-foreground/10 bg-foreground/[0.03] p-10 text-center text-muted-foreground">
                   <p>No bookmarked interviews match these filters.</p>
                   <Link
                     href="/bookmarks?tab=interviews"
@@ -185,7 +185,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   </Link>
                 </div>
               ) : (
-                <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
+                <div className="rounded-[28px] border border-dashed border-foreground/10 bg-foreground/[0.03] p-10 text-center text-muted-foreground">
                   <p>You have not bookmarked any interviews yet.</p>
                   <Link
                     href="/interview"
@@ -209,7 +209,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   <h2 className="text-xl font-bold text-white">
                     Saved Challenges
                   </h2>
-                  <p className="mt-1 text-sm text-light-400">
+                  <p className="mt-1 text-sm text-muted-foreground">
                     Problems you want to revisit or solve later.
                   </p>
                 </div>
@@ -240,7 +240,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   />
                 ))
               ) : hasChallengeFilters ? (
-                <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
+                <div className="rounded-[28px] border border-dashed border-foreground/10 bg-foreground/[0.03] p-10 text-center text-muted-foreground">
                   <p>No bookmarked challenges match these filters.</p>
                   <Link
                     href="/bookmarks"
@@ -250,7 +250,7 @@ const BookmarksPage = async ({ searchParams }: Props) => {
                   </Link>
                 </div>
               ) : (
-                <div className="rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-10 text-center text-light-400">
+                <div className="rounded-[28px] border border-dashed border-foreground/10 bg-foreground/[0.03] p-10 text-center text-muted-foreground">
                   <p>You have not bookmarked any challenges yet.</p>
                   <Link
                     href="/challenges"

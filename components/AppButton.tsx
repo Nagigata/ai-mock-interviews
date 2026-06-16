@@ -16,8 +16,8 @@ interface AppButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 const variantClass: Record<AppButtonVariant, string> = {
   primary: "bg-primary-200 text-dark-100 hover:bg-primary-200/80",
   outline:
-    "border border-white/10 bg-white/[0.04] text-white hover:bg-white/[0.08]",
-  destructive: "bg-red-500/90 text-white hover:bg-red-500",
+    "border border-foreground/10 bg-foreground/[0.04] text-white hover:bg-foreground/[0.08]",
+  destructive: "bg-red-500/80 text-white hover:bg-red-500",
 };
 
 const sizeClass: Record<AppButtonSize, string> = {

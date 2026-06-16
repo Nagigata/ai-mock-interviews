@@ -124,11 +124,11 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
   return (
     <div className="flex h-full flex-col">
       {/* Top Header/Toolbar */}
-      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 bg-dark-300 px-6 py-3 shadow-lg">
+      <header className="flex flex-wrap items-center justify-between gap-3 border-b border-foreground/5 bg-muted px-6 py-3 shadow-lg">
         <div className="flex min-w-0 items-center gap-4">
           <Link
             href={`/preparation/${skillSlug}`}
-            className="p-2 hover:bg-dark-200 rounded-lg transition-colors text-light-400 hover:text-white"
+            className="p-2 hover:bg-card rounded-lg transition-colors text-muted-foreground hover:text-white"
             aria-label="Back to skill"
           >
             <ChevronLeft size={20} />
@@ -141,18 +141,18 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
             >
               <Link
                 href="/preparation"
-                className="shrink-0 text-light-500 transition-colors hover:text-primary-100"
+                className="shrink-0 text-muted-foreground transition-colors hover:text-primary-100"
               >
                 Preparation
               </Link>
-              <ChevronRight className="size-3.5 shrink-0 text-light-600" />
+              <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
               <Link
                 href={`/preparation/${skillSlug}`}
-                className="max-w-[140px] truncate text-light-400 transition-colors hover:text-primary-100"
+                className="max-w-[140px] truncate text-muted-foreground transition-colors hover:text-primary-100"
               >
                 {skillSlug}
               </Link>
-              <ChevronRight className="size-3.5 shrink-0 text-light-600" />
+              <ChevronRight className="size-3.5 shrink-0 text-muted-foreground" />
               <span className="truncate text-primary-100">{challenge.title}</span>
             </nav>
             <h2 className="truncate text-sm font-bold leading-none text-white">
@@ -171,7 +171,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
               setCode(templateCode[newLang] || "");
               setExecutionResult(null);
             }}
-            className="bg-dark-200 text-light-100 text-xs font-bold border border-white/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary-200 cursor-pointer disabled:opacity-50 h-9"
+            className="bg-card text-foreground text-xs font-bold border border-foreground/10 rounded-lg px-4 py-2 focus:outline-none focus:ring-1 focus:ring-primary-200 cursor-pointer disabled:opacity-50 h-9"
           >
             {availableLangs.map((lang) => (
               <option key={lang} value={lang} className="capitalize">{lang}</option>
@@ -183,13 +183,13 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
             size="sm"
             disabled={isExecuting}
             onClick={handleResetCode}
-            className="bg-dark-200 border-white/10 text-light-100 hover:bg-dark-100 hover:text-white h-9 gap-2"
+            className="bg-card border-foreground/10 text-foreground hover:bg-background hover:text-white h-9 gap-2"
           >
             <RotateCcw size={14} />
             <span>Reset</span>
           </Button>
 
-          <div className="h-6 w-px bg-white/5 mx-1" />
+          <div className="h-6 w-px bg-foreground/5 mx-1" />
 
           <Button
             size="sm"
@@ -198,7 +198,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
             className="bg-primary-200 text-dark-100 hover:bg-primary-200/80 font-bold px-6 min-w-[80px] h-9 gap-2"
           >
             {isExecuting ? (
-              <div className="size-4 border-2 border-dark-100/30 border-t-dark-100 rounded-full animate-spin" />
+              <div className="size-4 border-2 border-border/30 border-t-dark-100 rounded-full animate-spin" />
             ) : (
               <>
                 <Play size={14} fill="currentColor" />
@@ -214,7 +214,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
             className="bg-success-100 text-white hover:bg-success-200 font-bold px-6 min-w-[100px] h-9 gap-2"
           >
             {isExecuting ? (
-              <div className="size-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="size-4 border-2 border-foreground/30 border-t-white rounded-full animate-spin" />
             ) : (
               <>
                 <Send size={14} />
@@ -226,7 +226,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
       </header>
 
       {/* Main Resizable Layout */}
-      <div className="relative flex-1 overflow-hidden border-b border-white/5 bg-dark-400 shadow-2xl">
+      <div className="relative flex-1 overflow-hidden border-b border-foreground/5 bg-muted shadow-2xl">
         <Group orientation="horizontal">
           {/* Left: Problem Description */}
           <Panel defaultSize={40} minSize={30}>
@@ -236,15 +236,15 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
             />
           </Panel>
 
-          <Separator className="w-1 bg-white/5 hover:bg-primary-200/30 transition-colors cursor-col-resize flex items-center justify-center">
-            <div className="h-8 w-[2px] bg-light-600/30 rounded-full" />
+          <Separator className="w-1 bg-foreground/5 hover:bg-primary-200/30 transition-colors cursor-col-resize flex items-center justify-center">
+            <div className="h-8 w-[2px] bg-muted/30 rounded-full" />
           </Separator>
 
           {/* Right: Code Editor & Console */}
           <Panel defaultSize={60} minSize={30}>
             <Group orientation="vertical">
               <Panel defaultSize={70} minSize={20}>
-                <div className="flex h-full flex-col bg-[#08090D]">
+                <div className="flex h-full flex-col bg-background">
                   <div className="min-h-0 flex-1">
                     <CodeEditor
                       key={`editor-${language}`}
@@ -259,17 +259,17 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
 
               {isConsoleOpen && (
                 <>
-                  <Separator className="h-1 bg-white/5 hover:bg-primary-200/30 transition-colors cursor-row-resize flex items-center justify-center">
-                    <div className="w-8 h-[2px] bg-light-600/30 rounded-full" />
+                  <Separator className="h-1 bg-foreground/5 hover:bg-primary-200/30 transition-colors cursor-row-resize flex items-center justify-center">
+                    <div className="w-8 h-[2px] bg-muted/30 rounded-full" />
                   </Separator>
                   <Panel defaultSize={30} minSize={10}>
-                    <div className="h-full bg-[#0d0e12] flex flex-col">
-                      <div className="flex items-center justify-between px-4 py-2 bg-dark-300 border-b border-white/5">
-                        <span className="text-[10px] font-bold text-light-600 uppercase tracking-widest leading-none">Console Output</span>
+                    <div className="h-full bg-background flex flex-col">
+                      <div className="flex items-center justify-between px-4 py-2 bg-muted border-b border-foreground/5">
+                        <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Console Output</span>
                         <button
                           onClick={() => setIsConsoleOpen(false)}
                           aria-label="Close console"
-                          className="text-light-600 hover:text-white transition-colors p-1"
+                          className="text-muted-foreground hover:text-white transition-colors p-1"
                         >
                           <X size={16} />
                         </button>
@@ -277,7 +277,7 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
 
                       <div className="flex-1 overflow-auto p-4 font-mono text-sm">
                         {isExecuting ? (
-                          <div className="flex items-center gap-3 text-light-400">
+                          <div className="flex items-center gap-3 text-muted-foreground">
                             <div className="size-3 border-2 border-primary-200/30 border-t-primary-200 rounded-full animate-spin" />
                             <span>Executing code...</span>
                           </div>
@@ -292,13 +292,13 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
                                   )}>
                                     {res.status.description}
                                   </span>
-                                  <span className="text-light-600">Test Case {idx + 1}</span>
-                                  {res.time && <span className="text-[10px] text-light-600">({Math.round(parseFloat(res.time) * 1000)}ms)</span>}
+                                  <span className="text-muted-foreground">Test Case {idx + 1}</span>
+                                  {res.time && <span className="text-[10px] text-muted-foreground">({Math.round(parseFloat(res.time) * 1000)}ms)</span>}
                                 </div>
 
                                 {res.stdout && (
-                                  <div className="bg-black/30 p-2 rounded border border-white/5">
-                                    <div className="text-[10px] text-light-600 mb-1 uppercase tracking-tighter">Output:</div>
+                                  <div className="bg-black/30 p-2 rounded border border-foreground/5">
+                                    <div className="text-[10px] text-muted-foreground mb-1 uppercase tracking-tighter">Output:</div>
                                     <pre className="text-success-100 whitespace-pre-wrap">{res.stdout}</pre>
                                   </div>
                                 )}
@@ -320,14 +320,14 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
                                 {res.status.id !== 3 && !res.compile_output && !res.stderr && (
                                   <div className="bg-destructive-100/5 p-2 rounded border border-destructive-100/10">
                                     <div className="text-[10px] text-destructive-100/60 mb-1 uppercase tracking-tighter">Expected Output:</div>
-                                    <pre className="text-light-400 whitespace-pre-wrap">{challenge.testCases[idx]?.output || "N/A"}</pre>
+                                    <pre className="text-muted-foreground whitespace-pre-wrap">{challenge.testCases[idx]?.output || "N/A"}</pre>
                                   </div>
                                 )}
                               </div>
                             ))}
                           </div>
                         ) : (
-                          <div className="text-light-600 italic">Click &quot;Run&quot; to see execution results.</div>
+                          <div className="text-muted-foreground italic">Click &quot;Run&quot; to see execution results.</div>
                         )}
                       </div>
                     </div>
@@ -340,9 +340,9 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
       </div>
 
       {/* Shortcuts Help Bar */}
-      <footer className="hidden items-center justify-between bg-[#08090D] px-6 py-2 text-[10px] font-medium text-light-600 md:flex">
+      <footer className="hidden items-center justify-between bg-background px-6 py-2 text-[10px] font-medium text-muted-foreground md:flex">
         <div className="flex gap-4">
-          <span>Shortcuts: <kbd className="bg-dark-300 px-1 rounded">Ctrl</kbd> + <kbd className="bg-dark-300 px-1 rounded">Enter</kbd> to Run</span>
+          <span>Shortcuts: <kbd className="bg-muted px-1 rounded">Ctrl</kbd> + <kbd className="bg-muted px-1 rounded">Enter</kbd> to Run</span>
         </div>
         <div>
           Powered by Judge0 & PrepWise

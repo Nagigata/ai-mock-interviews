@@ -229,40 +229,40 @@ export default function AdminUsersClient({
       <AdminTableContainer>
         <table className="w-full min-w-[800px]">
           <thead>
-            <tr className="border-b border-white/5">
-              <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+            <tr className="border-b border-foreground/5">
+              <th className="px-5 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 User
               </th>
-              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-left text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Provider
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Interviews
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Submissions
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Role
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Status
               </th>
-              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-4 py-3.5 text-center text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Joined
               </th>
-              <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-light-400">
+              <th className="px-5 py-3.5 text-right text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Actions
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-white/5">
+          <tbody className="divide-y divide-foreground/5">
             {data.items?.length ? data.items.map((user: any) => {
               const isSelf = user.id === currentUserId;
               return (
                 <tr
                   key={user.id}
-                  className="transition-colors hover:bg-white/[0.02]"
+                  className="transition-colors hover:bg-foreground/[0.02]"
                 >
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
@@ -276,34 +276,34 @@ export default function AdminUsersClient({
                         <p className="truncate text-sm font-medium text-white">
                           {user.name}
                           {isSelf && (
-                            <span className="ml-1.5 text-[10px] text-light-600">
+                            <span className="ml-1.5 text-[10px] text-muted-foreground">
                               (you)
                             </span>
                           )}
                         </p>
-                        <p className="truncate text-xs text-light-400">
+                        <p className="truncate text-xs text-muted-foreground">
                           {user.email}
                         </p>
                       </div>
                     </div>
                   </td>
                   <td className="px-4 py-4">
-                    <span className="whitespace-nowrap rounded-md bg-white/5 px-2 py-1 text-xs text-light-400">
+                    <span className="whitespace-nowrap rounded-md bg-foreground/5 px-2 py-1 text-xs text-muted-foreground">
                       {user.provider || "LOCAL"}
                     </span>
                   </td>
-                  <td className="px-4 py-4 text-center text-sm text-light-100">
+                  <td className="px-4 py-4 text-center text-sm text-foreground">
                     {user.totalInterviews}
                   </td>
-                  <td className="px-4 py-4 text-center text-sm text-light-100">
+                  <td className="px-4 py-4 text-center text-sm text-foreground">
                     {user.totalSubmissions}
                   </td>
                   <td className="px-4 py-4 text-center">
                     <span
                       className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${
                         user.role === "ADMIN"
-                          ? "bg-amber-500/20 text-amber-400"
-                          : "bg-white/10 text-light-400"
+                          ? "bg-amber-500/20 text-amber-700 dark:text-amber-400"
+                          : "bg-foreground/10 text-muted-foreground"
                       }`}
                     >
                       {user.role === "ADMIN" ? (
@@ -318,8 +318,8 @@ export default function AdminUsersClient({
                     <span
                       className={`inline-flex items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1 text-xs font-medium ${
                         user.isActive === false
-                          ? "bg-red-500/15 text-red-400"
-                          : "bg-emerald-500/15 text-emerald-400"
+                          ? "bg-red-500/15 text-red-700 dark:text-red-400"
+                          : "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"
                       }`}
                     >
                       {user.isActive === false ? (
@@ -330,12 +330,12 @@ export default function AdminUsersClient({
                       {user.isActive === false ? "Inactive" : "Active"}
                     </span>
                   </td>
-                  <td className="whitespace-nowrap px-4 py-4 text-center text-xs text-light-400">
+                  <td className="whitespace-nowrap px-4 py-4 text-center text-xs text-muted-foreground">
                     {new Date(user.createdAt).toLocaleDateString()}
                   </td>
                   <td className="px-5 py-4 text-right">
                     {isSelf ? (
-                      <span className="text-xs italic text-light-600">-</span>
+                      <span className="text-xs italic text-muted-foreground">-</span>
                     ) : (
                       <div className="flex justify-end gap-1">
                         <button
@@ -360,8 +360,8 @@ export default function AdminUsersClient({
                           disabled={updating === user.id}
                           className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                             user.isActive === false
-                              ? "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
-                              : "text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
+                              ? "text-emerald-700 dark:text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                              : "text-red-700 dark:text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
                           }`}
                           title={
                             user.isActive === false ? "Reactivate" : "Deactivate"
@@ -382,8 +382,8 @@ export default function AdminUsersClient({
                           disabled={updating === user.id}
                           className={`rounded-lg p-1.5 transition-colors disabled:opacity-50 ${
                             user.role === "ADMIN"
-                              ? "text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
-                              : "text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
+                              ? "text-red-700 dark:text-red-400/60 hover:bg-red-500/10 hover:text-red-400"
+                              : "text-emerald-700 dark:text-emerald-400/70 hover:bg-emerald-500/10 hover:text-emerald-400"
                           }`}
                           title={
                             user.role === "ADMIN"

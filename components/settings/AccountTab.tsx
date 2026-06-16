@@ -115,8 +115,8 @@ const AccountTab = ({ profile }: AccountTabProps) => {
         <div
           className={`flex items-start gap-3 rounded-2xl border p-4 text-sm ${
             banner.kind === "ok"
-              ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-200"
-              : "border-red-500/20 bg-red-500/10 text-red-200"
+              ? "border-emerald-400/20 bg-emerald-400/10 text-emerald-700 dark:text-emerald-200"
+              : "border-red-500/20 bg-red-500/10 text-red-700 dark:text-red-200"
           }`}
         >
           {banner.kind === "ok" ? (
@@ -145,38 +145,38 @@ const AccountTab = ({ profile }: AccountTabProps) => {
           <button
             type="button"
             onClick={() => setBanner(null)}
-            className="text-xs text-light-100/70 hover:text-white"
+            className="text-xs text-foreground/70 hover:text-white"
           >
             Dismiss
           </button>
         </div>
       )}
 
-      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 sm:p-6">
+      <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 sm:p-6">
         <h2 className="text-xl font-bold text-white">Sign-in methods</h2>
-        <p className="mt-1 mb-5 text-sm leading-6 text-light-100/70">
+        <p className="mt-1 mb-5 text-sm leading-6 text-foreground/70">
           How you get into PrepWise. Your email can&rsquo;t be changed.
         </p>
 
         <div className="flex flex-col gap-4">
-          <div className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+          <div className="flex items-center gap-3 rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] p-4">
             <Mail className="size-5 text-primary-100" />
             <div className="flex-1">
               <p className="text-sm font-semibold text-white">
                 {profile.email}
               </p>
-              <p className="text-xs text-light-100/60">Primary email</p>
+              <p className="text-xs text-foreground/60">Primary email</p>
             </div>
-            <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-300">
+            <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-1 text-xs font-semibold text-emerald-700 dark:text-emerald-300">
               Verified
             </span>
           </div>
 
-          <div className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4">
+          <div className="flex items-center gap-3 rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] p-4">
             <ShieldCheck className="size-5 text-primary-100" />
             <div className="flex-1">
               <p className="text-sm font-semibold text-white">Password</p>
-              <p className="text-xs text-light-100/60">
+              <p className="text-xs text-foreground/60">
                 {hasPassword
                   ? "You can sign in with your email and password."
                   : "Not set yet — needed before you can delete your account."}
@@ -199,9 +199,9 @@ const AccountTab = ({ profile }: AccountTabProps) => {
             return (
               <div
                 key={key}
-                className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-4"
+                className="flex items-center gap-3 rounded-2xl border border-foreground/[0.08] bg-foreground/[0.03] p-4"
               >
-                <div className="flex size-7 items-center justify-center rounded-full bg-white/[0.08]">
+                <div className="flex size-7 items-center justify-center rounded-full bg-foreground/[0.08]">
                   {key === "google" ? (
                     <FcGoogle />
                   ) : (
@@ -210,7 +210,7 @@ const AccountTab = ({ profile }: AccountTabProps) => {
                 </div>
                 <div className="flex-1">
                   <p className="text-sm font-semibold text-white">{label}</p>
-                  <p className="text-xs text-light-100/60">
+                  <p className="text-xs text-foreground/60">
                     {isLinked
                       ? `Linked — you can sign in with ${label}.`
                       : `Not linked. Link to enable ${label} sign-in.`}
@@ -218,7 +218,7 @@ const AccountTab = ({ profile }: AccountTabProps) => {
                 </div>
                 {isLinked ? (
                   <>
-                    <span className="hidden rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-300 sm:inline-flex">
+                    <span className="hidden rounded-full border border-emerald-400/20 bg-emerald-400/10 px-2.5 py-1 text-[11px] font-semibold text-emerald-700 dark:text-emerald-300 sm:inline-flex">
                       Linked
                     </span>
                     <AppButton
@@ -253,19 +253,19 @@ const AccountTab = ({ profile }: AccountTabProps) => {
           })}
 
           {actionError && (
-            <p className="text-xs text-red-300">{actionError}</p>
+            <p className="text-xs text-red-700 dark:text-red-300">{actionError}</p>
           )}
         </div>
       </section>
 
-      <section className="rounded-[28px] border border-white/[0.08] bg-[#101318] p-5 sm:p-6">
+      <section className="rounded-[28px] border border-foreground/[0.08] bg-card p-5 sm:p-6">
         <div className="flex items-start gap-3">
-          <div className="rounded-xl bg-red-500/15 p-2.5 text-red-400">
+          <div className="rounded-xl bg-red-500/15 p-2.5 text-red-700 dark:text-red-400">
             <AlertTriangle className="size-5" />
           </div>
           <div className="flex-1">
             <h2 className="text-xl font-bold text-white">Delete account</h2>
-            <p className="mt-1 text-sm leading-6 text-light-100/75">
+            <p className="mt-1 text-sm leading-6 text-foreground/75">
               Removes your name, avatar, and personal info. Past solutions and
               comments stay visible but appear as &ldquo;Deleted User&rdquo;.
               You can&rsquo;t undo this.

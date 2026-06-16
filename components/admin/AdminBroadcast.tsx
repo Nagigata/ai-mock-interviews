@@ -99,11 +99,11 @@ export default function AdminBroadcast() {
         icon={Megaphone}
       />
 
-      <div className="rounded-3xl border border-white/10 bg-gradient-to-br from-white/5 to-transparent p-6">
+      <div className="rounded-3xl border border-foreground/10 bg-gradient-to-br from-white/5 to-transparent p-6">
         <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
           <div className="space-y-5">
             <div>
-              <span className="mb-2 block text-xs font-medium uppercase tracking-wider text-light-400">
+              <span className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
                 Audience
               </span>
               <div className="grid gap-3 sm:grid-cols-3">
@@ -119,32 +119,32 @@ export default function AdminBroadcast() {
                       className={`group flex flex-col gap-2 rounded-2xl border bg-gradient-to-br p-4 text-left transition-all disabled:opacity-50 ${
                         selected
                           ? `${option.accent} shadow-lg`
-                          : "border-white/10 from-white/[0.03] to-transparent hover:border-white/20 hover:from-white/[0.05]"
+                          : "border-foreground/10 from-white/[0.03] to-transparent hover:border-foreground/20 hover:from-white/[0.05]"
                       }`}
                     >
                       <div className="flex items-center justify-between">
                         <Icon
                           className={`size-4 ${
-                            selected ? "text-white" : "text-light-400"
+                            selected ? "text-white" : "text-muted-foreground"
                           }`}
                         />
                         <span
                           className={`size-3 rounded-full border-2 ${
                             selected
                               ? "border-white bg-white"
-                              : "border-light-600 bg-transparent"
+                              : "border-border bg-transparent"
                           }`}
                         />
                       </div>
                       <div>
                         <p
                           className={`text-sm font-semibold ${
-                            selected ? "text-white" : "text-light-100"
+                            selected ? "text-white" : "text-foreground"
                           }`}
                         >
                           {option.label}
                         </p>
-                        <p className="mt-0.5 text-xs text-light-400">
+                        <p className="mt-0.5 text-xs text-muted-foreground">
                           {option.description}
                         </p>
                       </div>
@@ -155,13 +155,13 @@ export default function AdminBroadcast() {
             </div>
 
             <label className="block">
-              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
                 <span>
-                  Title <span className="text-red-400">*</span>
+                  Title <span className="text-red-700 dark:text-red-400">*</span>
                 </span>
                 <span
                   className={
-                    title.length > TITLE_MAX ? "text-red-400" : "text-light-600"
+                    title.length > TITLE_MAX ? "text-red-700 dark:text-red-400" : "text-muted-foreground"
                   }
                 >
                   {title.length}/{TITLE_MAX}
@@ -174,20 +174,20 @@ export default function AdminBroadcast() {
                 disabled={submitting}
                 maxLength={TITLE_MAX}
                 placeholder="e.g. Scheduled maintenance Saturday 2 AM"
-                className="w-full rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+                className="w-full rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
               />
             </label>
 
             <label className="block">
-              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
                 <span>
-                  Message <span className="text-red-400">*</span>
+                  Message <span className="text-red-700 dark:text-red-400">*</span>
                 </span>
                 <span
                   className={
                     message.length > MESSAGE_MAX
-                      ? "text-red-400"
-                      : "text-light-600"
+                      ? "text-red-700 dark:text-red-400"
+                      : "text-muted-foreground"
                   }
                 >
                   {message.length}/{MESSAGE_MAX}
@@ -200,18 +200,18 @@ export default function AdminBroadcast() {
                 rows={5}
                 maxLength={MESSAGE_MAX}
                 placeholder="What do recipients need to know? Be clear and concise."
-                className="w-full resize-none rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+                className="w-full resize-none rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
               />
             </label>
 
             <label className="block">
-              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-light-400">
+              <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
                 <span>Action URL (optional)</span>
                 <span
                   className={
                     actionUrl.length > ACTION_URL_MAX
-                      ? "text-red-400"
-                      : "text-light-600"
+                      ? "text-red-700 dark:text-red-400"
+                      : "text-muted-foreground"
                   }
                 >
                   {actionUrl.length}/{ACTION_URL_MAX}
@@ -224,9 +224,9 @@ export default function AdminBroadcast() {
                 disabled={submitting}
                 maxLength={ACTION_URL_MAX}
                 placeholder="/preparation or https://..."
-                className="w-full rounded-xl border border-white/10 bg-dark-100 px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
+                className="w-full rounded-xl border border-foreground/10 bg-background px-3 py-2 text-sm text-white  focus:border-primary-200/50 focus:outline-none disabled:opacity-50"
               />
-              <p className="mt-1.5 text-xs text-light-500">
+              <p className="mt-1.5 text-xs text-muted-foreground">
                 When clicked, recipients route to this URL.
               </p>
             </label>
@@ -253,34 +253,34 @@ export default function AdminBroadcast() {
           </div>
 
           <aside className="space-y-3">
-            <p className="text-xs font-medium uppercase tracking-wider text-light-400">
+            <p className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
               Preview
             </p>
             <div className="rounded-2xl border-l-4 border-amber-400 bg-amber-500/[0.08] p-4">
               <div className="flex items-start gap-3">
                 <div className="mt-0.5 flex size-9 shrink-0 items-center justify-center rounded-xl border border-amber-400/40 bg-amber-500/10">
-                  <Megaphone className="size-4 text-amber-400" />
+                  <Megaphone className="size-4 text-amber-700 dark:text-amber-400" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="mb-1 flex items-center gap-2">
-                    <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-amber-300">
+                    <span className="shrink-0 rounded-full border border-amber-400/40 bg-amber-500/15 px-2 py-0.5 text-[9px] font-bold uppercase tracking-[0.14em] text-amber-700 dark:text-amber-300">
                       System
                     </span>
                   </div>
-                  <p className="line-clamp-2 text-sm font-bold text-amber-50">
+                  <p className="line-clamp-2 text-sm font-bold text-amber-800 dark:text-amber-50">
                     {trimmedTitle || "Your title will appear here"}
                   </p>
-                  <p className="mt-1 line-clamp-4 text-xs leading-5 text-light-400">
+                  <p className="mt-1 line-clamp-4 text-xs leading-5 text-muted-foreground">
                     {trimmedMessage ||
                       "Your message body will preview here as the user will see it."}
                   </p>
-                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-300/70">
+                  <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-amber-700 dark:text-amber-300/70">
                     just now
                   </p>
                 </div>
               </div>
             </div>
-            <p className="text-xs leading-5 text-light-400">
+            <p className="text-xs leading-5 text-muted-foreground">
               Inactive and deleted accounts are excluded automatically. This
               action is logged in the audit trail.
             </p>

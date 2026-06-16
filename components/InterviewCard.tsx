@@ -28,20 +28,20 @@ interface InterviewCardProps2 extends InterviewCardProps {
 }
 
 const typeStyles: Record<string, string> = {
-  Technical: "bg-indigo-500/15 text-indigo-300 border-indigo-500/20",
-  Behavioral: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-  Mixed: "bg-amber-500/15 text-amber-300 border-amber-500/20",
+  Technical: "bg-indigo-500/15 text-indigo-700 dark:text-indigo-300 border-indigo-500/20",
+  Behavioral: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/20",
+  Mixed: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/20",
 };
 
 const getScoreTone = (score?: number) => {
   if (!score) return "border-[var(--surface-border)] text-[var(--text-muted)]";
   if (score >= 80) {
-    return "border-emerald-500/20 bg-emerald-500/10 text-emerald-300";
+    return "border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300";
   }
   if (score >= 50) {
-    return "border-amber-500/20 bg-amber-500/10 text-amber-300";
+    return "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:text-amber-300";
   }
-  return "border-red-500/20 bg-red-500/10 text-red-300";
+  return "border-red-500/20 bg-red-500/10 text-red-700 dark:text-red-300";
 };
 
 const InterviewCard = ({
@@ -101,7 +101,7 @@ const InterviewCard = ({
             disabled={isStarLoading || !interviewId}
             className={`rounded-xl border border-[var(--surface-border)] p-2 transition-all duration-200 ${
               isStarred
-                ? "text-yellow-400 hover:border-yellow-400/30 hover:bg-yellow-400/10"
+                ? "text-yellow-700 dark:text-yellow-400 hover:border-yellow-400/30 hover:bg-yellow-400/10"
                 : "text-[var(--text-muted)] hover:border-[var(--surface-border-hover)] hover:text-[var(--text-body)]"
             }`}
             style={{ background: "var(--surface-overlay)" }}

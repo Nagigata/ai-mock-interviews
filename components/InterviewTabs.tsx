@@ -69,12 +69,12 @@ const EmptyState = ({
   description: string;
   action?: { href: string; label: string };
 }) => (
-  <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-dark-200/35 px-6 py-12 text-center">
+  <div className="flex min-h-[320px] flex-col items-center justify-center rounded-[28px] border border-dashed border-foreground/10 bg-card/35 px-6 py-12 text-center">
     <div className="mb-5 flex size-14 items-center justify-center rounded-2xl border border-primary-200/20 bg-primary-200/10 text-primary-100">
       <Inbox className="size-6" />
     </div>
     <h3 className="text-xl font-bold text-white">{title}</h3>
-    <p className="mt-2 max-w-md text-sm leading-6 text-light-400">
+    <p className="mt-2 max-w-md text-sm leading-6 text-muted-foreground">
       {description}
     </p>
     {action && (
@@ -179,11 +179,11 @@ export default function InterviewTabs({
 
   return (
     <div className="space-y-6">
-      <div className="rounded-[30px] border border-white/8 bg-dark-200/35 p-3 shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-        <div className="flex flex-col gap-4 border-b border-white/8 p-2 pb-4 lg:flex-row lg:items-center lg:justify-between">
+      <div className="rounded-[30px] border border-foreground/8 bg-card/35 p-3 shadow-[0_18px_60px_rgba(0,0,0,0.18)] backdrop-blur-xl">
+        <div className="flex flex-col gap-4 border-b border-foreground/8 p-2 pb-4 lg:flex-row lg:items-center lg:justify-between">
           <UnderlineTabs tabs={tabs} activeTab={tab} onChange={setTab} />
 
-          <div className="flex items-center gap-2 text-sm text-light-400">
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <Filter className="size-4 text-primary-100" />
             <span>
               Showing{" "}
@@ -204,7 +204,7 @@ export default function InterviewTabs({
                 className={`rounded-xl border px-4 py-2 text-xs font-semibold transition-all ${
                   myFilter === filter.value
                     ? "border-primary-200/30 bg-primary-200/15 text-primary-100"
-                    : "border-white/8 bg-white/[0.03] text-light-400 hover:border-white/15 hover:text-white"
+                    : "border-foreground/8 bg-foreground/[0.03] text-muted-foreground hover:border-foreground/15 hover:text-white"
                 }`}
               >
                 {filter.label}
@@ -268,16 +268,16 @@ export default function InterviewTabs({
 
       {deleteConfirm && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-md animate-in rounded-2xl border border-white/10 bg-[#1c1f26] p-6 shadow-2xl duration-200 fade-in zoom-in-95">
+          <div className="relative w-full max-w-md animate-in rounded-2xl border border-foreground/10 bg-muted p-6 shadow-2xl duration-200 fade-in zoom-in-95">
             <button
               onClick={() => setDeleteConfirm(null)}
-              className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white"
+              className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-white"
             >
               <X className="size-5" />
             </button>
 
             <div className="mb-4 flex items-center gap-3">
-              <div className="rounded-xl bg-red-500/15 p-2.5 text-red-400">
+              <div className="rounded-xl bg-red-500/15 p-2.5 text-red-700 dark:text-red-400">
                 <AlertTriangle className="size-5" />
               </div>
               <h3 className="text-lg font-semibold text-white">
@@ -287,7 +287,7 @@ export default function InterviewTabs({
 
             {deleteConfirm.attemptCount > 0 ? (
               <>
-                <p className="mb-3 text-sm text-light-100">
+                <p className="mb-3 text-sm text-foreground">
                   This interview has{" "}
                   <span className="font-semibold text-white">
                     {deleteConfirm.attemptCount} attempt
@@ -295,13 +295,13 @@ export default function InterviewTabs({
                   </span>{" "}
                   with feedback and transcripts.
                 </p>
-                <p className="mb-4 text-xs text-red-400/80">
+                <p className="mb-4 text-xs text-red-700 dark:text-red-400/80">
                   All attempts, feedback, and transcripts will be permanently
                   deleted. This action cannot be undone.
                 </p>
               </>
             ) : (
-              <p className="mb-4 text-sm text-light-100">
+              <p className="mb-4 text-sm text-foreground">
                 Delete the{" "}
                 <span className="font-semibold capitalize text-white">
                   {deleteConfirm.role}
@@ -310,11 +310,11 @@ export default function InterviewTabs({
               </p>
             )}
 
-            <div className="mb-5 rounded-xl bg-white/5 px-4 py-3">
+            <div className="mb-5 rounded-xl bg-foreground/5 px-4 py-3">
               <p className="text-sm font-medium capitalize text-white">
                 {deleteConfirm.role} Mock Interview
               </p>
-              <p className="mt-0.5 text-xs text-light-400">
+              <p className="mt-0.5 text-xs text-muted-foreground">
                 {deleteConfirm.attemptCount} attempt
                 {deleteConfirm.attemptCount !== 1 ? "s" : ""}
               </p>
@@ -323,7 +323,7 @@ export default function InterviewTabs({
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="rounded-xl border border-white/10 px-4 py-2 text-sm text-light-400 transition-colors hover:bg-white/5 hover:text-white"
+                className="rounded-xl border border-foreground/10 px-4 py-2 text-sm text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-white"
               >
                 Cancel
               </button>

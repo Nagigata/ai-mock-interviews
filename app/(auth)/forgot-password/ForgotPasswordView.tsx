@@ -158,7 +158,7 @@ const ForgotPasswordView = () => {
                   className={`size-8 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                     step >= s
                       ? "bg-primary-200 text-dark-100"
-                      : "bg-dark-300 text-light-400"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {s}
@@ -166,7 +166,7 @@ const ForgotPasswordView = () => {
                 {s < 3 && (
                   <div
                     className={`w-10 h-0.5 transition-all ${
-                      step > s ? "bg-primary-200" : "bg-dark-300"
+                      step > s ? "bg-primary-200" : "bg-muted"
                     }`}
                   />
                 )}
@@ -176,11 +176,11 @@ const ForgotPasswordView = () => {
 
           {/* Icon + Title */}
           <div className="flex flex-col items-center gap-3">
-            <div className="size-16 rounded-2xl bg-dark-300/50 border border-white/5 flex items-center justify-center">
+            <div className="size-16 rounded-2xl bg-muted/50 border border-foreground/5 flex items-center justify-center">
               {stepIcons[step - 1]}
             </div>
             <h3 className="text-lg font-bold text-white">{stepTitles[step - 1]}</h3>
-            <p className="text-sm text-light-400 text-center">{stepDescriptions[step - 1]}</p>
+            <p className="text-sm text-muted-foreground text-center">{stepDescriptions[step - 1]}</p>
           </div>
 
           {/* Step 1: Email */}
@@ -193,7 +193,7 @@ const ForgotPasswordView = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSendCode()}
-                className="w-full bg-dark-200 border border-dark-300 rounded-xl py-3.5 px-4 text-white placeholder:text-light-400 focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
+                className="w-full bg-card border border-border rounded-xl py-3.5 px-4 text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
               />
               <Button
                 className="btn w-full"
@@ -208,7 +208,7 @@ const ForgotPasswordView = () => {
           {/* Step 2: OTP */}
           {step === 2 && (
             <div className="flex flex-col gap-4 mt-2">
-              <p className="text-xs text-light-400 text-center">
+              <p className="text-xs text-muted-foreground text-center">
                 Code sent to <span className="text-primary-200 font-semibold">{email}</span>
               </p>
               <div className="flex justify-center gap-3" onPaste={handleCodePaste}>
@@ -223,7 +223,7 @@ const ForgotPasswordView = () => {
                     value={digit}
                     onChange={(e) => handleCodeChange(i, e.target.value)}
                     onKeyDown={(e) => handleCodeKeyDown(i, e)}
-                    className="w-12 h-14 text-center text-2xl font-bold bg-dark-200 border border-dark-300 rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-200/50 focus:border-primary-200 transition-all"
+                    className="w-12 h-14 text-center text-2xl font-bold bg-card border border-border rounded-xl text-white focus:outline-none focus:ring-2 focus:ring-primary-200/50 focus:border-primary-200 transition-all"
                   />
                 ))}
               </div>
@@ -236,7 +236,7 @@ const ForgotPasswordView = () => {
               </Button>
               <button
                 type="button"
-                className="text-xs text-light-400 hover:text-primary-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-light-400"
+                className="text-xs text-muted-foreground hover:text-primary-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:text-muted-foreground"
                 onClick={handleSendCode}
                 disabled={isLoading || resendCooldown > 0}
               >
@@ -256,7 +256,7 @@ const ForgotPasswordView = () => {
                 placeholder="New password (min 6 characters)"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                className="w-full bg-dark-200 border border-dark-300 rounded-xl py-3.5 px-4 text-white placeholder:text-light-400 focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
+                className="w-full bg-card border border-border rounded-xl py-3.5 px-4 text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
               />
               <input
                 type="password"
@@ -265,7 +265,7 @@ const ForgotPasswordView = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleResetPassword()}
-                className="w-full bg-dark-200 border border-dark-300 rounded-xl py-3.5 px-4 text-white placeholder:text-light-400 focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
+                className="w-full bg-card border border-border rounded-xl py-3.5 px-4 text-white placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary-200/50 text-sm"
               />
               <Button
                 className="btn w-full"
@@ -280,7 +280,7 @@ const ForgotPasswordView = () => {
           {/* Back to Sign In */}
           <Link
             href="/sign-in"
-            className="flex items-center justify-center gap-2 text-sm text-light-400 hover:text-primary-200 transition-colors mt-2"
+            className="flex items-center justify-center gap-2 text-sm text-muted-foreground hover:text-primary-200 transition-colors mt-2"
           >
             <ArrowLeft className="size-4" />
             Back to Sign In

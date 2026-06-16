@@ -209,9 +209,9 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
                 href="/admin"
                 onClick={() => setIsOpen(false)}
                 role="menuitem"
-                className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-amber-300 transition hover:bg-amber-500/10"
+                className="group/item flex items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-amber-700 dark:text-amber-300 transition hover:bg-amber-500/10"
               >
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-amber-300/15 bg-amber-300/10 text-amber-300">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-amber-300/15 bg-amber-300/10 text-amber-700 dark:text-amber-300">
                   <Shield className="size-4" />
                 </span>
                 <span>Admin Panel</span>
@@ -254,7 +254,7 @@ const UserMenu = ({ currentLocale, user }: UserMenuProps) => {
               role="menuitem"
               className="group/item flex w-full items-center gap-3 rounded-2xl px-3 py-2.5 text-sm font-semibold text-[#f29a9a] transition hover:bg-[#ff6b6b]/10 hover:text-red-200"
             >
-              <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-red-300/15 bg-red-300/10 text-red-300">
+              <span className="flex size-8 shrink-0 items-center justify-center rounded-xl border border-red-300/15 bg-red-300/10 text-red-700 dark:text-red-300">
                 <LogOut className="size-4" />
               </span>
               <span>Logout</span>

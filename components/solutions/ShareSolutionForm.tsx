@@ -74,8 +74,8 @@ export function ShareSolutionForm({
   };
 
   return (
-    <div className="min-h-screen bg-[#08090D] text-light-100">
-      <div className="sticky top-0 z-10 border-b border-white/5 bg-[#08090D]/95 backdrop-blur">
+    <div className="min-h-screen bg-background text-foreground">
+      <div className="sticky top-0 z-10 border-b border-foreground/5 bg-background/95 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
           <div className="flex items-center gap-3">
             <h1 className="text-sm font-semibold text-white">Share Solution</h1>
@@ -94,7 +94,7 @@ export function ShareSolutionForm({
 
       <div className="mx-auto max-w-6xl space-y-6 px-6 py-6">
         <div className="space-y-2">
-          <Label htmlFor="sol-title" className="text-light-300">
+          <Label htmlFor="sol-title" className="text-muted-foreground">
             Title
           </Label>
           <Input
@@ -103,15 +103,15 @@ export function ShareSolutionForm({
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             maxLength={200}
-            className="border-white/10 bg-white/[0.03] text-base text-white placeholder:text-light-600 focus-visible:border-primary-200/40"
+            className="border-foreground/10 bg-foreground/[0.03] text-base text-white placeholder:text-muted-foreground focus-visible:border-primary-200/40"
           />
-          <div className="flex justify-end text-xs text-light-600">
+          <div className="flex justify-end text-xs text-muted-foreground">
             {title.length} / 200
           </div>
         </div>
 
         <div className="space-y-2">
-          <Label className="text-light-300">Write-up</Label>
+          <Label className="text-muted-foreground">Write-up</Label>
           <div data-color-mode="dark">
             <MDEditor
               value={description}
@@ -125,18 +125,18 @@ export function ShareSolutionForm({
 
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <Label className="text-light-300">
+            <Label className="text-muted-foreground">
               <span className="inline-flex items-center gap-2">
                 <Code2 className="size-4" />
                 Your accepted solution
               </span>
             </Label>
-            <Badge variant="outline" className="border-white/10 text-light-300">
+            <Badge variant="outline" className="border-foreground/10 text-muted-foreground">
               {language}
             </Badge>
           </div>
           <CodeBlock code={code} language={language} />
-          <p className="text-xs text-light-600">
+          <p className="text-xs text-muted-foreground">
             This is your accepted submission and will be included with your post.
           </p>
         </div>

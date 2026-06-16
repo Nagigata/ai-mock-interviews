@@ -174,7 +174,7 @@ const NotificationCenter = () => {
               </div>
             ) : items.length === 0 ? (
               <div className="flex flex-col items-center justify-center px-6 py-10 text-center">
-                <div className="mb-3 flex size-12 items-center justify-center rounded-2xl border border-[var(--surface-border)] bg-white/[0.03]">
+                <div className="mb-3 flex size-12 items-center justify-center rounded-2xl border border-[var(--surface-border)] bg-foreground/[0.03]">
                   <Inbox className="size-5 text-[var(--text-muted)]" />
                 </div>
                 <p className="text-sm font-bold text-[var(--text-heading)]">
@@ -200,7 +200,7 @@ const NotificationCenter = () => {
           <Link
             href="/notifications"
             onClick={() => setIsOpen(false)}
-            className="flex items-center justify-center gap-2 border-t border-[var(--surface-border)] p-3 text-xs font-bold text-primary-100 transition hover:bg-white/[0.04]"
+            className="flex items-center justify-center gap-2 border-t border-[var(--surface-border)] p-3 text-xs font-bold text-primary-100 transition hover:bg-foreground/[0.04]"
           >
             View all notifications
             <ArrowRight className="size-3.5" />

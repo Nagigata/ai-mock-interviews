@@ -43,7 +43,7 @@ const getAttemptStatusConfig = (
   if (hasFeedback || status === "COMPLETED") {
     return {
       label: "Completed",
-      className: "border-emerald-400/20 bg-emerald-400/10 text-emerald-300",
+      className: "border-emerald-400/20 bg-emerald-400/10 text-emerald-700 dark:text-emerald-300",
       emptyText: "Feedback is available for this completed attempt.",
     };
   }
@@ -51,7 +51,7 @@ const getAttemptStatusConfig = (
   if (status === "TOO_SHORT") {
     return {
       label: "Too short",
-      className: "border-amber-400/20 bg-amber-400/10 text-amber-300",
+      className: "border-amber-400/20 bg-amber-400/10 text-amber-700 dark:text-amber-300",
       emptyText:
         "This interview ended before enough answers were provided, so feedback was not generated.",
     };
@@ -60,7 +60,7 @@ const getAttemptStatusConfig = (
   if (status === "FAILED") {
     return {
       label: "Failed",
-      className: "border-red-400/20 bg-red-400/10 text-red-300",
+      className: "border-red-400/20 bg-red-400/10 text-red-700 dark:text-red-300",
       emptyText:
         "Feedback generation failed for this attempt. Please try another attempt.",
     };
@@ -68,7 +68,7 @@ const getAttemptStatusConfig = (
 
   return {
     label: "In progress",
-    className: "border-white/10 bg-white/[0.04] text-light-300",
+    className: "border-foreground/10 bg-foreground/[0.04] text-muted-foreground",
     emptyText: "This attempt has not generated feedback yet.",
   };
 };
@@ -118,7 +118,7 @@ const AttemptsPage = async ({
       </Link>
 
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-[28px] border border-white/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.16),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div className="relative overflow-hidden rounded-[28px] border border-foreground/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.16),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-200/20 bg-primary-200/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-primary-100">
@@ -128,7 +128,7 @@ const AttemptsPage = async ({
             <h1 className="mt-4 text-3xl font-bold capitalize text-white sm:text-4xl">
               {interview.role} Interview
             </h1>
-            <p className="mt-3 max-w-2xl text-sm text-light-400">
+            <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
               Review every time you took this interview, compare scores, and
               reopen the feedback for each attempt.
             </p>
@@ -136,26 +136,26 @@ const AttemptsPage = async ({
 
           {/* Stats */}
           <div className="flex flex-wrap gap-3">
-            <div className="rounded-2xl border border-white/8 bg-white/[0.04] px-5 py-4 text-center">
+            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] px-5 py-4 text-center">
               <div className="text-2xl font-bold text-white">
                 {attempts?.length || 0}
               </div>
-              <div className="text-[11px] text-light-400 mt-1">Attempts</div>
+              <div className="text-[11px] text-muted-foreground mt-1">Attempts</div>
             </div>
             <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] px-5 py-4 text-center">
-              <div className="text-2xl font-bold text-emerald-400">
+              <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
                 {completedAttempts}
               </div>
-              <div className="text-[11px] text-light-400 mt-1">
+              <div className="text-[11px] text-muted-foreground mt-1">
                 Completed
               </div>
             </div>
             {bestScore > 0 && (
               <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] px-5 py-4 text-center">
-                <div className="text-2xl font-bold text-emerald-400">
+                <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
                   {bestScore}
                 </div>
-                <div className="text-[11px] text-light-400 mt-1">
+                <div className="text-[11px] text-muted-foreground mt-1">
                   Best Score
                 </div>
               </div>
@@ -165,10 +165,10 @@ const AttemptsPage = async ({
       </div>
 
       {!attempts || attempts.length === 0 ? (
-        <div className="rounded-[24px] border border-white/8 bg-white/[0.03] p-10 text-center">
-          <Clock size={40} className="mx-auto text-light-600 mb-4" />
+        <div className="rounded-[24px] border border-foreground/8 bg-foreground/[0.03] p-10 text-center">
+          <Clock size={40} className="mx-auto text-muted-foreground mb-4" />
           <p className="text-lg font-semibold text-white">No attempts yet</p>
-          <p className="mt-2 text-sm text-light-400">
+          <p className="mt-2 text-sm text-muted-foreground">
             Start this interview once and your result will appear here.
           </p>
           <Link
@@ -195,17 +195,17 @@ const AttemptsPage = async ({
             );
             const scoreColor =
               attemptScore >= 80
-                ? "text-emerald-400"
+                ? "text-emerald-700 dark:text-emerald-400"
                 : attemptScore >= 50
-                  ? "text-amber-400"
+                  ? "text-amber-700 dark:text-amber-400"
                   : attemptScore > 0
-                    ? "text-red-400"
-                    : "text-light-400";
+                    ? "text-red-700 dark:text-red-400"
+                    : "text-muted-foreground";
 
             return (
               <article
                 key={attempt.id}
-                className="group rounded-2xl border border-white/6 bg-[#171a20] p-5 transition-all duration-200 hover:border-white/10 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)]"
+                className="group rounded-2xl border border-foreground/6 bg-card p-5 transition-all duration-200 hover:border-foreground/10 hover:shadow-[0_12px_40px_rgba(0,0,0,0.2)]"
               >
                 <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
                   <div className="flex-1 space-y-3">
@@ -219,7 +219,7 @@ const AttemptsPage = async ({
                       >
                         {statusConfig.label}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs text-light-400">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                         <CalendarDays size={13} />
                         {displayDate}
                       </span>
@@ -231,14 +231,14 @@ const AttemptsPage = async ({
                           ? `${feedback.totalScore}/100`
                           : "No score"}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 text-xs text-light-400">
+                      <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
                         <MessageSquareText size={13} />
                         {attempt.transcriptCount || 0} messages
                       </span>
                     </div>
 
                     {/* Assessment preview */}
-                    <p className="line-clamp-2 text-sm text-light-100 leading-relaxed">
+                    <p className="line-clamp-2 text-sm text-foreground leading-relaxed">
                       {feedback?.finalAssessment ||
                         attempt.failureReason ||
                         statusConfig.emptyText}
@@ -249,7 +249,7 @@ const AttemptsPage = async ({
                   <div className="flex gap-2 shrink-0">
                     <Link
                       href={`/interview/${id}/attempts/${attempt.id}`}
-                      className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-4 py-2.5 text-xs font-semibold text-light-100 transition-colors hover:bg-white/5"
+                      className="inline-flex items-center gap-2 rounded-xl border border-foreground/10 px-4 py-2.5 text-xs font-semibold text-foreground transition-colors hover:bg-foreground/5"
                     >
                       <FileText size={14} />
                       Transcript

@@ -73,7 +73,7 @@ const LoadMoreChallenges = ({ initialFilters, dictionary }: Props) => {
       ))}
       {hasMore && (
         <div ref={ref} className="flex w-full justify-center py-6">
-          <div className="inline-flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.035] px-5 py-3 text-sm font-semibold text-light-400">
+          <div className="inline-flex items-center gap-3 rounded-2xl border border-foreground/[0.08] bg-foreground/[0.035] px-5 py-3 text-sm font-semibold text-muted-foreground">
             <Loader2 className="size-5 animate-spin text-primary-200" />
             Loading more challenges
           </div>

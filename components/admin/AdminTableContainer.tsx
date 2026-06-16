@@ -16,7 +16,7 @@ export default function AdminTableContainer({
   return (
     <div
       className={cn(
-        "overflow-hidden rounded-2xl border border-white/5 bg-dark-200/50 shadow-[0_18px_60px_rgba(0,0,0,0.18)]",
+        "overflow-hidden rounded-2xl border border-foreground/5 bg-card/50 shadow-[0_18px_60px_rgba(0,0,0,0.18)]",
         className,
       )}
     >

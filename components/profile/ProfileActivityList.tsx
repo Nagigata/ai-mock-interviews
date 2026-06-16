@@ -11,17 +11,17 @@ interface Props {
 }
 
 const statusColors: Record<string, string> = {
-  ACCEPTED: "text-emerald-400",
-  COMPLETED: "text-emerald-400",
-  WRONG_ANSWER: "text-red-400",
-  TIME_LIMIT_EXCEEDED: "text-amber-400",
-  RUNTIME_ERROR: "text-red-400",
-  COMPILE_ERROR: "text-red-400",
-  REJECTED: "text-red-400",
-  TOO_SHORT: "text-amber-400",
-  FAILED: "text-red-400",
-  IN_PROGRESS: "text-light-400",
-  PENDING: "text-light-400",
+  ACCEPTED: "text-emerald-700 dark:text-emerald-400",
+  COMPLETED: "text-emerald-700 dark:text-emerald-400",
+  WRONG_ANSWER: "text-red-700 dark:text-red-400",
+  TIME_LIMIT_EXCEEDED: "text-amber-700 dark:text-amber-400",
+  RUNTIME_ERROR: "text-red-700 dark:text-red-400",
+  COMPILE_ERROR: "text-red-700 dark:text-red-400",
+  REJECTED: "text-red-700 dark:text-red-400",
+  TOO_SHORT: "text-amber-700 dark:text-amber-400",
+  FAILED: "text-red-700 dark:text-red-400",
+  IN_PROGRESS: "text-muted-foreground",
+  PENDING: "text-muted-foreground",
 };
 
 const formatStatus = (status: string) => status.replace(/_/g, " ");

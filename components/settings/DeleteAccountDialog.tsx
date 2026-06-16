@@ -15,7 +15,7 @@ interface DeleteAccountDialogProps {
 }
 
 const inputClass =
-  "h-11 w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 text-sm text-white placeholder:text-light-100/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
+  "h-11 w-full rounded-2xl border border-foreground/10 bg-foreground/[0.04] px-4 text-sm text-white placeholder:text-foreground/40 transition-colors focus:border-primary-200/40 focus:outline-none focus:ring-2 focus:ring-primary-200/20 disabled:opacity-50";
 
 const DeleteAccountDialog = ({
   open,
@@ -74,20 +74,20 @@ const DeleteAccountDialog = ({
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descId}
-        className="relative w-full max-w-md rounded-[28px] border border-white/10 bg-[#101318] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
+        className="relative w-full max-w-md rounded-[28px] border border-foreground/10 bg-card p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200"
       >
         <button
           type="button"
           onClick={onClose}
           disabled={isPending}
           aria-label="Close dialog"
-          className="absolute right-4 top-4 text-light-100/60 transition-colors hover:text-white disabled:opacity-50"
+          className="absolute right-4 top-4 text-foreground/60 transition-colors hover:text-white disabled:opacity-50"
         >
           <X className="size-5" />
         </button>
 
         <div className="mb-4 flex items-center gap-3">
-          <div className="rounded-xl bg-red-500/15 p-2.5 text-red-400">
+          <div className="rounded-xl bg-red-500/15 p-2.5 text-red-700 dark:text-red-400">
             <AlertTriangle className="size-5" />
           </div>
           <h3 id={titleId} className="text-lg font-bold text-white">
@@ -95,14 +95,14 @@ const DeleteAccountDialog = ({
           </h3>
         </div>
 
-        <p id={descId} className="mb-5 text-sm leading-6 text-light-100/75">
+        <p id={descId} className="mb-5 text-sm leading-6 text-foreground/75">
           This removes your name, avatar, and personal info. Past solutions and
           comments stay visible but appear as &ldquo;Deleted User&rdquo;. You
           can&rsquo;t undo this.
         </p>
 
         {!hasPassword ? (
-          <div className="mb-6 rounded-2xl border border-amber-400/20 bg-amber-400/[0.06] p-4 text-sm leading-6 text-amber-200">
+          <div className="mb-6 rounded-2xl border border-amber-400/20 bg-amber-400/[0.06] p-4 text-sm leading-6 text-amber-700 dark:text-amber-200">
             Please set a password first so we can confirm it&rsquo;s really you.
             Close this dialog, then choose &ldquo;Set password&rdquo;.
           </div>
@@ -128,7 +128,7 @@ const DeleteAccountDialog = ({
                 htmlFor="delete-confirm"
                 className="text-sm font-semibold text-white"
               >
-                Type <span className="font-mono text-rose-300">DELETE</span> to
+                Type <span className="font-mono text-rose-700 dark:text-rose-300">DELETE</span> to
                 confirm
               </label>
               <input

@@ -99,7 +99,7 @@ const InterviewFilterBar = ({
           <button
             type="button"
             onClick={clearFilters}
-            className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[0.03] px-4 py-2.5 text-sm font-semibold text-light-300 transition-colors hover:border-white/20 hover:text-white"
+            className="inline-flex items-center justify-center gap-2 rounded-xl border border-foreground/10 bg-foreground/[0.03] px-4 py-2.5 text-sm font-semibold text-muted-foreground transition-colors hover:border-foreground/20 hover:text-white"
           >
             <X className="size-4" />
             Clear

@@ -46,14 +46,14 @@ const entityOptions = [
 ];
 
 const actionTone: Record<string, string> = {
-  CREATE_SKILL: "bg-emerald-500/15 text-emerald-400",
-  CREATE_CHALLENGE: "bg-emerald-500/15 text-emerald-400",
-  ENABLE_SKILL: "bg-emerald-500/15 text-emerald-400",
-  ENABLE_CHALLENGE: "bg-emerald-500/15 text-emerald-400",
-  DISABLE_SKILL: "bg-red-500/15 text-red-400",
-  DISABLE_CHALLENGE: "bg-red-500/15 text-red-400",
-  ARCHIVE_INTERVIEW: "bg-amber-500/15 text-amber-400",
-  RESTORE_INTERVIEW: "bg-cyan-500/15 text-cyan-300",
+  CREATE_SKILL: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  CREATE_CHALLENGE: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  ENABLE_SKILL: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  ENABLE_CHALLENGE: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  DISABLE_SKILL: "bg-red-500/15 text-red-700 dark:text-red-400",
+  DISABLE_CHALLENGE: "bg-red-500/15 text-red-700 dark:text-red-400",
+  ARCHIVE_INTERVIEW: "bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  RESTORE_INTERVIEW: "bg-cyan-500/15 text-cyan-700 dark:text-cyan-300",
 };
 
 const formatLabel = (value: string) =>
@@ -164,7 +164,7 @@ export default function AdminAuditLogsClient({
       <AdminTableContainer>
         <table className="w-full min-w-[1100px]">
           <thead>
-            <tr className="border-b border-white/5">
+            <tr className="border-b border-foreground/5">
               {["Admin", "Action", "Entity", "Metadata", "Context", "Time"].map(
                 (header) => (
                   <th
@@ -182,7 +182,7 @@ export default function AdminAuditLogsClient({
               data.items.map((log: any) => (
                 <tr
                   key={log.id}
-                  className="border-b border-white/5 transition-colors hover:bg-white/[0.03]"
+                  className="border-b border-foreground/5 transition-colors hover:bg-foreground/[0.03]"
                 >
                   <td className="px-5 py-4">
                     <div className="flex items-center gap-3">
@@ -195,7 +195,7 @@ export default function AdminAuditLogsClient({
                         <p className="truncate text-sm font-semibold text-white">
                           {log.admin?.name || "Unknown admin"}
                         </p>
-                        <p className="truncate text-xs text-light-400">
+                        <p className="truncate text-xs text-muted-foreground">
                           {log.admin?.email || "No email"}
                         </p>
                       </div>
@@ -212,11 +212,11 @@ export default function AdminAuditLogsClient({
                     </span>
                   </td>
                   <td className="px-5 py-4">
-                    <div className="flex items-center gap-2 text-sm text-light-100">
-                      <Database className="size-4 text-light-500" />
+                    <div className="flex items-center gap-2 text-sm text-foreground">
+                      <Database className="size-4 text-muted-foreground" />
                       <div>
                         <p className="font-semibold">{log.entityType}</p>
-                        <p className="max-w-[220px] truncate text-xs text-light-400">
+                        <p className="max-w-[220px] truncate text-xs text-muted-foreground">
                           {log.entityName || log.entityId || "Unknown entity"}
                         </p>
                       </div>
@@ -224,15 +224,15 @@ export default function AdminAuditLogsClient({
                   </td>
                   <td className="px-5 py-4">
                     {log.metadata ? (
-                      <pre className="max-h-28 max-w-[320px] overflow-auto rounded-lg border border-white/10 bg-black/20 p-3 text-xs text-light-300">
+                      <pre className="max-h-28 max-w-[320px] overflow-auto rounded-lg border border-foreground/10 bg-foreground/[0.05] p-3 text-xs text-muted-foreground">
                         {JSON.stringify(log.metadata, null, 2)}
                       </pre>
                     ) : (
-                      <span className="text-sm text-light-500">No metadata</span>
+                      <span className="text-sm text-muted-foreground">No metadata</span>
                     )}
                   </td>
                   <td className="px-5 py-4">
-                    <div className="space-y-1 text-xs text-light-400">
+                    <div className="space-y-1 text-xs text-muted-foreground">
                       <div className="flex items-center gap-2">
                         <Activity className="size-3.5" />
                         <span>{log.ipAddress || "No IP"}</span>
@@ -243,8 +243,8 @@ export default function AdminAuditLogsClient({
                     </div>
                   </td>
                   <td className="px-5 py-4">
-                    <div className="flex items-center gap-2 text-sm text-light-300">
-                      <Clock className="size-4 text-light-500" />
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <Clock className="size-4 text-muted-foreground" />
                       {formatDateTime(log.createdAt)}
                     </div>
                   </td>

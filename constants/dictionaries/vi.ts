@@ -30,6 +30,10 @@ export const vi = {
     endBtn: "Kết thúc",
     selectLanguage: "Ngôn ngữ phỏng vấn:",
     setupInstruction: "Vui lòng chọn ngôn ngữ để bắt đầu.",
+    conversation: "Hội thoại",
+    conversationEmpty: "Hội thoại sẽ hiện ở đây khi cuộc gọi bắt đầu.",
+    showConversation: "Mở hội thoại",
+    hideConversation: "Ẩn hội thoại",
   },
   interviewCard: {
     questions: "câu hỏi",

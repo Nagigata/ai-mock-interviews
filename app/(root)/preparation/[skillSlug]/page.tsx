@@ -65,24 +65,24 @@ const SkillPage = async ({ params, searchParams }: Props) => {
 
   return (
     <div className="flex flex-col gap-8">
-      <header className="rounded-[26px] border border-white/[0.08] bg-[linear-gradient(180deg,_rgba(20,23,31,0.94),_rgba(12,14,19,0.98))] px-5 py-5 shadow-[0_10px_30px_rgba(0,0,0,0.16)] sm:px-6">
+      <header className="rounded-[26px] border border-[var(--surface-border)] px-5 py-5 shadow-[0_10px_30px_var(--shadow-color)] sm:px-6" style={{ background: "var(--hero-gradient)" }}>
         <nav
           aria-label="Breadcrumb"
           className="mb-5 flex flex-wrap items-center gap-2 text-sm"
         >
           <Link
             href="/preparation"
-            className="font-semibold text-light-400 transition-colors hover:text-primary-100"
+            className="font-semibold text-muted-foreground transition-colors hover:text-primary-100"
           >
             Preparation
           </Link>
-          <ChevronRight className="size-4 text-light-600" />
+          <ChevronRight className="size-4 text-muted-foreground" />
           <span className="font-semibold text-white">{skill.name}</span>
         </nav>
 
         <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
           <div className="flex flex-col gap-5 sm:flex-row sm:items-center">
-            <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.04] p-3.5">
+            <div className="flex size-16 shrink-0 items-center justify-center rounded-2xl border border-foreground/[0.08] bg-foreground/[0.04] p-3.5">
               {skill.icon ? (
                 <Image
                   src={skill.icon}
@@ -100,28 +100,28 @@ const SkillPage = async ({ params, searchParams }: Props) => {
               <h1 className="text-3xl font-bold tracking-tight text-white">
                 {skill.name}
               </h1>
-              <p className="mt-3 max-w-2xl text-sm leading-6 text-light-100/80 sm:text-base">
+              <p className="mt-3 max-w-2xl text-sm leading-6 text-foreground/80 sm:text-base">
                 {skill.description}
               </p>
             </div>
           </div>
 
           <div className="flex flex-wrap gap-2 lg:max-w-[440px] lg:justify-end">
-            <div className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
+            <div className="inline-flex items-center gap-2 rounded-xl border border-foreground/[0.08] bg-foreground/[0.035] px-3.5 py-2.5">
               <Layers3 className="size-4 text-primary-100" />
               <span className="text-sm font-bold text-white">
                 {totalSkillChallenges}
               </span>
-              <span className="text-sm text-light-400">Challenges</span>
+              <span className="text-sm text-muted-foreground">Challenges</span>
             </div>
-            <div className="inline-flex items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
-              <Code2 className="size-4 text-cyan-300" />
+            <div className="inline-flex items-center gap-2 rounded-xl border border-foreground/[0.08] bg-foreground/[0.035] px-3.5 py-2.5">
+              <Code2 className="size-4 text-cyan-700 dark:text-cyan-300" />
               <span className="text-sm font-bold text-white">{topics.length}</span>
-              <span className="text-sm text-light-400">Topics</span>
+              <span className="text-sm text-muted-foreground">Topics</span>
             </div>
-            <div className="inline-flex max-w-full items-center gap-2 rounded-xl border border-white/[0.08] bg-white/[0.035] px-3.5 py-2.5">
-              <BookOpen className="size-4 shrink-0 text-emerald-300" />
-              <span className="truncate text-sm font-semibold text-light-100">
+            <div className="inline-flex max-w-full items-center gap-2 rounded-xl border border-foreground/[0.08] bg-foreground/[0.035] px-3.5 py-2.5">
+              <BookOpen className="size-4 shrink-0 text-emerald-700 dark:text-emerald-300" />
+              <span className="truncate text-sm font-semibold text-foreground">
                 {skill.slug}
               </span>
             </div>
@@ -138,7 +138,7 @@ const SkillPage = async ({ params, searchParams }: Props) => {
               <h2 className="text-2xl font-bold text-white">
                 {t.preparation.challenges}
               </h2>
-              <p className="mt-1 text-sm text-light-400">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Choose a challenge and keep the practice flow moving.
               </p>
             </div>
@@ -158,12 +158,12 @@ const SkillPage = async ({ params, searchParams }: Props) => {
                 />
               ))
             ) : (
-              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-white/10 bg-white/[0.03] p-16 text-center">
-                <div className="mb-4 rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-                  <CircleAlert size={32} className="text-light-400" />
+              <div className="flex flex-col items-center justify-center rounded-[28px] border border-dashed border-foreground/10 bg-foreground/[0.03] p-16 text-center">
+                <div className="mb-4 rounded-2xl border border-foreground/10 bg-foreground/[0.04] p-4">
+                  <CircleAlert size={32} className="text-muted-foreground" />
                 </div>
-                <p className="text-light-100 font-medium">No challenges found</p>
-                <p className="text-sm text-light-400 mt-1">Try adjusting your filters to find what you are looking for.</p>
+                <p className="text-foreground font-medium">No challenges found</p>
+                <p className="text-sm text-muted-foreground mt-1">Try adjusting your filters to find what you are looking for.</p>
                 <Link href={`/preparation/${skill.slug}`} className="mt-6 text-primary-200 hover:text-primary-100 font-bold text-sm">
                   Clear all filters
                 </Link>

@@ -35,9 +35,9 @@ type ProblemTab =
 
 const DifficultyBadge = ({ difficulty }: { difficulty: string }) => {
   const styles: Record<string, string> = {
-    EASY: "bg-emerald-500/15 text-emerald-300 border-emerald-500/20",
-    MEDIUM: "bg-amber-500/15 text-amber-300 border-amber-500/20",
-    HARD: "bg-red-500/15 text-red-300 border-red-500/20",
+    EASY: "bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border-emerald-500/20",
+    MEDIUM: "bg-amber-500/15 text-amber-700 dark:text-amber-300 border-amber-500/20",
+    HARD: "bg-red-500/15 text-red-700 dark:text-red-300 border-red-500/20",
   };
   return (
     <span className={`text-[10px] font-bold px-2.5 py-1 rounded border uppercase tracking-wider ${styles[difficulty] || styles.EASY}`}>
@@ -51,15 +51,15 @@ const ExamplesSection = ({ examples }: { examples: LeetCodeExample[] }) => (
     {examples.map((ex, index) => {
       const exampleNum = ex.example_num ?? index + 1;
       return (
-        <div key={`example-${exampleNum}`} className="rounded-xl border border-white/5 bg-dark-300/50 overflow-hidden">
-          <div className="px-4 py-2 bg-dark-300 border-b border-white/5">
-            <span className="text-xs font-bold text-light-400 uppercase tracking-widest">
+        <div key={`example-${exampleNum}`} className="rounded-xl border border-foreground/5 bg-muted/50 overflow-hidden">
+          <div className="px-4 py-2 bg-muted border-b border-foreground/5">
+            <span className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
               Example {exampleNum}
             </span>
           </div>
           <div className="p-4 flex flex-col gap-3">
             {ex.images && ex.images.length > 0 && ex.images.map((img, i) => (
-              <div key={i} className="relative w-full max-h-48 rounded-lg overflow-hidden bg-dark-200">
+              <div key={i} className="relative w-full max-h-48 rounded-lg overflow-hidden bg-card">
                 <img
                   src={img}
                   alt={`Example ${exampleNum} illustration`}
@@ -69,23 +69,23 @@ const ExamplesSection = ({ examples }: { examples: LeetCodeExample[] }) => (
             ))}
 
             {ex.example_text ? (
-              <pre className="font-mono text-sm text-light-100 whitespace-pre-wrap leading-relaxed bg-dark-200/60 p-3 rounded-lg border border-white/5">
+              <pre className="font-mono text-sm text-foreground whitespace-pre-wrap leading-relaxed bg-card/60 p-3 rounded-lg border border-foreground/5">
                 {ex.example_text}
               </pre>
             ) : (
-              <div className="flex flex-col gap-2 bg-dark-200/60 p-4 rounded-lg border border-white/5">
+              <div className="flex flex-col gap-2 bg-card/60 p-4 rounded-lg border border-foreground/5">
                 <div className="flex items-start gap-2 text-sm">
-                  <span className="text-light-400 font-bold min-w-16">Input:</span>
-                  <span className="font-mono text-light-100 break-all">{ex.input}</span>
+                  <span className="text-muted-foreground font-bold min-w-16">Input:</span>
+                  <span className="font-mono text-foreground break-all">{ex.input}</span>
                 </div>
                 <div className="flex items-start gap-2 text-sm mt-1">
-                  <span className="text-light-400 font-bold min-w-16">Output:</span>
-                  <span className="font-mono text-light-100 break-all">{ex.output}</span>
+                  <span className="text-muted-foreground font-bold min-w-16">Output:</span>
+                  <span className="font-mono text-foreground break-all">{ex.output}</span>
                 </div>
                 {ex.explanation && (
-                  <div className="flex items-start gap-2 text-sm mt-2 pt-2 border-t border-white/5">
-                    <span className="text-light-400 font-bold min-w-24">Explanation:</span>
-                    <span className="text-light-100/90 leading-relaxed">{ex.explanation}</span>
+                  <div className="flex items-start gap-2 text-sm mt-2 pt-2 border-t border-foreground/5">
+                    <span className="text-muted-foreground font-bold min-w-24">Explanation:</span>
+                    <span className="text-foreground/90 leading-relaxed">{ex.explanation}</span>
                   </div>
                 )}
               </div>
@@ -98,13 +98,13 @@ const ExamplesSection = ({ examples }: { examples: LeetCodeExample[] }) => (
 );
 
 const ConstraintsSection = ({ constraints }: { constraints: string[] }) => (
-  <div className="rounded-xl border border-white/5 bg-dark-300/30 p-4">
-    <h3 className="text-xs font-bold text-light-400 uppercase tracking-widest mb-3">Constraints</h3>
+  <div className="rounded-xl border border-foreground/5 bg-muted/30 p-4">
+    <h3 className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-3">Constraints</h3>
     <ul className="flex flex-col gap-2">
       {constraints.map((c, i) => (
-        <li key={i} className="flex items-start gap-2 text-sm text-light-100">
+        <li key={i} className="flex items-start gap-2 text-sm text-foreground">
           <span className="text-primary-200 mt-0.5 shrink-0">•</span>
-          <code className="font-mono text-xs text-primary-200 bg-dark-300 px-1.5 py-0.5 rounded">{c}</code>
+          <code className="font-mono text-xs text-primary-200 bg-muted px-1.5 py-0.5 rounded">{c}</code>
         </li>
       ))}
     </ul>
@@ -116,7 +116,7 @@ const HintsSection = ({ hints }: { hints: string[] }) => {
 
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex items-center gap-2 text-xs font-bold text-light-400 uppercase tracking-widest">
+      <div className="flex items-center gap-2 text-xs font-bold text-muted-foreground uppercase tracking-widest">
         <Lightbulb size={12} />
         <span>Hints</span>
       </div>
@@ -124,16 +124,16 @@ const HintsSection = ({ hints }: { hints: string[] }) => {
         {hints.map((hint, i) => (
           <div key={i}>
             {i < revealedCount ? (
-              <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 p-3 text-sm text-light-100 flex items-start gap-2">
-                <Lightbulb size={14} className="text-yellow-400 shrink-0 mt-0.5" />
+              <div className="rounded-lg border border-yellow-500/20 bg-yellow-500/5 p-3 text-sm text-foreground flex items-start gap-2">
+                <Lightbulb size={14} className="text-yellow-700 dark:text-yellow-400 shrink-0 mt-0.5" />
                 <span>{hint}</span>
               </div>
             ) : (
               <button
                 onClick={() => setRevealedCount(i + 1)}
-                className="w-full text-left rounded-lg border border-white/5 bg-dark-300/30 p-3 text-sm text-light-400 hover:text-white hover:bg-dark-300/60 transition-all flex items-center gap-2"
+                className="w-full text-left rounded-lg border border-foreground/5 bg-muted/30 p-3 text-sm text-muted-foreground hover:text-white hover:bg-muted/60 transition-all flex items-center gap-2"
               >
-                <Lightbulb size={14} className="text-yellow-400/40" />
+                <Lightbulb size={14} className="text-yellow-700 dark:text-yellow-400/40" />
                 <span>Show Hint {i + 1}</span>
               </button>
             )}
@@ -236,8 +236,8 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
   };
 
   return (
-    <div className="flex h-full flex-col overflow-y-auto bg-dark-200/20">
-      <div className="sticky top-0 z-10 border-b border-white/5 bg-dark-300/95 px-6 pt-4 backdrop-blur-xl">
+    <div className="flex h-full flex-col overflow-y-auto bg-card/20">
+      <div className="sticky top-0 z-10 border-b border-foreground/5 bg-muted/95 px-6 pt-4 backdrop-blur-xl">
         <UnderlineTabs
           tabs={visibleTabs}
           activeTab={activeTab}
@@ -257,20 +257,20 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
               {topics.slice(0, 4).map((topic) => (
                 <span
                   key={topic}
-                  className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-white/5 bg-dark-200 text-light-400 text-[10px] font-bold uppercase tracking-wider"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-foreground/5 bg-card text-muted-foreground text-[10px] font-bold uppercase tracking-wider"
                 >
                   <Layers size={10} />
                   {topic}
                 </span>
               ))}
               {topics.length > 4 && (
-                <span className="text-[10px] text-light-600">+{topics.length - 4} more</span>
+                <span className="text-[10px] text-muted-foreground">+{topics.length - 4} more</span>
               )}
             </div>
           </div>
 
           {/* Description */}
-          <div className="prose prose-invert max-w-none prose-p:text-light-100 prose-p:leading-relaxed prose-headings:text-white prose-strong:text-primary-100 prose-code:text-primary-200 prose-code:bg-dark-300 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-dark-300 prose-pre:border prose-pre:border-white/5 prose-li:text-light-100">
+          <div className="prose prose-invert max-w-none prose-p:text-foreground prose-p:leading-relaxed prose-headings:text-white prose-strong:text-primary-100 prose-code:text-primary-200 prose-code:bg-muted prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded prose-pre:bg-muted prose-pre:border prose-pre:border-foreground/5 prose-li:text-foreground">
             <ReactMarkdown>{challenge.description}</ReactMarkdown>
           </div>
 
@@ -292,7 +292,7 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
               <h3 className="text-xs font-bold text-primary-200 uppercase tracking-widest mb-3">Follow-up</h3>
               <ul className="flex flex-col gap-2">
                 {challenge.followUps.map((f, i) => (
-                  <li key={i} className="text-sm text-light-100 flex items-start gap-2">
+                  <li key={i} className="text-sm text-foreground flex items-start gap-2">
                     <span className="text-primary-200 shrink-0"><MoveRight size={12} className="mt-1" /></span>
                     <span>{f}</span>
                   </li>
@@ -346,7 +346,7 @@ const ProblemDescription = ({ challenge, currentUserId }: ProblemDescriptionProp
           <SubmissionResultViewSkeleton />
         </div>
       ) : (
-        <div className="px-6 py-8 text-sm text-light-500">
+        <div className="px-6 py-8 text-sm text-muted-foreground">
           Select a submission to view its result.
         </div>
       )}

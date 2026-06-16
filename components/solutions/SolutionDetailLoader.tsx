@@ -55,12 +55,12 @@ export function SolutionDetailLoader({ solutionId, currentUserId, onBack }: Prop
         <button
           type="button"
           onClick={onBack}
-          className="inline-flex items-center gap-1.5 text-xs font-semibold text-light-400 transition-colors hover:text-primary-100"
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground transition-colors hover:text-primary-100"
         >
           <ArrowLeft className="size-3.5" />
           Back to solutions
         </button>
-        <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-300">
+        <div className="rounded-lg border border-red-500/20 bg-red-500/5 p-4 text-sm text-red-700 dark:text-red-300">
           {error}
         </div>
       </div>

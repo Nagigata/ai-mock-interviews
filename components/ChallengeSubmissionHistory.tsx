@@ -30,7 +30,7 @@ interface ChallengeSubmissionHistoryProps {
 const PAGE_SIZE = 5;
 
 const noteColors = [
-  { value: "gray", className: "border-light-300 bg-light-300" },
+  { value: "gray", className: "border-border bg-muted" },
   { value: "yellow", className: "border-yellow-400 bg-yellow-400" },
   { value: "blue", className: "border-sky-400 bg-sky-400" },
   { value: "green", className: "border-emerald-400 bg-emerald-400" },
@@ -206,19 +206,19 @@ const ChallengeSubmissionHistory = ({
   };
 
   return (
-    <section className="h-full bg-dark-200/20">
+    <section className="h-full bg-card/20">
       <div className="overflow-x-auto">
         {isPending && !items.length ? (
-          <div className="flex items-center gap-3 px-4 py-6 text-sm text-light-400">
+          <div className="flex items-center gap-3 px-4 py-6 text-sm text-muted-foreground">
             <div className="size-3 rounded-full border-2 border-primary-200/30 border-t-primary-200 animate-spin" />
             Loading submission history...
           </div>
         ) : error ? (
-          <div className="px-4 py-6 text-sm text-red-300">{error}</div>
+          <div className="px-4 py-6 text-sm text-red-700 dark:text-red-300">{error}</div>
         ) : items.length ? (
           <table className="w-full min-w-[680px] border-collapse text-left">
             <thead>
-              <tr className="border-b border-white/5 text-[10px] font-bold uppercase tracking-widest text-light-500">
+              <tr className="border-b border-foreground/5 text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                 <th className="w-10 px-4 py-3">#</th>
                 <th className="px-4 py-3">
                   <SelectFilter
@@ -228,7 +228,7 @@ const ChallengeSubmissionHistory = ({
                     options={statusFilterOptions}
                     onChange={updateStatusFilter}
                     className="min-w-0"
-                    triggerClassName="h-auto gap-1 rounded-md border-transparent px-0 py-0 text-[10px] font-bold uppercase tracking-widest text-light-500 [background:transparent] hover:border-transparent hover:bg-transparent hover:text-light-200 data-[state=open]:border-transparent focus:border-transparent"
+                    triggerClassName="h-auto gap-1 rounded-md border-transparent px-0 py-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground [background:transparent] hover:border-transparent hover:bg-transparent hover:text-muted-foreground data-[state=open]:border-transparent focus:border-transparent"
                   />
                 </th>
                 <th className="px-4 py-3">
@@ -239,7 +239,7 @@ const ChallengeSubmissionHistory = ({
                     options={languageFilterOptions}
                     onChange={updateLanguageFilter}
                     className="min-w-0"
-                    triggerClassName="h-auto gap-1 rounded-md border-transparent px-0 py-0 text-[10px] font-bold uppercase tracking-widest text-light-500 [background:transparent] hover:border-transparent hover:bg-transparent hover:text-light-200 data-[state=open]:border-transparent focus:border-transparent"
+                    triggerClassName="h-auto gap-1 rounded-md border-transparent px-0 py-0 text-[10px] font-bold uppercase tracking-widest text-muted-foreground [background:transparent] hover:border-transparent hover:bg-transparent hover:text-muted-foreground data-[state=open]:border-transparent focus:border-transparent"
                   />
                 </th>
                 <th className="px-4 py-3">Runtime</th>
@@ -253,12 +253,12 @@ const ChallengeSubmissionHistory = ({
                     key={submission.id}
                     onClick={() => selectSubmission(submission.id)}
                     className={cn(
-                      "cursor-pointer border-b border-white/5 transition-colors last:border-b-0 hover:bg-white/[0.03]",
+                      "cursor-pointer border-b border-foreground/5 transition-colors last:border-b-0 hover:bg-foreground/[0.03]",
                       selectedSubmissionId === submission.id &&
                         "bg-primary-200/5",
                     )}
                   >
-                    <td className="px-4 py-4 align-top text-xs font-medium text-light-500">
+                    <td className="px-4 py-4 align-top text-xs font-medium text-muted-foreground">
                       {index + 1}
                     </td>
                     <td className="whitespace-nowrap px-4 py-4">
@@ -266,28 +266,28 @@ const ChallengeSubmissionHistory = ({
                         className={cn(
                           "block text-xs font-bold",
                           submission.status === "ACCEPTED"
-                            ? "text-emerald-300"
+                            ? "text-emerald-700 dark:text-emerald-300"
                             : submission.status === "REJECTED"
-                              ? "text-red-300"
-                              : "text-amber-300",
+                              ? "text-red-700 dark:text-red-300"
+                              : "text-amber-700 dark:text-amber-300",
                         )}
                       >
                         {submission.status}
                       </span>
-                      <span className="mt-1 flex items-center gap-1.5 text-[11px] text-light-500">
-                        <CalendarClock className="size-3 text-light-600" />
+                      <span className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                        <CalendarClock className="size-3 text-muted-foreground" />
                         {formatSubmittedAt(submission.createdAt)}
                       </span>
                     </td>
                     <td className="px-4 py-4">
-                      <span className="rounded-lg border border-white/5 bg-dark-200 px-2.5 py-1 text-xs font-bold capitalize text-light-100">
+                      <span className="rounded-lg border border-foreground/5 bg-card px-2.5 py-1 text-xs font-bold capitalize text-foreground">
                         {submission.language}
                       </span>
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-xs text-light-300">
+                    <td className="whitespace-nowrap px-4 py-4 text-xs text-muted-foreground">
                       {submission.runtime ? `${submission.runtime} ms` : "--"}
                     </td>
-                    <td className="whitespace-nowrap px-4 py-4 text-xs text-light-300">
+                    <td className="whitespace-nowrap px-4 py-4 text-xs text-muted-foreground">
                       {formatMemory(submission.memory)}
                     </td>
                     <td className="px-4 py-4">
@@ -298,7 +298,7 @@ const ChallengeSubmissionHistory = ({
                             event.stopPropagation();
                             beginEditing(submission);
                           }}
-                          className="flex w-full items-start gap-2 text-left text-xs leading-relaxed text-light-300 transition-colors hover:text-light-100 focus:outline-none"
+                          className="flex w-full items-start gap-2 text-left text-xs leading-relaxed text-muted-foreground transition-colors hover:text-foreground focus:outline-none"
                         >
                           <span className="line-clamp-3 flex-1">
                             {submission.note}
@@ -317,7 +317,7 @@ const ChallengeSubmissionHistory = ({
                             event.stopPropagation();
                             beginEditing(submission);
                           }}
-                          className="rounded-xl border border-dashed border-white/10 bg-white/[0.02] px-3 py-2 text-xs font-semibold text-light-500 transition-colors hover:border-primary-200/30 hover:bg-primary-200/5 hover:text-primary-200"
+                          className="rounded-xl border border-dashed border-foreground/10 bg-foreground/[0.02] px-3 py-2 text-xs font-semibold text-muted-foreground transition-colors hover:border-primary-200/30 hover:bg-primary-200/5 hover:text-primary-200"
                         >
                           + Add note
                         </button>
@@ -328,20 +328,20 @@ const ChallengeSubmissionHistory = ({
             </tbody>
           </table>
         ) : (
-          <div className="px-4 py-8 text-sm text-light-500">
+          <div className="px-4 py-8 text-sm text-muted-foreground">
             No submissions yet. Submit a solution and your history will appear here.
           </div>
         )}
       </div>
 
       {items.length > 0 && canLoadMore && (
-        <div className="border-t border-white/5 px-4 py-4 text-center">
+        <div className="border-t border-foreground/5 px-4 py-4 text-center">
           <Button
             type="button"
             variant="outline"
             disabled={isPending}
             onClick={() => setRequestedPage((currentPage) => currentPage + 1)}
-            className="h-9 border-white/10 bg-dark-200 px-5 text-xs font-semibold text-light-100 hover:bg-dark-100"
+            className="h-9 border-foreground/10 bg-card px-5 text-xs font-semibold text-foreground hover:bg-background"
           >
             {isPending ? "Loading..." : "Load more"}
           </Button>
@@ -350,11 +350,11 @@ const ChallengeSubmissionHistory = ({
 
       {editingSubmission && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 px-4 backdrop-blur-sm">
-          <div className="relative w-full max-w-lg rounded-2xl border border-white/10 bg-[#1c1f26] p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
+          <div className="relative w-full max-w-lg rounded-2xl border border-foreground/10 bg-muted p-6 shadow-2xl animate-in fade-in zoom-in-95 duration-200">
             <button
               type="button"
               onClick={cancelEditing}
-              className="absolute right-4 top-4 text-light-400 transition-colors hover:text-white"
+              className="absolute right-4 top-4 text-muted-foreground transition-colors hover:text-white"
               aria-label="Close note editor"
             >
               <X className="size-5" />
@@ -364,7 +364,7 @@ const ChallengeSubmissionHistory = ({
               <h3 className="text-lg font-semibold text-white">
                 Submission note
               </h3>
-              <p className="mt-1 text-xs text-light-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 {formatSubmittedAt(editingSubmission.createdAt)} •{" "}
                 {editingSubmission.language} • {editingSubmission.status}
               </p>
@@ -376,10 +376,10 @@ const ChallengeSubmissionHistory = ({
               placeholder="What did you learn from this submission?"
               maxLength={1000}
               autoFocus
-              className="min-h-44 w-full resize-none rounded-xl border border-white/10 bg-dark-200 px-4 py-3 text-sm leading-relaxed text-light-100 outline-none transition-colors placeholder:text-light-600 focus:border-primary-200/50"
+              className="min-h-44 w-full resize-none rounded-xl border border-foreground/10 bg-card px-4 py-3 text-sm leading-relaxed text-foreground outline-none transition-colors placeholder:text-muted-foreground focus:border-primary-200/50"
             />
 
-            <div className="mt-2 text-right text-[11px] text-light-600">
+            <div className="mt-2 text-right text-[11px] text-muted-foreground">
               {draftNote.length}/1000
             </div>
 
@@ -396,12 +396,12 @@ const ChallengeSubmissionHistory = ({
                       className={cn(
                         "flex size-5 items-center justify-center rounded-full border transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary-200/40",
                         color.className,
-                        isSelected ? "ring-2 ring-white/70" : "bg-transparent",
+                        isSelected ? "ring-2 ring-foreground/70" : "bg-transparent",
                       )}
                       aria-label={`Use ${color.value} note color`}
                     >
                       {isSelected && (
-                        <span className="size-2 rounded-full bg-dark-100" />
+                        <span className="size-2 rounded-full bg-background" />
                       )}
                     </button>
                   );
@@ -414,7 +414,7 @@ const ChallengeSubmissionHistory = ({
                 variant="outline"
                 disabled={isPending}
                 onClick={cancelEditing}
-                className="border-white/10 bg-transparent text-light-300 hover:bg-white/5"
+                className="border-foreground/10 bg-transparent text-muted-foreground hover:bg-foreground/5"
               >
                 Cancel
               </Button>
