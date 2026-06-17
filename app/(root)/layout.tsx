@@ -14,13 +14,14 @@ const RootLayout = async ({ children }: { children: ReactNode }) => {
 
   const cookieStore = await cookies();
   const locale = cookieStore.get("NEXT_LOCALE")?.value || "en";
+  const socketToken = cookieStore.get("token")?.value ?? null;
   const t = getDictionary(locale);
   const profile = await getMyProfile();
 
   return (
     <div className="flex flex-col min-h-screen" style={{ background: "var(--surface-base)" }}>
       <Navbar locale={locale} t={t} user={profile} />
-      <NotificationWatcher soundEnabled={profile?.notifySound ?? true} />
+      <NotificationWatcher soundEnabled={profile?.notifySound ?? true} token={socketToken} />
 
       {/* Main Content Area - Increased spacing (pt-24) to avoid "stuck" feeling */}
       <main className="flex-1 pt-24 pb-12 w-full max-w-7xl mx-auto px-6 lg:px-8">

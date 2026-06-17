@@ -115,11 +115,12 @@ const dispatchNotificationCenterEvent = (notification: NotificationPayload) => {
 
 interface NotificationWatcherProps {
   soundEnabled?: boolean;
+  token?: string | null;
 }
 
 const NOTIFICATION_SOUND_URL = "/sounds/notification.mp3";
 
-const NotificationWatcher = ({ soundEnabled = true }: NotificationWatcherProps) => {
+const NotificationWatcher = ({ soundEnabled = true, token }: NotificationWatcherProps) => {
   const router = useRouter();
   const socketRef = useRef<Socket | null>(null);
   const soundEnabledRef = useRef(soundEnabled);
@@ -207,6 +208,7 @@ const NotificationWatcher = ({ soundEnabled = true }: NotificationWatcherProps) 
 
     const socket = io(SOCKET_URL, {
       withCredentials: true,
+      auth: token ? { token } : undefined,
       reconnectionAttempts: 5,
       reconnectionDelay: 3000,
       timeout: 10000,
@@ -221,7 +223,7 @@ const NotificationWatcher = ({ soundEnabled = true }: NotificationWatcherProps) 
       socket.disconnect();
       socketRef.current = null;
     };
-  }, [router]);
+  }, [router, token]);
 
   return null;
 };
