@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { Brain, Cpu, Key, Eye, EyeOff, Save, CheckCircle2, AlertTriangle, ShieldCheck } from "lucide-react";
+import { Brain, Cpu, Key, Eye, EyeOff, Save, CheckCircle2, Sparkles, BrainCircuit, Layers } from "lucide-react";
 import { UserProfile } from "@/types";
 import { updateAIPreferences } from "@/lib/actions/user.actions";
+import SelectFilter from "@/components/filters/SelectFilter";
 
 interface AIPreferencesTabProps {
   profile: UserProfile;
@@ -15,6 +16,7 @@ const PROVIDERS = [
     id: "local-qwen",
     name: "Local Qwen (Free)",
     description: "Runs on our local GPU server. Free to use, no API key required.",
+    icon: <Cpu className="size-5 text-primary-100" />,
     models: [
       { id: "qwen-3b", name: "Qwen 2.5 3B Instruct" }
     ]
@@ -23,6 +25,7 @@ const PROVIDERS = [
     id: "gemini",
     name: "Google Gemini",
     description: "Requires your own Google AI API Key. Highly optimized and accurate.",
+    icon: <Sparkles className="size-5 text-indigo-400" />,
     models: [
       { id: "gemini-2.5-flash", name: "Gemini 2.5 Flash (Recommended)" },
       { id: "gemini-2.5-pro", name: "Gemini 2.5 Pro" },
@@ -33,6 +36,7 @@ const PROVIDERS = [
     id: "openai",
     name: "OpenAI GPT",
     description: "Requires your own OpenAI API Key. Standard performance and depth.",
+    icon: <BrainCircuit className="size-5 text-emerald-400" />,
     models: [
       { id: "gpt-4o-mini", name: "GPT-4o Mini (Fast & Cheap)" },
       { id: "gpt-4o", name: "GPT-4o (Deep Evaluation)" }
@@ -42,6 +46,7 @@ const PROVIDERS = [
     id: "anthropic",
     name: "Anthropic Claude",
     description: "Requires your own Anthropic API Key. Superior coding and reasoning ability.",
+    icon: <Layers className="size-5 text-amber-400" />,
     models: [
       { id: "claude-3-5-haiku-20241022", name: "Claude 3.5 Haiku" },
       { id: "claude-3-5-sonnet-20241022", name: "Claude 3.5 Sonnet (State-of-the-Art)" }
@@ -100,7 +105,6 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
       aiFeedbackModel: feedbackModel,
     };
 
-    // Only update keys if user typed something new, or if they explicitly want to clear it (not covered here, but we default to preserving unless changed)
     if (geminiApiKey.trim()) {
       payload.aiGeminiApiKey = geminiApiKey.trim();
     }
@@ -142,7 +146,7 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
       : "aiAnthropicApiKey";
 
     const res = await updateAIPreferences({
-      [keyField]: "" // Passing empty string to clear the key on backend
+      [keyField]: "" // Passing empty string to clear key
     });
 
     setIsPending(false);
@@ -176,37 +180,21 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
           </div>
 
           <div className="grid gap-5">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="question-provider" className="text-sm font-semibold text-foreground/90">AI Provider</label>
-              <select
-                id="question-provider"
-                value={questionProvider}
-                onChange={(e) => handleProviderChange("question", e.target.value)}
-                className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] p-3 text-sm text-white focus:border-primary-100 focus:outline-none"
-              >
-                {PROVIDERS.map((p) => (
-                  <option key={p.id} value={p.id} className="bg-dark-100 text-white">
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <SelectFilter
+              label="AI Provider"
+              value={questionProvider}
+              options={PROVIDERS.map((p) => ({ value: p.id, label: p.name }))}
+              onChange={(val) => handleProviderChange("question", val)}
+              className="w-full"
+            />
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="question-model" className="text-sm font-semibold text-foreground/90">Model Version</label>
-              <select
-                id="question-model"
-                value={questionModel}
-                onChange={(e) => setQuestionModel(e.target.value)}
-                className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] p-3 text-sm text-white focus:border-primary-100 focus:outline-none"
-              >
-                {getModels(questionProvider).map((m) => (
-                  <option key={m.id} value={m.id} className="bg-dark-100 text-white">
-                    {m.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <SelectFilter
+              label="Model Version"
+              value={questionModel}
+              options={getModels(questionProvider).map((m) => ({ value: m.id, label: m.name }))}
+              onChange={(val) => setQuestionModel(val)}
+              className="w-full"
+            />
           </div>
         </section>
 
@@ -223,37 +211,21 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
           </div>
 
           <div className="grid gap-5">
-            <div className="flex flex-col gap-2">
-              <label htmlFor="feedback-provider" className="text-sm font-semibold text-foreground/90">AI Provider</label>
-              <select
-                id="feedback-provider"
-                value={feedbackProvider}
-                onChange={(e) => handleProviderChange("feedback", e.target.value)}
-                className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] p-3 text-sm text-white focus:border-primary-100 focus:outline-none"
-              >
-                {PROVIDERS.map((p) => (
-                  <option key={p.id} value={p.id} className="bg-dark-100 text-white">
-                    {p.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <SelectFilter
+              label="AI Provider"
+              value={feedbackProvider}
+              options={PROVIDERS.map((p) => ({ value: p.id, label: p.name }))}
+              onChange={(val) => handleProviderChange("feedback", val)}
+              className="w-full"
+            />
 
-            <div className="flex flex-col gap-2">
-              <label htmlFor="feedback-model" className="text-sm font-semibold text-foreground/90">Model Version</label>
-              <select
-                id="feedback-model"
-                value={feedbackModel}
-                onChange={(e) => setFeedbackModel(e.target.value)}
-                className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] p-3 text-sm text-white focus:border-primary-100 focus:outline-none"
-              >
-                {getModels(feedbackProvider).map((m) => (
-                  <option key={m.id} value={m.id} className="bg-dark-100 text-white">
-                    {m.name}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <SelectFilter
+              label="Model Version"
+              value={feedbackModel}
+              options={getModels(feedbackProvider).map((m) => ({ value: m.id, label: m.name }))}
+              onChange={(val) => setFeedbackModel(val)}
+              className="w-full"
+            />
           </div>
         </section>
 
@@ -266,7 +238,7 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
               </span>
               <div>
                 <h2 className="text-xl font-bold text-white">API Keys</h2>
-                <p className="text-xs text-muted-foreground mt-0.5">Your credentials are encrypted using AES-256-GCM before database write.</p>
+                <p className="text-xs text-muted-foreground mt-0.5">Keys are stored securely and used only for model calls.</p>
               </div>
             </div>
 
@@ -298,7 +270,7 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
                       value={geminiApiKey}
                       onChange={(e) => setGeminiApiKey(e.target.value)}
                       placeholder={hasGemini ? "••••••••••••••••••••••••••••••••" : "Enter Google AI Studio API Key..."}
-                      className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
+                      className="w-full rounded-xl border border-[var(--surface-border)] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
                     />
                     <button
                       type="button"
@@ -338,7 +310,7 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
                       value={openaiApiKey}
                       onChange={(e) => setOpenaiApiKey(e.target.value)}
                       placeholder={hasOpenai ? "••••••••••••••••••••••••••••••••" : "Enter OpenAI API Key (sk-...)"}
-                      className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
+                      className="w-full rounded-xl border border-[var(--surface-border)] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
                     />
                     <button
                       type="button"
@@ -378,7 +350,7 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
                       value={anthropicApiKey}
                       onChange={(e) => setAnthropicApiKey(e.target.value)}
                       placeholder={hasAnthropic ? "••••••••••••••••••••••••••••••••" : "Enter Anthropic Console API Key..."}
-                      className="w-full rounded-xl border border-foreground/[0.1] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
+                      className="w-full rounded-xl border border-[var(--surface-border)] bg-foreground/[0.03] py-3 pl-3 pr-10 text-sm text-white focus:border-primary-100 focus:outline-none"
                     />
                     <button
                       type="button"
@@ -412,8 +384,8 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
           <div className="flex flex-col gap-6">
             {PROVIDERS.map((p) => (
               <div key={p.id} className="flex gap-3">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-foreground/[0.04] text-primary-200 text-sm font-bold">
-                  {p.name.charAt(0)}
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-foreground/[0.04]">
+                  {p.icon}
                 </span>
                 <div>
                   <h4 className="text-sm font-semibold text-white">{p.name}</h4>
@@ -421,30 +393,6 @@ export default function AIPreferencesTab({ profile }: AIPreferencesTabProps) {
                 </div>
               </div>
             ))}
-          </div>
-        </section>
-
-        <section className="rounded-[28px] border border-primary-200/10 bg-primary-200/[0.02] p-6">
-          <div className="flex gap-3 text-primary-200">
-            <ShieldCheck className="size-5 shrink-0" />
-            <div>
-              <h3 className="text-sm font-bold">Privacy & Encryption</h3>
-              <p className="text-xs text-foreground/80 mt-1.5 leading-relaxed">
-                Your API keys are encrypted immediately using AES-256-GCM. We never store raw keys in databases or log files. Keys are decrypted in memory only when calling models to generate questions or evaluate your responses.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="rounded-[28px] border border-amber-500/10 bg-amber-500/[0.02] p-6">
-          <div className="flex gap-3 text-amber-400">
-            <AlertTriangle className="size-5 shrink-0" />
-            <div>
-              <h3 className="text-sm font-bold">Important Notice</h3>
-              <p className="text-xs text-foreground/80 mt-1.5 leading-relaxed">
-                Make sure your API key has sufficient credit/quota before starting a session. If a model call fails due to invalid keys or limit issues, your phỏng vấn mock sẽ không thể sinh ra hoặc không thể chấm điểm.
-              </p>
-            </div>
           </div>
         </section>
       </div>
