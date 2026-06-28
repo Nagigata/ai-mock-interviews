@@ -398,3 +398,36 @@ export async function getProfileActivityByUserId(
     return null;
   }
 }
+
+export type AIPreferencesInput = {
+  aiQuestionProvider?: string;
+  aiQuestionModel?: string;
+  aiFeedbackProvider?: string;
+  aiFeedbackModel?: string;
+  aiGeminiApiKey?: string;
+  aiOpenaiApiKey?: string;
+  aiAnthropicApiKey?: string;
+};
+
+export async function updateAIPreferences(input: AIPreferencesInput) {
+  try {
+    const body: Record<string, unknown> = {};
+    if (input.aiQuestionProvider !== undefined) body.aiQuestionProvider = input.aiQuestionProvider;
+    if (input.aiQuestionModel !== undefined) body.aiQuestionModel = input.aiQuestionModel;
+    if (input.aiFeedbackProvider !== undefined) body.aiFeedbackProvider = input.aiFeedbackProvider;
+    if (input.aiFeedbackModel !== undefined) body.aiFeedbackModel = input.aiFeedbackModel;
+    if (input.aiGeminiApiKey !== undefined) body.aiGeminiApiKey = input.aiGeminiApiKey;
+    if (input.aiOpenaiApiKey !== undefined) body.aiOpenaiApiKey = input.aiOpenaiApiKey;
+    if (input.aiAnthropicApiKey !== undefined) body.aiAnthropicApiKey = input.aiAnthropicApiKey;
+
+    const updated = await apiPatch<UserProfile>("/users/me", body);
+    revalidatePath("/settings");
+    return { success: true as const, data: updated };
+  } catch (error) {
+    return {
+      success: false as const,
+      message: error instanceof Error ? error.message : "Failed to update AI preferences.",
+    };
+  }
+}
+

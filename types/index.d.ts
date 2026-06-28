@@ -160,6 +160,13 @@ export interface User {
   notifyComments?: boolean;
   notifySound?: boolean;
   deletedAt?: string | null;
+  aiQuestionProvider?: string;
+  aiQuestionModel?: string;
+  aiFeedbackProvider?: string;
+  aiFeedbackModel?: string;
+  hasGeminiKey?: boolean;
+  hasOpenaiKey?: boolean;
+  hasAnthropicKey?: boolean;
 }
 
 export interface InterviewCardProps {

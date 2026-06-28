@@ -9,15 +9,16 @@ import { UserProfile } from "@/types";
 import AccountTab from "./AccountTab";
 import NotificationsTab from "./NotificationsTab";
 import ProfileTab from "./ProfileTab";
+import AIPreferencesTab from "./AIPreferencesTab";
 
-type SettingsTab = "profile" | "notifications" | "account";
+type SettingsTab = "profile" | "notifications" | "ai" | "account";
 
 interface SettingsViewProps {
   profile: UserProfile;
 }
 
 const resolveTab = (raw: string | null): SettingsTab => {
-  if (raw === "account" || raw === "notifications" || raw === "profile") {
+  if (raw === "account" || raw === "notifications" || raw === "profile" || raw === "ai") {
     return raw;
   }
   return "profile";
@@ -37,6 +38,7 @@ const SettingsView = ({ profile }: SettingsViewProps) => {
   const tabs = [
     { id: "profile" as const, label: "Profile" },
     { id: "notifications" as const, label: "Notifications" },
+    { id: "ai" as const, label: "AI Preferences" },
     { id: "account" as const, label: "Account" },
   ];
 
@@ -67,6 +69,7 @@ const SettingsView = ({ profile }: SettingsViewProps) => {
 
       {activeTab === "profile" && <ProfileTab profile={profile} />}
       {activeTab === "notifications" && <NotificationsTab profile={profile} />}
+      {activeTab === "ai" && <AIPreferencesTab profile={profile} />}
       {activeTab === "account" && <AccountTab profile={profile} />}
     </div>
   );
