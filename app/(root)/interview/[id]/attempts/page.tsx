@@ -118,17 +118,20 @@ const AttemptsPage = async ({
       </Link>
 
       {/* Hero */}
-      <div className="relative overflow-hidden rounded-[28px] border border-foreground/8 bg-[radial-gradient(circle_at_top_left,_rgba(202,197,254,0.16),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div
+        className="relative overflow-hidden rounded-[28px] border border-[var(--surface-border)] p-7"
+        style={{ background: "var(--hero-gradient)", boxShadow: "0 24px 70px var(--shadow-heavy)" }}
+      >
         <div className="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-primary-200/20 bg-primary-200/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.24em] text-primary-100">
               <History size={14} />
               Attempt History
             </div>
-            <h1 className="mt-4 text-3xl font-bold capitalize text-white sm:text-4xl">
+            <h1 className="mt-4 text-3xl font-bold capitalize sm:text-4xl" style={{ color: "var(--text-heading)" }}>
               {interview.role} Interview
             </h1>
-            <p className="mt-3 max-w-2xl text-sm text-muted-foreground">
+            <p className="mt-3 max-w-2xl text-sm text-[var(--text-muted)]">
               Review every time you took this interview, compare scores, and
               reopen the feedback for each attempt.
             </p>
@@ -136,17 +139,17 @@ const AttemptsPage = async ({
 
           {/* Stats */}
           <div className="flex flex-wrap gap-3">
-            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] px-5 py-4 text-center">
-              <div className="text-2xl font-bold text-white">
+            <div className="rounded-2xl border border-[var(--surface-border)] px-5 py-4 text-center" style={{ background: "var(--surface-overlay)" }}>
+              <div className="text-2xl font-bold" style={{ color: "var(--text-heading)" }}>
                 {attempts?.length || 0}
               </div>
-              <div className="text-[11px] text-muted-foreground mt-1">Attempts</div>
+              <div className="text-[11px] text-[var(--text-muted)] mt-1">Attempts</div>
             </div>
             <div className="rounded-2xl border border-emerald-500/15 bg-emerald-500/[0.05] px-5 py-4 text-center">
               <div className="text-2xl font-bold text-emerald-700 dark:text-emerald-400">
                 {completedAttempts}
               </div>
-              <div className="text-[11px] text-muted-foreground mt-1">
+              <div className="text-[11px] text-[var(--text-muted)] mt-1">
                 Completed
               </div>
             </div>
@@ -165,9 +168,9 @@ const AttemptsPage = async ({
       </div>
 
       {!attempts || attempts.length === 0 ? (
-        <div className="rounded-[24px] border border-foreground/8 bg-foreground/[0.03] p-10 text-center">
+        <div className="rounded-[24px] border border-[var(--surface-border)] bg-[var(--surface-overlay)] p-10 text-center">
           <Clock size={40} className="mx-auto text-muted-foreground mb-4" />
-          <p className="text-lg font-semibold text-white">No attempts yet</p>
+          <p className="text-lg font-semibold text-[var(--text-heading)]">No attempts yet</p>
           <p className="mt-2 text-sm text-muted-foreground">
             Start this interview once and your result will appear here.
           </p>

@@ -113,17 +113,20 @@ const AttemptTranscriptPage = async ({
       </Link>
 
       {/* Header */}
-      <div className="relative overflow-hidden rounded-[28px] border border-foreground/8 bg-[radial-gradient(circle_at_top_left,_rgba(92,114,255,0.14),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div
+        className="relative overflow-hidden rounded-[28px] border border-[var(--surface-border)] p-7"
+        style={{ background: "var(--hero-gradient)", boxShadow: "0 24px 70px var(--shadow-heavy)" }}
+      >
         <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold capitalize text-white sm:text-4xl">
+            <h1 className="text-3xl font-bold capitalize sm:text-4xl" style={{ color: "var(--text-heading)" }}>
               {attempt.interview.role} Transcript
             </h1>
-            <p className="text-sm text-muted-foreground max-w-xl">
+            <p className="text-sm text-[var(--text-muted)] max-w-xl">
               Review the conversation captured during this interview attempt.
             </p>
 
-            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+            <div className="flex flex-wrap gap-4 text-xs text-[var(--text-muted)]">
               <span
                 className={`inline-flex items-center rounded-full border px-2.5 py-1 font-bold ${statusConfig.className}`}
               >
@@ -161,14 +164,14 @@ const AttemptTranscriptPage = async ({
       </div>
 
       {/* Transcript */}
-      <div className="rounded-[24px] border border-foreground/6 bg-card p-5 sm:p-6 shadow-[0_18px_60px_rgba(0,0,0,0.24)]">
+      <div className="rounded-[24px] border border-[var(--surface-border)] bg-card p-5 sm:p-6" style={{ boxShadow: "0 18px 60px var(--shadow-heavy)" }}>
         {attempt.transcripts.length === 0 ? (
           <div className="py-14 text-center">
             <MessageSquareText
               size={40}
-              className="mx-auto text-muted-foreground mb-4"
+              className="mx-auto text-[var(--text-muted)] mb-4"
             />
-            <p className="text-lg font-semibold text-white">
+            <p className="text-lg font-semibold" style={{ color: "var(--text-heading)" }}>
               No transcript messages saved
             </p>
             <p className="mt-2 text-sm text-muted-foreground max-w-md mx-auto">

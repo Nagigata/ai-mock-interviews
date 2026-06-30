@@ -54,11 +54,11 @@ const InterviewSetupPage = async () => {
           <div className="space-y-3">
             <div className="flex items-center gap-3">
               <BrainCircuit className="text-primary-100" size={30} />
-              <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl" style={{ color: "var(--text-heading)" }}>
                 {t.home.startBtn}
               </h1>
             </div>
-            <p className="max-w-2xl text-base leading-7 text-foreground sm:text-lg">
+            <p className="max-w-2xl text-base leading-7 sm:text-lg" style={{ color: "var(--text-body)" }}>
               Pick your preferred language, connect with the assistant, and start a fresh mock interview session.
             </p>
           </div>

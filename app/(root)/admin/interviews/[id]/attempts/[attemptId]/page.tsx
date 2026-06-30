@@ -55,17 +55,20 @@ export default async function AdminInterviewAttemptDetailPage({
         Back to Interview Detail
       </Link>
 
-      <div className="rounded-[28px] border border-foreground/8 bg-[radial-gradient(circle_at_top_left,_rgba(92,114,255,0.14),_transparent_34%),linear-gradient(135deg,#1d1f24_0%,#11141a_100%)] p-7 shadow-[0_24px_70px_rgba(0,0,0,0.28)]">
+      <div
+        className="rounded-[28px] border border-[var(--surface-border)] p-7"
+        style={{ background: "var(--hero-gradient)", boxShadow: "0 24px 70px var(--shadow-heavy)" }}
+      >
         <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
           <div className="space-y-3">
-            <h1 className="text-3xl font-bold capitalize text-white">
+            <h1 className="text-3xl font-bold capitalize" style={{ color: "var(--text-heading)" }}>
               {attempt.interview.role} Attempt
             </h1>
-            <p className="max-w-2xl text-sm leading-6 text-muted-foreground">
+            <p className="max-w-2xl text-sm leading-6 text-[var(--text-muted)]">
               Review this attempt by switching between AI feedback and the
               captured transcript.
             </p>
-            <div className="flex flex-wrap gap-4 text-xs text-muted-foreground">
+            <div className="flex flex-wrap gap-4 text-xs text-[var(--text-muted)]">
               <span className="inline-flex items-center gap-1.5">
                 <UserRound className="size-3.5" />
                 {attempt.user?.name} ({attempt.user?.email})
@@ -93,9 +96,9 @@ export default async function AdminInterviewAttemptDetailPage({
               <span className="mt-1 text-xs text-muted-foreground">/100</span>
             </div>
           ) : (
-            <div className="rounded-2xl border border-foreground/8 bg-foreground/[0.04] px-8 py-5 text-center">
-              <p className="text-sm font-bold text-white">No Feedback</p>
-              <p className="mt-1 text-xs text-muted-foreground">
+            <div className="rounded-2xl border border-[var(--surface-border)] px-8 py-5 text-center" style={{ background: "var(--surface-overlay)" }}>
+              <p className="text-sm font-bold" style={{ color: "var(--text-heading)" }}>No Feedback</p>
+              <p className="mt-1 text-xs text-[var(--text-muted)]">
                 Feedback has not been generated.
               </p>
             </div>

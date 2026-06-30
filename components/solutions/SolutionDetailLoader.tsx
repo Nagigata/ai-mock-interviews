@@ -14,6 +14,7 @@ interface Solution {
   language: string;
   code: string;
   upvoteCount: number;
+  viewCount: number;
   isUpvoted: boolean;
   createdAt: string;
   user: { id: string; name: string; avatarUrl?: string };
