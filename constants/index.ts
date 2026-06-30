@@ -103,7 +103,7 @@ export const interviewer_en: CreateAssistantDTO = {
     "Hello! Thank you for taking the time to speak with me today. I'm excited to learn more about you and your experience.",
   transcriber: {
     provider: "deepgram",
-    model: "nova-2",
+    model: "nova-3",
     language: "en",
   },
   voice: {
@@ -161,7 +161,7 @@ export const interviewer_vi: CreateAssistantDTO = {
     "Chào bạn! Cảm ơn bạn đã dành thời gian tham gia buổi phỏng vấn hôm nay. Tôi rất mong được lắng nghe những chia sẻ về kinh nghiệm của bạn.",
   transcriber: {
     provider: "deepgram",
-    model: "nova-2",
+    model: "nova-3",
     language: "vi",
   },
   voice: {
