@@ -288,39 +288,41 @@ const ChallengeEditorView = ({ challenge, skillSlug, currentUserId }: ChallengeE
                                 <div className="flex items-center gap-2">
                                   <span className={cn(
                                     "px-2 py-0.5 rounded text-[10px] font-bold uppercase",
-                                    res.status.id === 3 ? "bg-success-100/10 text-success-100" : "bg-destructive-100/10 text-destructive-100"
+                                    res.status.id === 3
+                                      ? "bg-emerald-500/10 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400"
+                                      : "bg-rose-500/10 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400"
                                   )}>
                                     {res.status.description}
                                   </span>
-                                  <span className="text-muted-foreground">Test Case {idx + 1}</span>
-                                  {res.time && <span className="text-[10px] text-muted-foreground">({Math.round(parseFloat(res.time) * 1000)}ms)</span>}
+                                  <span className="text-xs font-semibold text-[var(--text-heading)]">Test Case {idx + 1}</span>
+                                  {res.time && <span className="text-[10px] text-[var(--text-muted)]">({Math.round(parseFloat(res.time) * 1000)}ms)</span>}
                                 </div>
 
                                 {res.stdout && (
-                                  <div className="bg-black/30 p-2 rounded border border-foreground/5">
-                                    <div className="text-[10px] text-muted-foreground mb-1 uppercase tracking-tighter">Output:</div>
-                                    <pre className="text-success-100 whitespace-pre-wrap">{res.stdout}</pre>
+                                  <div className="bg-slate-100/80 dark:bg-black/30 p-3 rounded-lg border border-slate-200 dark:border-white/5">
+                                    <div className="text-[10px] text-slate-500 dark:text-muted-foreground mb-1.5 uppercase font-bold tracking-wider">Output:</div>
+                                    <pre className="text-emerald-700 dark:text-emerald-400 font-medium whitespace-pre-wrap">{res.stdout}</pre>
                                   </div>
                                 )}
 
                                 {res.compile_output && (
-                                  <div className="bg-destructive-100/5 p-2 rounded border border-destructive-100/10">
-                                    <div className="text-[10px] text-destructive-100/60 mb-1 uppercase tracking-tighter">Compile Error:</div>
-                                    <pre className="text-destructive-100 whitespace-pre-wrap">{res.compile_output}</pre>
+                                  <div className="bg-rose-50/50 dark:bg-rose-950/10 p-3 rounded-lg border border-rose-100 dark:border-rose-950/30">
+                                    <div className="text-[10px] text-rose-600 dark:text-rose-400/80 mb-1.5 uppercase font-bold tracking-wider">Compile Error:</div>
+                                    <pre className="text-rose-700 dark:text-rose-400 whitespace-pre-wrap">{res.compile_output}</pre>
                                   </div>
                                 )}
 
                                 {res.stderr && (
-                                  <div className="bg-destructive-100/5 p-2 rounded border border-destructive-100/10">
-                                    <div className="text-[10px] text-destructive-100/60 mb-1 uppercase tracking-tighter">Runtime Error:</div>
-                                    <pre className="text-destructive-100 whitespace-pre-wrap">{res.stderr}</pre>
+                                  <div className="bg-rose-50/50 dark:bg-rose-950/10 p-3 rounded-lg border border-rose-100 dark:border-rose-950/30">
+                                    <div className="text-[10px] text-rose-600 dark:text-rose-400/80 mb-1.5 uppercase font-bold tracking-wider">Runtime Error:</div>
+                                    <pre className="text-rose-700 dark:text-rose-400 whitespace-pre-wrap">{res.stderr}</pre>
                                   </div>
                                 )}
 
                                 {res.status.id !== 3 && !res.compile_output && !res.stderr && (
-                                  <div className="bg-destructive-100/5 p-2 rounded border border-destructive-100/10">
-                                    <div className="text-[10px] text-destructive-100/60 mb-1 uppercase tracking-tighter">Expected Output:</div>
-                                    <pre className="text-muted-foreground whitespace-pre-wrap">{challenge.testCases[idx]?.output || "N/A"}</pre>
+                                  <div className="bg-slate-100/80 dark:bg-black/30 p-3 rounded-lg border border-slate-200 dark:border-white/5">
+                                    <div className="text-[10px] text-slate-500 dark:text-muted-foreground mb-1.5 uppercase font-bold tracking-wider">Expected Output:</div>
+                                    <pre className="text-slate-700 dark:text-slate-300 font-medium whitespace-pre-wrap">{challenge.testCases[idx]?.output || "N/A"}</pre>
                                   </div>
                                 )}
                               </div>
